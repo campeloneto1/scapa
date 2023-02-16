@@ -1,0 +1,174 @@
+<!-- INICIO CONTENT WRAPER-->
+<div class="content-wrapper" >
+    <!--INICIO COMPONENT TITULO DA PAGINA-->
+    <app-titulo titulo="Orgãos" />
+    <!--FIM COMPONENT TITULO DA PAGINA-->
+    <!--INICIO SECTION TABLE-->
+    <section class="content">
+      <!--INICIO CARD -->
+      <div class="card">
+        <!--INICIO CARD HEADER-->
+        <div class="card-header">
+          <h3 class="card-title">
+            <button 
+            *ngIf="perfil.orgaos_cad"
+              class="btn btn-outline-primary" 
+              data-bs-toggle="modal"
+              data-bs-target="#modalcad">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </h3>
+          
+        </div>
+        <!--FIM CARD HEADER-->
+        <!--INICIO CARD BODY-->
+        <div class="card-body">
+          <!--INICIO TABLE-->
+          <table
+          datatable
+          [dtOptions]="dtOptions"
+          [dtTrigger]="dtTrigger"
+          class="table table-hover table-head-fixed text-nowrap"
+        >
+          <!--INICIO THEAD-->
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Nome</th>
+              <th>Telefone 1</th>
+              <th>E-mail</th>
+             
+              <th>Opções</th>
+            </tr>
+          </thead>
+          <!--FIM THEAD-->
+          <!-- INICIO TBODY -->
+          <tbody *ngIf="data$ | async as data; else loading">
+            <!-- INICIO TR -->
+            <tr *ngFor="let row of data" class="optionshover">
+              <td>{{ row.id }}</td>
+              <td>{{ row.nome }}</td>
+              <td>{{ row.telefone1 }}</td>
+              <td>{{ row.email }}</td>
+             
+              <td>               
+                <a      
+                *ngIf="perfil.orgaos_edt"       
+                  class="options ml-2"
+                  (click)="edit(row)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalcad"
+                >
+                  <i
+                    class="fas fa-edit text-primary point"
+                    aria-hidden="true"
+                  ></i>
+                </a>
+                <a
+                *ngIf="perfil.orgaos_del"
+                  class="options ml-2"
+                  (click)="delete(row)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modaldel"
+                >
+                  <i
+                    class="fas fa-trash text-danger point "
+                    aria-hidden="true"
+                  ></i
+                ></a>
+              </td>
+            </tr>
+            <!-- FIM TR -->
+          </tbody>
+          <!-- FIM TBODY -->
+        </table>
+        <!--FIM TABLE-->
+        <!--INICIO NGTEMPLATE-->
+        <ng-template #loading>
+          <tbody class="text-center">
+            <!-- INICIO TR -->
+            <tr>
+              <td colspan="100%">
+                <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+              </td>
+            </tr>
+            <!-- FIM TR -->
+          </tbody>
+        </ng-template>
+        <!--FIM NGTEMPLATE-->
+
+        </div>
+        <!--FIM CARD BODY-->
+        <!--INICIO CARD FOOTER
+        <div class="card-footer">
+
+        </div>-->
+        <!--FIM CARD FOOTER-->
+      </div>
+      <!--FIM CARD -->
+    </section>
+    <!--FIM SECTION TABLE-->
+
+    <!--INICIO MODAL CADASTRO-->
+    <div class="modal fade" id="modalcad" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Cadastrar</h4>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <app-formulario-orgaos
+              (refresh)="refresh()"
+            />
+          </div>         
+        </div>
+      </div>
+    </div>
+    <!--FIM MODAL CADASTRO-->
+
+    <!--INICIO MODAL EXCLUSAO-->
+    <div class="modal fade" id="modaldel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content" *ngIf="excluir">
+          <div class="modal-header">
+            <h4 class="modal-title">Excluir</h4>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body" >
+            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.nome}}</strong>?</p>
+          </div> 
+          <div class="modal-footer justify-right">
+            <button type="button" class="btn btn-link" data-bs-dismiss="modal">
+              Fechar
+            </button>
+            <button
+              (click)="confirm(excluir.id || 0)"
+              data-bs-dismiss="modal"
+              type="button"
+              class="btn btn-danger"
+            >
+              Confirmar
+            </button>
+          </div>        
+        </div>
+      </div>
+    </div>
+    <!--FIM MODAL EXCLUSAO-->
+
+  </div>
+  <!-- FIM CONTENT WRAPER-->

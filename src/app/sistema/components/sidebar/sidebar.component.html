@@ -1,0 +1,136 @@
+<aside class="main-sidebar sidebar-dark-primary elevation-4">
+  <a [routerLink]="['']" class="brand-link">
+    <img
+      src="assets/casamil.png"
+      alt="AdminLTE Logo"
+      class="brand-image img-circle elevation-3"
+      style="opacity: 0.8"
+    />
+    <span class="brand-text font-weight-light">SCAPA</span>
+  </a>
+  <div class="sidebar">
+    <nav class="mt-2">
+      <ul
+        class="nav nav-pills nav-sidebar flex-column"
+        data-widget="treeview"
+        role="menu"
+        data-accordion="false"
+      >
+      <li class="nav-item">
+        <a [routerLink]="['Inicio']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-home"></i>
+          <p>
+            Início
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.acessos">
+        <a [routerLink]="['Acesso']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fas fa-address-card"></i>
+          <p>
+            Acesso
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.acessos">
+        <a [routerLink]="['Acessos']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-list"></i>
+          <p>
+            Acessos
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.pessoas">
+        <a [routerLink]="['Pessoas']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-address-book"></i>
+          <p>
+            Pessoas
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.postos">
+        <a [routerLink]="['Postos']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-laptop"></i>
+          <p>
+            Postos
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.orgaos">
+        <a [routerLink]="['Niveis']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-signal"></i>
+          <p>
+            Níveis
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.orgaos">
+        <a [routerLink]="['Orgaos']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-building"></i>
+          <p>
+            Orgãos
+          </p>
+        </a>
+      </li>
+      
+      <li class="nav-item" *ngIf="perfil.setores">
+        <a [routerLink]="['Setores']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-sitemap"></i>
+          <p>
+            Setores
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.administrador">
+        <a [routerLink]="['Usuarios']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-users"></i>
+          <p>
+            Usuários
+          </p>
+        </a>
+      </li>
+        <li class="nav-item" *ngIf="perfil.administrador">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-cogs"></i>
+            <p>
+              Administrador
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a [routerLink]="['Cidades']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Cidades</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['Estados']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Estados</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['Paises']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Países</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['Perfis']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Perfis</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a [routerLink]="['Sexos']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Sexos</p>
+              </a>
+            </li>
+          </ul>
+        </li>     
+      </ul>
+    </nav>
+  </div>
+</aside>

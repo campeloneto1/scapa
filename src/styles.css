@@ -1,1 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+.point{
+    cursor: pointer;
+}
+
+.options{
+    display: none;
+}
+
+.optionshover:hover td a{
+    display: inline;
+}

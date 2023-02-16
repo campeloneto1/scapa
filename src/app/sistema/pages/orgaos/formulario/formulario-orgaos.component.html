@@ -1,0 +1,17 @@
+<form  [formGroup]="form" (ngSubmit)="cadastrar()">
+    <div class="row">
+        <app-input-text class="col-sm-4" formControlName="nome" label="Nome" id="nome" tipo="text" />
+        <app-input-text class="col-sm-2" mascara="(00) 0 0000-0000" formControlName="telefone1" label="Telefone 1" id="telefone1" tipo="text" />
+        <app-input-text class="col-sm-2" mascara="(00) 0 0000-0000" formControlName="telefone2" label="Telefone 2" id="telefone2" tipo="text" />
+        <app-input-text class="col-sm-4" formControlName="email" label="E-mail" id="email" tipo="email" />
+    </div>
+    <hr />
+    <div class="float-right">
+        <a (click)="form.reset()" data-bs-dismiss="modal" class="btn btn-link text-danger">
+            Cancelar
+        </a>
+        <button [disabled]="form.invalid"  data-bs-dismiss="modal" type="submit" class="btn btn-primary ">
+            Cadastrar
+        </button>        
+    </div>
+</form>

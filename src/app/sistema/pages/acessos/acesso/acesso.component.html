@@ -1,0 +1,109 @@
+<form [formGroup]="form" class="content-wrapper">
+<!--IMPORTA COMPONENT TITULO DA PAGINA-->
+<app-titulo titulo="Acesso" />
+    <!--INICIO SECTION CONTENT-->
+  <section class="content">
+    <!--INICIO DIV ROW selecao posto-->
+    <div class="row" *ngIf="!form.value.posto">
+         <!--INICIO COL-SM4 SELECAO posto-->
+        <div class="col-sm-6 offset-sm-3">
+             <!--INICIO CARD -->
+            <div class="card">
+                <div class="card-header border-0">
+                <h3 class="card-title">Selecione o posto de serviço</h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <app-input-select class="col-sm-6 offset-sm-3" formControlName="posto"  [config]="config" [data$]="postos$" id="posto" label="Posto" />
+                    </div>
+                </div>
+            </div>
+            <!--FIM CARD-->
+        </div>
+        <!--fim COL-SM4 SELECAO posto-->
+    </div>
+    <!--fim DIV ROW selecao posto-->
+
+    <!--INICIO DIV ROW selecao pessoa-->
+    <div class="row" *ngIf="form.value.posto">
+        <!--INICIO COL-SM4 SELECAO PESSOA-->
+      <div class="col-sm-4">
+        <!--INICIO CARD -->
+        <div class="card">
+            <div class="card-header border-0">
+              <h3 class="card-title">{{form.value.posto.nome}}</h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <app-input-select (ngModelChange)="setPosto()" class="col-sm-12" formControlName="pessoa"  [config]="config2" [data$]="pessoas$" id="pessoa" label="Pessoa" />
+                </div>
+            </div>
+          </div>
+        <!--FIM CARD-->
+      </div>
+      <!--FIM COL-SM-4  SELECAO PESSOA-->
+      <!--INICIO COL-SM-8  IDENTIFICACAO PESSOA-->
+      <div class="col-sm-8">
+         <!--INICIO CARD -->
+         <div class="card">
+            <div class="card-header border-0">
+              <h3 class="card-title">Identificação</h3>
+            </div>
+            <!--INICIO CARD BOSY IDENTIFICACAO PESSOA-->
+            <div class="card-body" *ngIf="form.value.pessoa">                
+                <h2 class="text-center">{{form.value.pessoa?.nome}}</h2>
+                <div class="row">
+                    <!--IDENTIFICACAO PESSOA-->
+                    <div class="col-sm-6">
+                        <dl class="row">
+                            <dt class="col-sm-4">CPF</dt><dd class="col-sm-8">{{form.value.pessoa?.cpf | mask: '000.000.000-00'}}</dd>
+                            <dt class="col-sm-4">RG</dt><dd class="col-sm-8">{{form.value.pessoa?.rg}}</dd>
+                            <dt class="col-sm-4">Data Nascimento</dt><dd class="col-sm-8">{{form.value.pessoa?.data_nascimento | date: 'dd/MM/yyyy'}}</dd>
+                            <dt class="col-sm-4">Sexo</dt><dd class="col-sm-8">{{form.value.pessoa?.sexo?.nome}}</dd>
+                            <dt class="col-sm-4">Mãe</dt><dd class="col-sm-8">{{form.value.pessoa?.mae}}</dd>
+                            <dt class="col-sm-4">Pai</dt><dd class="col-sm-8">{{form.value.pessoa?.pai}}</dd>
+                            
+                            <dt class="col-sm-4">Telefone 1</dt><dd class="col-sm-8">{{form.value.pessoa?.telefone1}}</dd>
+                            <dt class="col-sm-4">Telefone 2</dt><dd class="col-sm-8">{{form.value.pessoa?.telefone2}}</dd>
+                            <dt class="col-sm-4">E-mail</dt><dd class="col-sm-8">{{form.value.pessoa?.email}}</dd>
+
+                            <dt class="col-sm-4">Endereço</dt><dd class="col-sm-8">
+                                {{form.value.pessoa?.rua}} 
+                                <span *ngIf="form.value.pessoa?.numero">, {{form.value.pessoa?.numero}}</span>
+                                <span *ngIf="form.value.pessoa?.bairro">, {{form.value.pessoa?.bairro}}</span>
+                                <span *ngIf="form.value.pessoa?.complemento">, {{form.value.pessoa?.complemento}}</span>
+                                <span *ngIf="form.value.pessoa?.cidade?.nome">, {{form.value.pessoa?.cidade?.nome}}</span>
+                                <span *ngIf="form.value.pessoa?.cidade?.estado.uf"> - {{form.value.pessoa?.cidade?.estado.uf}}</span>
+                            </dd>
+                        </dl>
+                    </div>
+                    <!--FIM IDENTIFICACAO PESSOA-->
+                    <!-- SETOR QUE IRA VISITAR-->
+                    <div class="col-sm-6">
+                        <app-input-select formControlName="setor"  [config]="config3" [data$]="setores$" id="setor" label="Setor" />
+                        <app-input-text  formControlName="obs" label="Observações" id="obs" tipo="textarea" />
+                    </div>
+                    <!--FIM SETOR QUE IRA VISITAR-->
+                    <!--BOTAO REGISTRAR-->
+                    <div class="col-sm-12">
+                        <button [disabled]="form.invalid" class="btn btn-primary btn-block">Registrar</button>
+                    </div>
+                    <!--FIM BOTAO REGISTRAR-->
+                     <!-- ULTIMAS VISITAS-->
+                    <div class="col-sm-12">
+
+                    </div>
+                     <!-- FIM ULTIMAS VISITAS-->
+                </div>
+            </div>
+            <!--FIM CARD BOSY IDENTIFICACAO PESSOA-->
+          </div>
+        <!--FIM CARD-->
+      </div>
+      <!--FIM COL-SM-8  IDENTIFICACAO PESSOA-->
+    </div>
+    <!--FIM DIV ROW selecao pessoa-->
+
+  </section>
+  <!--FIM SECTION CONTENT-->
+</form>

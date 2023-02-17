@@ -24,6 +24,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Cidades',
+                loadComponent: () => import('./pages/cidades/cidades.component').then((c) => c.CidadesComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Estados',
                 loadComponent: () => import('./pages/estados/estados.component').then((c) => c.EstadosComponent),
                 canActivate: [AlowedGuard]
@@ -44,8 +49,18 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Perfis',
+                loadComponent: () => import('./pages/perfis/perfis.component').then((c) => c.PerfisComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Pessoas',
                 loadComponent: () => import('./pages/pessoas/pessoas.component').then((c) => c.PessoasComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
+                path: 'Pessoa/:id',
+                loadComponent: () => import('./pages/pessoas/pessoa/pessoa.component').then((c) => c.PessoaComponent),
                 canActivate: [AlowedGuard]
             },
             {

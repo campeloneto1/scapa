@@ -8,7 +8,7 @@
       <!--INICIO CARD -->
       <div class="card">
         <!--INICIO CARD HEADER-->
-        <div class="card-header">
+        <!--<div class="card-header">
           <h3 class="card-title">
             <button 
                 *ngIf="perfil.acessos_cad"
@@ -19,7 +19,7 @@
             </button>
           </h3>
           
-        </div>
+        </div>-->
         <!--FIM CARD HEADER-->
         <!--INICIO CARD BODY-->
         <div class="card-body">
@@ -41,6 +41,7 @@
               <th>Posto</th>
               <th>Data Hora</th>
               <th>Verificação</th>
+              <th>Observações</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -52,13 +53,14 @@
               <td>{{ row.id }}</td>
               <td>{{ row.setor.orgao.nome }}</td>
               <td>{{ row.setor.nome }}</td>
-              <td>{{ row.pessoa.nome }}</td>
+              <td><a [routerLink]="['/Pessoa', row.pessoa_id]">{{ row.pessoa.nome }}</a></td>
               <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.posto.nome }}</td>
               <td>{{ row.data_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
               <td>{{ row.createdby.nome }}</td>
+              <td>{{ row.obs }}</td>
               <td>               
-                <a             
+                <!--<a             
                 *ngIf="perfil.acessos_edt"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -69,7 +71,7 @@
                     class="fas fa-edit text-primary point"
                     aria-hidden="true"
                   ></i>
-                </a>
+                </a>-->
                 <a
                 *ngIf="perfil.acessos_del"
                   class="options ml-2"

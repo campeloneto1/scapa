@@ -53,7 +53,7 @@
               <td>{{ row.id }}</td>
               <!--<td>{{ row.orgao.nome }}</td>
               <td>{{ row.nivel.nome }}</td>-->
-              <td>{{ row.nome }}</td>
+              <td><a [routerLink]="['/Pessoa', row.id]">{{ row.nome }}</a></td>
               <td>{{ row.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.rg }}</td>
               <td>{{ row.telefone1 | mask : "(00) 0 0000-0000" }}</td>

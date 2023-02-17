@@ -3,23 +3,24 @@ import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
 import { Observable, Subject, tap } from 'rxjs';
 import { TituloComponent } from '../../components/titulo/titulo.component';
+import { SessionService } from '../../shared/session.service';
 import { SharedModule } from '../../shared/shared.module';
 import { SharedService } from '../../shared/shared.service';
-import { FormularioEstadosCompoennt } from './formulario/formulario-estados.component';
-import { Estado, Estados } from './estados';
-import { EstadosService } from './estados.service';
+import { FormularioPerfisComponent } from './formulario/formulario-perfis.component';
+import { Perfil, Perfis } from './perfis';
+import { PerfisService } from './perfis.service';
 
 @Component({
-  selector: 'app-estados',
-  templateUrl: './estados.component.html',
-  styleUrls: ['estados.component.css'],
+  selector: 'app-perfis',
+  templateUrl: './perfis.component.html',
+  styleUrls: ['perfis.component.css'],
   standalone: true,
-  imports: [CommonModule, TituloComponent, SharedModule, FormularioEstadosCompoennt],
+  imports: [CommonModule, TituloComponent, SharedModule, FormularioPerfisComponent],
 })
-export class EstadosComponent implements OnInit, OnDestroy {
+export class PerfisComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
-  data$!: Observable<Estados>;
-  excluir!: Estado;
+  data$!: Observable<Perfis>;
+  excluir!: Perfil;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -28,15 +29,16 @@ export class EstadosComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
-  @ViewChild(FormularioEstadosCompoennt) child!: FormularioEstadosCompoennt;
+  @ViewChild(FormularioPerfisComponent) child!: FormularioPerfisComponent;
 
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject<Estados>();
+  dtTrigger: Subject<any> = new Subject<Perfis>();
 
   constructor(
     private sharedService: SharedService,
-    private estadosService: EstadosService
+    private sessionService: SessionService,
+    private perfisService: PerfisService
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +46,7 @@ export class EstadosComponent implements OnInit, OnDestroy {
     this.dtOptions = this.sharedService.getDtOptions();
     this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
 
-    this.data$ = this.estadosService.index().pipe(
+    this.data$ = this.perfisService.index().pipe(
       tap(() => {
         this.dtTrigger.next(this.dtOptions);
       })
@@ -57,7 +59,7 @@ export class EstadosComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.data$ = this.estadosService.index().pipe(
+    this.data$ = this.perfisService.index().pipe(
       tap(() => {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           // Destroy the table first
@@ -67,30 +69,21 @@ export class EstadosComponent implements OnInit, OnDestroy {
         });
       })
     );
-
-    /*
-     
-    */
   }
 
-  /*
-  paginate(url: string){
-   this.data$ = this.estadosService.paginate(url);
-  }*/
-
   //SETA INFORMACAO NO FORMULARIO CHILD
-  edit(data: Estado) {
+  edit(data: Perfil) {
     this.child.setForm(data);
   }
 
   //SETA VARIAVEL EXCLUIR COM INFORMACOES DO USUARIO
-  delete(data: Estado) {
+  delete(data: Perfil) {
     this.excluir = data;
   }
 
   //CONFIRMA A ESCLUSAO DO USUARIO
   confirm(id:number){
-    this.estadosService.destroy(id).subscribe({
+    this.perfisService.destroy(id).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
         this.refresh();

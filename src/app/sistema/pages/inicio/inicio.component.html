@@ -58,14 +58,34 @@
     <!--INICIO DIV ROW INFORMACOES-->
     <div class="row">
       <!--INICIO COL SM 3 POR DIA-->
-      <div class="col-sm3"></div>
+      <div class="col-sm3">
+
+        <!--INICIO NGX CHART
+        <ngx-charts-line-chart *ngIf="quantPorSetor"
+          [legend]="legend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxis]="xAxis"
+          [yAxis]="yAxis"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [timeline]="timeline"
+          [results]="quantPorSetor"
+          (select)="onSelect($event)"
+          (activate)="onActivate($event)"
+          (deactivate)="onDeactivate($event)"
+          >
+        </ngx-charts-line-chart>-->
+        <!--FIM NGX CHARt-->
+
+      </div>
       <!--FIM COL SM 3 POR DIA-->
       <!--INICIO COL SM 3 POR SETORES-->
       <div class="col-sm-3">
         <!-- INICIO CARD POR SETORES-->
         <div class="card">
           <div class="card-header border-0">
-            <h3 class="card-title">Acessos por setores no dia</h3>            
+            <h3 class="card-title">Acessos por setor no dia</h3>            
           </div>
           <div class="card-body table-responsive p-0">
             <table class="table table-hover table-valign-middle">

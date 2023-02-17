@@ -5,21 +5,21 @@ import { Observable, Subject, tap } from 'rxjs';
 import { TituloComponent } from '../../components/titulo/titulo.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SharedService } from '../../shared/shared.service';
-import { FormularioEstadosCompoennt } from './formulario/formulario-estados.component';
-import { Estado, Estados } from './estados';
-import { EstadosService } from './estados.service';
+import { FormularioCidadesCompoennt } from './formulario/formulario-cidades.component';
+import { Cidade, Cidades } from './cidades';
+import { CidadesService } from './cidades.service';
 
 @Component({
-  selector: 'app-estados',
-  templateUrl: './estados.component.html',
-  styleUrls: ['estados.component.css'],
+  selector: 'app-cidades',
+  templateUrl: './cidades.component.html',
+  styleUrls: ['cidades.component.css'],
   standalone: true,
-  imports: [CommonModule, TituloComponent, SharedModule, FormularioEstadosCompoennt],
+  imports: [CommonModule, TituloComponent, SharedModule, FormularioCidadesCompoennt],
 })
-export class EstadosComponent implements OnInit, OnDestroy {
+export class CidadesComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
-  data$!: Observable<Estados>;
-  excluir!: Estado;
+  data$!: Observable<Cidades>;
+  excluir!: Cidade;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -28,15 +28,15 @@ export class EstadosComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
-  @ViewChild(FormularioEstadosCompoennt) child!: FormularioEstadosCompoennt;
+  @ViewChild(FormularioCidadesCompoennt) child!: FormularioCidadesCompoennt;
 
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject<Estados>();
+  dtTrigger: Subject<any> = new Subject<Cidades>();
 
   constructor(
     private sharedService: SharedService,
-    private estadosService: EstadosService
+    private cidadesService: CidadesService
   ) {}
 
   ngOnInit(): void {
@@ -44,7 +44,7 @@ export class EstadosComponent implements OnInit, OnDestroy {
     this.dtOptions = this.sharedService.getDtOptions();
     this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
 
-    this.data$ = this.estadosService.index().pipe(
+    this.data$ = this.cidadesService.index().pipe(
       tap(() => {
         this.dtTrigger.next(this.dtOptions);
       })
@@ -57,7 +57,7 @@ export class EstadosComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.data$ = this.estadosService.index().pipe(
+    this.data$ = this.cidadesService.index().pipe(
       tap(() => {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           // Destroy the table first
@@ -79,18 +79,18 @@ export class EstadosComponent implements OnInit, OnDestroy {
   }*/
 
   //SETA INFORMACAO NO FORMULARIO CHILD
-  edit(data: Estado) {
+  edit(data: Cidade) {
     this.child.setForm(data);
   }
 
   //SETA VARIAVEL EXCLUIR COM INFORMACOES DO USUARIO
-  delete(data: Estado) {
+  delete(data: Cidade) {
     this.excluir = data;
   }
 
   //CONFIRMA A ESCLUSAO DO USUARIO
   confirm(id:number){
-    this.estadosService.destroy(id).subscribe({
+    this.cidadesService.destroy(id).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
         this.refresh();

@@ -1,5 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
+import { SharedModule } from "../../shared/shared.module";
 import { InicioService } from "./inicio.service";
 
 @Component({
@@ -7,7 +8,7 @@ import { InicioService } from "./inicio.service";
     templateUrl: './inicio.component.html',
     styleUrls: ['inicio.component.css'],
     standalone: true,
-    imports: [CommonModule]
+    imports: [CommonModule, SharedModule]
 })
 
 export class InicioComponent implements OnInit{
@@ -18,7 +19,7 @@ export class InicioComponent implements OnInit{
     quantPorSetor!: any;
 
     constructor(private inicioService: InicioService){
-
+        
     }
 
     ngOnInit(): void {
@@ -43,6 +44,7 @@ export class InicioComponent implements OnInit{
         this.inicioService.acessosPorDia().subscribe({
             next: (data) => {
                 this.quantPorDia = data;
+                
             },
             error: (error) => {
 
@@ -51,12 +53,13 @@ export class InicioComponent implements OnInit{
 
         this.inicioService.acessosPorSetor().subscribe({
             next: (data) => {
-                this.quantPorSetor = data;
+                this.quantPorSetor = data;            
             },
             error: (error) => {
 
             }
         });
     }
+
     
 }

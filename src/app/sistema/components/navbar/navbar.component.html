@@ -12,8 +12,93 @@
   </ul>
 
   <ul class="navbar-nav ml-auto">
-    <li class="nav-item d-none d-sm-inline-block">
-      <a href="" (click)="logout()" class="nav-link">Sair</a>
+    <li class="nav-item dropdown user-menu">
+      <a
+        href="#"
+        class="nav-link dropdown-toggle"
+        data-bs-toggle="dropdown"
+        aria-expanded="false"
+      >
+        <img
+          src="assets/casamil.png"
+          class="user-image img-circle elevation-2"
+          alt="User Image"
+        />
+        <span class="d-none d-md-inline">{{ user.nome }}</span>
+      </a>
+      <ul
+        class="dropdown-menu dropdown-menu-lg dropdown-menu-right"
+        style="left: inherit; right: 0px"
+      >
+        <li class="user-header bg-navy">
+          <img
+            src="assets/casamil.png"
+            class="img-circle elevation-2"
+            alt="User Image"
+          />
+          <p>
+            {{ user.nome }}
+            <small>{{ user.cpf | mask: '000.000.000-00' }}</small>
+          </p>
+        </li>
+
+        <li class="user-body">
+          <div class="row">
+            
+            <div class="col-12 text-center">
+              <a 
+              href="#"
+              data-bs-toggle="modal"
+              data-bs-target="#modalsenha"
+              >Alterar senha</a>
+            </div>
+            
+          </div>
+        </li>
+
+        <li class="user-footer">
+          <a (click)="logout()" class="btn btn-default btn-flat float-right">Sair</a>
+        </li>
+      </ul>
     </li>
+   
   </ul>
 </nav>
+
+<div class="modal fade" id="modalsenha" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content" >
+      <div class="modal-header">
+        <h4 class="modal-title">Alterar senha</h4>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <div class="modal-body ">
+            <form [formGroup]="form" class="row">
+              <app-input-text class="col-sm-6" [label]="'Nova Senha'" [id]="'senha'" [tipo]="'password'" formControlName="senha"/>
+              <app-input-text class="col-sm-6" [label]="'Confirmar Senha'" [id]="'confirmsenha'" [tipo]="'password'" formControlName="confirmsenha"/>
+            </form>
+      </div>
+      <div class="modal-footer justify-right">
+        <button type="button" class="btn btn-link text-danger" data-bs-dismiss="modal">
+          Fechar
+        </button>
+        <button
+          (click)="alterarSenha()"
+          data-bs-dismiss="modal"
+          type="button"
+          class="btn btn-primary"
+          [disabled]="form.invalid || form.value.senha != form.value.confirmsenha"
+        >
+          Confirmar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

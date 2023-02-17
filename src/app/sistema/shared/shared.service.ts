@@ -20,7 +20,7 @@ export class SharedService {//
     pageLength: 10,
     processing: true,
     responsive: true,
-    
+    paging: true
   };
 
   config = {  

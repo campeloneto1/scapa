@@ -1,7 +1,7 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper" >
     <!--INICIO COMPONENT TITULO DA PAGINA-->
-    <app-titulo titulo="Estados" />
+    <app-titulo titulo="Cidades" />
     <!--FIM COMPONENT TITULO DA PAGINA-->
     <!--INICIO SECTION TABLE-->
     <section class="content">
@@ -35,8 +35,8 @@
             <tr>
               <th>#</th>
               <th>País</th>
+              <th>Estado</th>
               <th>Nome</th>
-              <th>UF</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -46,9 +46,9 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>{{ row.pais.nome }}</td>
+              <td>{{ row.estado.pais.nome }}</td>
+              <td>{{ row.estado.nome }}</td>
               <td>{{ row.nome }}</td>
-              <td>{{ row.uf }}</td>
               <td>               
                 <a             
                   class="options ml-2"
@@ -134,7 +134,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <app-formulario-estados
+            <app-formulario-cidades
               (refresh)="refresh()"
             />
           </div>         

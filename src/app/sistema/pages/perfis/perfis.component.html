@@ -1,7 +1,7 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper" >
     <!--INICIO COMPONENT TITULO DA PAGINA-->
-    <app-titulo titulo="Estados" />
+    <app-titulo titulo="Perfis" />
     <!--FIM COMPONENT TITULO DA PAGINA-->
     <!--INICIO SECTION TABLE-->
     <section class="content">
@@ -23,8 +23,7 @@
         <!--INICIO CARD BODY-->
         <div class="card-body">
           <!--INICIO TABLE-->
-          <table 
-          
+          <table
           datatable
           [dtOptions]="dtOptions"
           [dtTrigger]="dtTrigger"
@@ -34,9 +33,8 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>País</th>
               <th>Nome</th>
-              <th>UF</th>
+             
               <th>Opções</th>
             </tr>
           </thead>
@@ -46,9 +44,8 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>{{ row.pais.nome }}</td>
               <td>{{ row.nome }}</td>
-              <td>{{ row.uf }}</td>
+             
               <td>               
                 <a             
                   class="options ml-2"
@@ -76,19 +73,6 @@
             </tr>
             <!-- FIM TR -->
           </tbody>
-          <!--<tfoot>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                
-                <span *ngFor="let pag of data.links">
-                  <li [ngClass]="{'active': pag.active, 'disabled': !pag.url}" class="page-item point">
-                    <a class="page-link" (click)="paginate(pag.url)" [innerHTML]="pag.label"></a>
-                  </li>
-                </span>
-                
-              </ul>
-            </nav>
-          </tfoot>-->
           <!-- FIM TBODY -->
         </table>
         <!--FIM TABLE-->
@@ -134,7 +118,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <app-formulario-estados
+            <app-formulario-perfis
               (refresh)="refresh()"
             />
           </div>         

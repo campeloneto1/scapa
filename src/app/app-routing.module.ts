@@ -12,6 +12,11 @@ const routes: Routes = [
     loadChildren: () => import('./sistema/sistema.module').then((m) => m.SistemaModule),
     canMatch: [AuthGuard],
   },
+  {
+      path: '**',
+      redirectTo: '',
+      pathMatch: 'full',
+  },
 ];
 
 @NgModule({

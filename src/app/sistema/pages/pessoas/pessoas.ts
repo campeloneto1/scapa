@@ -1,3 +1,4 @@
+import { Acesso, Acessos } from "../acessos/acessos";
 import { Cidade } from "../cidades/cidades";
 import { Estado } from "../estados/estados";
 import { Nivel } from "../niveis/niveis";
@@ -6,6 +7,7 @@ import { Sexo } from "../sexos/sexos";
 
 export interface Pessoa{
     id?: number,
+    acessos?: Acessos,
     orgao_id: number,
     orgao: Orgao,
     nivel_id: number,
@@ -18,6 +20,8 @@ export interface Pessoa{
     uf_rg_id?: number,
     uf_rg?: Estado,
     data_nascimento?: Date,
+    mae: string,
+    pai: string,
     telefone1: string,
     telefone2: string,
     email: string,

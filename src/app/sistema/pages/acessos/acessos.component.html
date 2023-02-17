@@ -55,7 +55,7 @@
               <td>{{ row.pessoa.nome }}</td>
               <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.posto.nome }}</td>
-              <td>{{ row.data_hora }}</td>
+              <td>{{ row.data_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
               <td>{{ row.createdby.nome }}</td>
               <td>               
                 <a             

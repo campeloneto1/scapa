@@ -34,13 +34,14 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Orgão</th>
+              <!--<th>Orgão</th>
+              <th>Nível</th>-->
               <th>Nome</th>
               <th>CPF</th>
               <th>RG</th>
               <th>Telefone 1</th>
               <th>E-mail</th>
-              <th>Nível</th>
+              
               <th>Opções</th>
             </tr>
           </thead>
@@ -50,13 +51,14 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>{{ row.orgao.nome }}</td>
+              <!--<td>{{ row.orgao.nome }}</td>
+              <td>{{ row.nivel.nome }}</td>-->
               <td>{{ row.nome }}</td>
               <td>{{ row.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.rg }}</td>
               <td>{{ row.telefone1 | mask : "(00) 0 0000-0000" }}</td>
               <td>{{ row.email }}</td>
-              <td>{{ row.nivel.nome }}</td>
+              
               <td>               
                 <a             
                 *ngIf="perfil.pessoas_edt"  

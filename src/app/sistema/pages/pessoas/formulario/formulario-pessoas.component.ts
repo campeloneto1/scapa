@@ -88,10 +88,10 @@ export class FormularioPessoasCompoennt implements OnInit {
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
-      orgao_id: [''],
-      orgao: ['', [Validators.required,]],
-      nivel_id: [''],
-      nivel: ['', [Validators.required,]],
+      //orgao_id: [''],
+     //orgao: ['', [Validators.required,]],
+      //nivel_id: [''],
+      //nivel: ['', [Validators.required,]],
       sexo_id: [''],
       sexo: ['',
    [
@@ -171,7 +171,7 @@ export class FormularioPessoasCompoennt implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    if(this.form.value.orgao){
+   /* if(this.form.value.orgao){
       this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
       this.form.get('orgao')?.patchValue('');
     }
@@ -181,7 +181,7 @@ export class FormularioPessoasCompoennt implements OnInit {
       this.form.get('nivel')?.patchValue('');
     }else{
       this.form.get('nivel_id')?.patchValue(1);
-    }
+    }*/
     
     if(this.form.value.uf_rg){
       this.form.get('uf_rg_id')?.patchValue(this.form.value.uf_rg.id);

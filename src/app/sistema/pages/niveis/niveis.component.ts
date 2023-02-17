@@ -44,7 +44,7 @@ export class NiveisComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
-    this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
+    this.dtOptions = { ...this.dtOptions, order: [[1, 'asc'],[2, 'asc'] ] };
 
     this.data$ = this.niveisService.index().pipe(
       tap(() => {

@@ -14,7 +14,7 @@
                 </div>
                 <div class="card-body">
                     <div class="row">
-                        <app-input-select class="col-sm-6 offset-sm-3" formControlName="posto"  [config]="config" [data$]="postos$" id="posto" label="Posto" />
+                        <app-input-select (ngModelChange)="setPosto()" class="col-sm-6 offset-sm-3" formControlName="posto"  [config]="config" [data$]="postos$" id="posto" label="Posto" />
                     </div>
                 </div>
             </div>
@@ -31,15 +31,51 @@
         <!--INICIO CARD -->
         <div class="card">
             <div class="card-header border-0">
-              <h3 class="card-title">{{form.value.posto.nome}}</h3>
+              <div class="d-flex justify-content-between">
+                <h3 class="card-title">{{form.value.posto.nome}}</h3>
+                <button class="btn btn-link" (click)="unsetPosto()">Mudar posto</button>
+              </div>
             </div>
             <div class="card-body">
                 <div class="row">
-                    <app-input-select (ngModelChange)="setPosto()" class="col-sm-12" formControlName="pessoa"  [config]="config2" [data$]="pessoas$" id="pessoa" label="Pessoa" />
+                    <app-input-select  class="col-sm-12" formControlName="pessoa"  [config]="config2" [data$]="pessoas$" id="pessoa" label="Pessoa" />
+                    <p class="text-center">ou</p>
+                    <button class="btn btn-primary"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modalcad" 
+                    >
+                      Cadastre uma pessoa
+                    </button>
                 </div>
             </div>
           </div>
         <!--FIM CARD-->
+
+          <!--INICIO MODAL CADASTRO-->
+          <div class="modal fade" id="modalcad" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title">Cadastrar Pessoa</h4>
+                  <button
+                    type="button"
+                    class="close"
+                    data-bs-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">×</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <app-formulario-pessoas
+                    (refresh)="refresh()"
+                  />
+                </div>         
+              </div>
+            </div>
+          </div>
+          <!--FIM MODAL CADASTRO-->
+
       </div>
       <!--FIM COL-SM-4  SELECAO PESSOA-->
       <!--INICIO COL-SM-8  IDENTIFICACAO PESSOA-->
@@ -75,6 +111,7 @@
                                 <span *ngIf="form.value.pessoa?.cidade?.nome">, {{form.value.pessoa?.cidade?.nome}}</span>
                                 <span *ngIf="form.value.pessoa?.cidade?.estado.uf"> - {{form.value.pessoa?.cidade?.estado.uf}}</span>
                             </dd>
+                            <dt class="col-sm-4">Observações</dt><dd class="col-sm-8">{{form.value.pessoa?.obs}}</dd>
                         </dl>
                     </div>
                     <!--FIM IDENTIFICACAO PESSOA-->
@@ -85,8 +122,8 @@
                     </div>
                     <!--FIM SETOR QUE IRA VISITAR-->
                     <!--BOTAO REGISTRAR-->
-                    <div class="col-sm-12">
-                        <button [disabled]="form.invalid" class="btn btn-primary btn-block">Registrar</button>
+                    <div class="col-sm-12"> 
+                        <button [disabled]="form.invalid" (click)="registrar()" class="btn btn-success btn-block">Registrar</button>
                     </div>
                     <!--FIM BOTAO REGISTRAR-->
                      <!-- ULTIMAS VISITAS-->

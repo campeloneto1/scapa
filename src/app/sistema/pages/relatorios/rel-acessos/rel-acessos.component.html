@@ -1,0 +1,92 @@
+<div  class="content-wrapper">
+    <!--IMPORTA COMPONENT TITULO DA PAGINA-->
+    <app-titulo titulo="Relatório de acessos" />
+        <!--INICIO SECTION CONTENT-->
+      <section class="content">
+        <!--INICIO CARD -->
+        <div class="card">
+            <div class="card-header border-0 ">
+                <div class="d-flex justify-content-between">
+                    <h3 class="card-title">Relatório de acessos</h3>
+                    <button (click)="show= false;"  *ngIf="show" class="btn btn-link">Voltar</button>
+                </div>
+            </div>
+
+            <div *ngIf="!show" class="card-body">
+                <form [formGroup]="form" (ngSubmit)="consultar()">
+                    <div class="row">
+                        <app-input-select (ngModelChange)="getSetoresPostos()"  class="col-sm-3 " formControlName="orgao"  [config]="config" [data$]="orgaos$" id="orgao" label="Orgão" />
+                        <app-input-select  class="col-sm-3 " formControlName="setor"  [config]="config3" [data$]="setores$" id="setor" label="Setor" />
+                        <app-input-select  class="col-sm-3 " formControlName="posto"  [config]="config2" [data$]="postos$" id="posto" label="Posto" />
+                    </div>
+                    <div class="row">
+                        <app-input-text class="col-sm-3" formControlName="data_hora_inicio" label="Data Hora Início" id="data_hora_inicio" tipo="datetime-local" />
+                        <app-input-text class="col-sm-3" formControlName="data_hora_fim" label="Data Hora Fim" id="data_hora_fim" tipo="datetime-local" />
+                    </div>
+                    <div class="row">
+                        <button [disabled]="form.invalid" type="submit" class="btn btn-primary">Consultar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div *ngIf="show" class="card-body">
+
+                <!--INICIO TABLE-->
+                <table
+                    class="table table-hover table-head-fixed text-nowrap"
+                    >
+                    <!--INICIO THEAD-->
+                    <thead>
+                        <tr>
+                        <th>#</th>
+                        <th>Orgão</th>
+                        <th>Setor</th>
+                        <th>Pessoa</th>
+                        <th>CPF</th>
+                        <th>Posto</th>
+                        <th>Data Hora</th>
+                        <th>Verificação</th>
+                        <th>Observações</th>
+                        </tr>
+                    </thead>
+                    <!--FIM THEAD-->
+                    <!-- INICIO TBODY -->
+                    <tbody *ngIf="data$ | async as data; else loading">
+                        <!-- INICIO TR -->
+                        <tr *ngFor="let row of data">
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.setor.orgao.nome }}</td>
+                            <td>{{ row.setor.nome }}</td>
+                            <td>{{ row.pessoa.nome }}</td>
+                            <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
+                            <td>{{ row.posto.nome }}</td>
+                            <td>{{ row.data_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+                            <td>{{ row.createdby.nome }}</td>
+                            <td>{{ row.obs }}</td>
+                        
+                        </tr>
+                        <!-- FIM TR -->
+                    </tbody>
+                    <!-- FIM TBODY -->
+                    </table>
+                    <!--FIM TABLE-->
+                     <!--INICIO NGTEMPLATE-->
+                    <ng-template #loading>
+                        <tbody class="text-center">
+                        <!-- INICIO TR -->
+                        <tr>
+                            <td colspan="100%">
+                            <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+                            </td>
+                        </tr>
+                        <!-- FIM TR -->
+                        </tbody>
+                    </ng-template>
+                    <!--FIM NGTEMPLATE-->
+            </div>
+        </div>
+        <!--FIM CARD-->
+      </section>
+      <!--FIM SECTION CONTENT-->
+    </div>
+    

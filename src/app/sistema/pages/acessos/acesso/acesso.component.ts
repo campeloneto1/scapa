@@ -13,7 +13,7 @@ import { PostosService } from "../../postos/postos.service";
 import { Setor, Setores } from "../../setores/setores";
 import { SetoresService } from "../../setores/setores.service";
 import { AcessosService } from "../acessos.service";
-
+import { environment } from "src/environments/environments";
 @Component({
     selector: 'app-acesso',
     templateUrl: './acesso.component.html',
@@ -24,10 +24,11 @@ import { AcessosService } from "../acessos.service";
 
 export class AcessoComponent implements OnInit{
     form!: FormGroup;
-
+    urlimage = environment.image;
     postos$!: Observable<Postos>;
     setores$!: Observable<Setores>;
     pessoas$!: Observable<Pessoas>;
+    cadastro:boolean = false;
 
     protected config!: any
     protected config2!: any
@@ -68,7 +69,7 @@ export class AcessoComponent implements OnInit{
 
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
         this.config = this.sharedService.getConfig();
-        this.config = {...this.config, displayFn:(item: Posto) => { return `${item.nome}`; }, placeholder:'Selecione um Posto'};
+        this.config = {...this.config, displayFn:(item: Posto) => { return `${item.orgao.nome} - ${item.nome}`; }, placeholder:'Selecione um Posto'};
 
         this.config2 = this.sharedService.getConfig();
         this.config2 = {...this.config, displayFn:(item: Pessoa) => { return `${item.nome} (${item.cpf})`; }, placeholder:'Selecione uma Pessoa'};
@@ -108,11 +109,16 @@ export class AcessoComponent implements OnInit{
                 this.form.get('pessoa')?.patchValue('');
                 this.form.get('setor_id')?.patchValue('');
                 this.form.get('setor')?.patchValue('');
+                this.form.get('obs')?.patchValue('');
                 
             },
             error: (error) => {
                 this.sharedService.toast('Error!', error.erro as string, 2);
             }
         })
+    }
+
+    teste(){
+        console.log(11111)
     }
 }

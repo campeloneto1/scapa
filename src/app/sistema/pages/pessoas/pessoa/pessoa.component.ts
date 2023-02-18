@@ -6,6 +6,7 @@ import { TituloComponent } from "src/app/sistema/components/titulo/titulo.compon
 import { SharedModule } from "src/app/sistema/shared/shared.module";
 import { Pessoa } from "../pessoas";
 import { PessoasService } from "../pessoas.service";
+import { environment } from "src/environments/environments";
 
 @Component({
     selector: 'app-pessoa',
@@ -18,6 +19,7 @@ import { PessoasService } from "../pessoas.service";
 export class PessoaComponent implements OnInit{
     id!: number;
     pessoa$!: Observable<Pessoa>;
+    urlimage = environment.image;
 
     constructor(
         private activatedRoute: ActivatedRoute,

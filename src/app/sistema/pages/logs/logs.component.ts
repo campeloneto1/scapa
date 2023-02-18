@@ -6,23 +6,20 @@ import { TituloComponent } from '../../components/titulo/titulo.component';
 import { SessionService } from '../../shared/session.service';
 import { SharedModule } from '../../shared/shared.module';
 import { SharedService } from '../../shared/shared.service';
-import { Perfil } from '../perfis/perfis';
-import { FormularioPessoasCompoennt } from './formulario/formulario-pessoas.component';
-import { Pessoa, Pessoas } from './pessoas';
-import { PessoasService } from './pessoas.service';
+import { Logs, Log } from './logs';
+import { LogsService } from './logs.service';
 
 @Component({
-  selector: 'app-pessoas',
-  templateUrl: './pessoas.component.html',
-  styleUrls: ['pessoas.component.css'],
+  selector: 'app-logs',
+  templateUrl: './logs.component.html',
+  styleUrls: ['logs.component.css'],
   standalone: true,
-  imports: [CommonModule, TituloComponent, SharedModule, FormularioPessoasCompoennt],
+  imports: [CommonModule, TituloComponent, SharedModule],
 })
-export class PessoasComponent implements OnInit, OnDestroy {
+export class LogsComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
-  data$!: Observable<Pessoas>;
-  excluir!: Pessoa;
-  perfil!: Perfil;
+  data$!: Observable<Logs>;
+  excluir!: Log;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -31,26 +28,22 @@ export class PessoasComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
-  @ViewChild(FormularioPessoasCompoennt) child!: FormularioPessoasCompoennt;
-
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject<Pessoas>();
+  dtTrigger: Subject<any> = new Subject<Logs>();
 
   constructor(
     private sharedService: SharedService,
     private sessionService: SessionService,
-    private PessoasService: PessoasService
+    private logsService: LogsService
   ) {}
 
   ngOnInit(): void {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
-    this.dtOptions = { ...this.dtOptions, order: [[1, 'asc'],[2, 'asc'] ] };
+    this.dtOptions = { ...this.dtOptions, order: [1, 'desc'] };
 
-    this.perfil = this.sessionService.retornaPerfil();
-
-    this.data$ = this.PessoasService.index().pipe(
+    this.data$ = this.logsService.index().pipe(
       tap(() => {
         this.dtTrigger.next(this.dtOptions);
       })
@@ -63,7 +56,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.data$ = this.PessoasService.index().pipe(
+    this.data$ = this.logsService.index().pipe(
       tap(() => {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           // Destroy the table first
@@ -75,19 +68,15 @@ export class PessoasComponent implements OnInit, OnDestroy {
     );
   }
 
-  //SETA INFORMACAO NO FORMULARIO CHILD
-  edit(data: Pessoa) {
-    this.child.setForm(data);
-  }
-
+ 
   //SETA VARIAVEL EXCLUIR COM INFORMACOES DO USUARIO
-  delete(data: Pessoa) {
+  delete(data: Log) {
     this.excluir = data;
   }
 
   //CONFIRMA A ESCLUSAO DO USUARIO
   confirm(id:number){
-    this.PessoasService.destroy(id).subscribe({
+    this.logsService.destroy(id).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
         this.refresh();
@@ -96,10 +85,6 @@ export class PessoasComponent implements OnInit, OnDestroy {
         this.sharedService.toast('Error!', error.erro as string, 2);
       }
     })
-  }
-
-  foto(data: Pessoa){
-
   }
 
 }

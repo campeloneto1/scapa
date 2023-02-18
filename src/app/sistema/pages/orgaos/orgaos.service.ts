@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environments";
 import { Niveis } from "../niveis/niveis";
+import { Postos } from "../postos/postos";
 import { Setores } from "../setores/setores";
 import { Orgao, Orgaos } from "./orgaos";
 
@@ -21,6 +22,10 @@ export class OrgaosService{
 
       where_niveis(id: number): Observable<Niveis> {
         return this.http.get<Niveis>(`${API}/orgaos/${id}/niveis`);
+      }
+
+      where_postos(id: number): Observable<Postos> {
+        return this.http.get<Postos>(`${API}/orgaos/${id}/postos`);
       }
 
       where_setores(id: number): Observable<Setores> {

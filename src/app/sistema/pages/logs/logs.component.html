@@ -1,7 +1,7 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper" >
     <!--INICIO COMPONENT TITULO DA PAGINA-->
-    <app-titulo titulo="Setores" />
+    <app-titulo titulo="Logs" />
     <!--FIM COMPONENT TITULO DA PAGINA-->
     <!--INICIO SECTION TABLE-->
     <section class="content">
@@ -9,15 +9,7 @@
       <div class="card">
         <!--INICIO CARD HEADER-->
         <div class="card-header border-0">
-          <h3 class="card-title">
-            <button 
-            *ngIf="perfil.setores_cad"
-              class="btn btn-outline-primary" 
-              data-bs-toggle="modal"
-              data-bs-target="#modalcad">
-              <i class="fa fa-plus" aria-hidden="true"></i>
-            </button>
-          </h3>
+          
           
         </div>
         <!--FIM CARD HEADER-->
@@ -34,8 +26,10 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Orgão</th>
-              <th>Nome</th>
+              <th>Mensagem</th>
+              <th>Tabela</th>
+              <th>ID</th>
+              <th>Objeto</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -45,23 +39,13 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>{{ row.orgao.nome }}</td>
-              <td>{{ row.nome }}</td>
+              <td>{{ row.mensagem }}</td>
+              <td>{{ row.table }}</td>
+              <td>{{ row.fk }}</td>
+              <td style="max-width: 400px; white-space: normal;">{{ row.object }}</td>
               <td>               
-                <a             
-                *ngIf="perfil.setores_edt"
-                  class="options ml-2"
-                  (click)="edit(row)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalcad"
-                >
-                  <i
-                    class="fas fa-edit text-primary point"
-                    aria-hidden="true"
-                  ></i>
-                </a>
+                
                 <a
-                *ngIf="perfil.setores_del"
                   class="options ml-2"
                   (click)="delete(row)"
                   data-bs-toggle="modal"
@@ -105,30 +89,6 @@
     </section>
     <!--FIM SECTION TABLE-->
 
-    <!--INICIO MODAL CADASTRO-->
-    <div class="modal fade" id="modalcad" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Cadastrar</h4>
-            <button
-              type="button"
-              class="close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-formulario-setores
-              (refresh)="refresh()"
-            />
-          </div>         
-        </div>
-      </div>
-    </div>
-    <!--FIM MODAL CADASTRO-->
 
     <!--INICIO MODAL EXCLUSAO-->
     <div class="modal fade" id="modaldel" aria-hidden="true">
@@ -146,7 +106,7 @@
             </button>
           </div>
           <div class="modal-body" >
-            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.nome}}</strong>?</p>
+            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.id}}</strong>?</p>
           </div> 
           <div class="modal-footer justify-right">
             <button type="button" class="btn btn-link" data-bs-dismiss="modal">

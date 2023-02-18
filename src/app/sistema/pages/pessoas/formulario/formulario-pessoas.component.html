@@ -1,4 +1,12 @@
 <form  [formGroup]="form" (ngSubmit)="cadastrar()">
+    <div class="text-center mb-2">
+      <img *ngIf="sysImage" style="height: 200px; width: 200px;" [src]="webcamImage.imageAsDataUrl"  /> 
+      <webcam  [height]="200" [imageQuality]="1" *ngIf="!sysImage && showwebcam" [trigger]="invokeObservable" (imageCapture)="captureImg($event)" ></webcam>
+    </div>
+    <div class="text-center mb-4">
+      <a *ngIf="!sysImage && showwebcam" (click)="getSnapshot()" class="btn btn-info">Tirar foto <span *ngIf="!form.value.foto" class="text-danger">*</span></a>
+      <a *ngIf="sysImage" (click)="sysImage = ''; form.get('foto')?.patchValue('');" class="btn btn-info">Tirar novamente</a>
+    </div>
     <div class="row">
         <app-input-text class="col-sm-4" formControlName="nome" label="Nome" id="nome" tipo="text" />
         <app-input-text class="col-sm-2" mascara="000.000.000-00" formControlName="cpf" label="CPF" id="cpf" tipo="text" />

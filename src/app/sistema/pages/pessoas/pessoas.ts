@@ -34,6 +34,8 @@ export interface Pessoa{
     cidade: Cidade,
     cep?: string,
     key: string,
+    foto?: string,
+    digital?: string,
     
 }
 

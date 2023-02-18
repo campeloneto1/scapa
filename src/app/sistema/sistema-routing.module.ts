@@ -34,6 +34,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Logs',
+                loadComponent: () => import('./pages/logs/logs.component').then((c) => c.LogsComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Niveis',
                 loadComponent: () => import('./pages/niveis/niveis.component').then((c) => c.NiveisComponent),
                 canActivate: [AlowedGuard]
@@ -66,6 +71,11 @@ const routes: Routes = [
             {
                 path: 'Postos',
                 loadComponent: () => import('./pages/postos/postos.component').then((c) => c.PostosComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
+                path: 'RelAcessos',
+                loadComponent: () => import('./pages/relatorios/rel-acessos/rel-acessos.component').then((c) => c.RelAcessosComponent),
                 canActivate: [AlowedGuard]
             },
             {

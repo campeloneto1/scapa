@@ -32,7 +32,7 @@
         <div class="card">
             <div class="card-header border-0">
               <div class="d-flex justify-content-between">
-                <h3 class="card-title">{{form.value.posto.nome}}</h3>
+                <h3 class="card-title">{{form.value.posto.orgao.nome}} - {{form.value.posto.nome}}</h3>
                 <button class="btn btn-link" (click)="unsetPosto()">Mudar posto</button>
               </div>
             </div>
@@ -43,6 +43,7 @@
                     <button class="btn btn-primary"
                       data-bs-toggle="modal"
                       data-bs-target="#modalcad" 
+                      (click)="cadastro = true;"
                     >
                       Cadastre uma pessoa
                     </button>
@@ -52,12 +53,13 @@
         <!--FIM CARD-->
 
           <!--INICIO MODAL CADASTRO-->
-          <div class="modal fade" id="modalcad" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
+          <div class="modal fade" id="modalcad"  aria-hidden="true">
+            <div class="modal-dialog modal-xl" >
               <div class="modal-content">
                 <div class="modal-header">
                   <h4 class="modal-title">Cadastrar Pessoa</h4>
                   <button
+                  (click)="cadastro = false;"
                     type="button"
                     class="close"
                     data-bs-dismiss="modal"
@@ -66,7 +68,7 @@
                     <span aria-hidden="true">×</span>
                   </button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" *ngIf="cadastro">
                   <app-formulario-pessoas
                     (refresh)="refresh()"
                   />
@@ -86,9 +88,27 @@
               <h3 class="card-title">Identificação</h3>
             </div>
             <!--INICIO CARD BOSY IDENTIFICACAO PESSOA-->
-            <div class="card-body" *ngIf="form.value.pessoa">                
+            <div class="card-body" *ngIf="form.value.pessoa">   
+                <div class="row">
+                  <div class="col-sm-4 offset-sm-4 text-center">
+                      <img
+                      *ngIf="!form.value.pessoa?.foto"
+                      class="profile-user-img img-fluid img-circle"
+                      src="assets/casamil.png"
+                      alt="User profile picture"
+                    />
+                    <img
+                      style="height: 200px; width: 200px;"
+                      *ngIf="form.value.pessoa?.foto"
+                      class="profile-user-img img-fluid img-circle"
+                      [src]="urlimage+form.value.pessoa?.foto"
+                      alt="User profile picture"
+                    />
+                  </div>
+                </div>             
                 <h2 class="text-center">{{form.value.pessoa?.nome}}</h2>
                 <div class="row">
+                  
                     <!--IDENTIFICACAO PESSOA-->
                     <div class="col-sm-6">
                         <dl class="row">

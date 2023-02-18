@@ -111,6 +111,12 @@
               </a>
             </li>
             <li class="nav-item">
+              <a [routerLink]="['Logs']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Logs</p>
+              </a>
+            </li>
+            <li class="nav-item">
               <a [routerLink]="['Paises']" routerLinkActive="active" class="nav-link">
                 <i class="far fa-circle nav-icon"></i>
                 <p>Países</p>
@@ -129,7 +135,25 @@
               </a>
             </li>
           </ul>
-        </li>     
+        </li>   
+        <li class="nav-item" *ngIf="perfil.administrador">
+          <a href="#" class="nav-link">
+            <i class="nav-icon fa fa-file"></i>
+            <p>
+              Relatórios
+              <i class="right fas fa-angle-left"></i>
+            </p>
+          </a>
+          <ul class="nav nav-treeview">
+            <li class="nav-item">
+              <a [routerLink]="['RelAcessos']" routerLinkActive="active" class="nav-link">
+                <i class="far fa-circle nav-icon"></i>
+                <p>Acessos</p>
+              </a>
+            </li>
+            
+          </ul>
+        </li>    
       </ul>
     </nav>
   </div>

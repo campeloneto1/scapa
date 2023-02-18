@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { SessionService } from 'src/app/sistema/shared/session.service';
 import { SharedModule } from 'src/app/sistema/shared/shared.module';
 import { SharedService } from 'src/app/sistema/shared/shared.service';
@@ -9,7 +9,6 @@ import { Cidade, Cidades } from '../../cidades/cidades';
 import { Estado, Estados } from '../../estados/estados';
 import { OrgaosService } from '../../orgaos/orgaos.service';
 import { Niveis, Nivel } from '../../niveis/niveis';
-import { NiveisService } from '../../niveis/niveis.service';
 import { Pais, Paises } from '../../paises/paises';
 import { Perfil } from '../../perfis/perfis';
 import { Sexo, Sexos } from '../../sexos/sexos';
@@ -17,15 +16,24 @@ import { SexosService } from '../../sexos/sexos.service';
 import { Pessoa } from '../pessoas';
 import { PessoasService } from '../pessoas.service';
 import { Orgao, Orgaos } from '../../orgaos/orgaos';
+import { WebcamModule, WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { environment } from 'src/environments/environments';
 
 @Component({
   selector: 'app-formulario-pessoas',
   templateUrl: './formulario-pessoas.component.html',
   styleUrls: ['./formulario-pessoas.component.css'],
   standalone: true,
-  imports: [CommonModule, SharedModule],
+  imports: [CommonModule, SharedModule, WebcamModule],
 })
 export class FormularioPessoasCompoennt implements OnInit {
+  private trigger: Subject<any> = new Subject();
+  public webcamImage!: WebcamImage;
+  private nextWebcam: Subject<any> = new Subject();
+  sysImage = '';
+  showwebcam = true;
+
   form!: FormGroup;
   @Output('refresh') refresh: EventEmitter<Pessoa> = new EventEmitter();
   orgaos$!: Observable<Orgaos>;
@@ -46,9 +54,9 @@ export class FormularioPessoasCompoennt implements OnInit {
   protected config7!: any
 
   constructor(
+    private http: HttpClient,
     private pessoasService: PessoasService,
     private formBuilder: FormBuilder,
-    private niveisService: NiveisService,
     private orgaosService: OrgaosService,
     private sexosService: SexosService,
     private sharedService: SharedService,
@@ -146,6 +154,9 @@ export class FormularioPessoasCompoennt implements OnInit {
       cidade: [''],
       complemento: [''],
       cep: [''],
+      foto: ['',  [
+        Validators.required,
+      ]],
       obs: [''],
     });
   }
@@ -212,6 +223,7 @@ export class FormularioPessoasCompoennt implements OnInit {
           //console.log('aaaaaaaaaa')
           this.sharedService.toast('Sucesso!', data as string, 3);
           this.form.reset();
+          this.sysImage = '';
           this.refresh.emit();
         },
         error: (error) => {
@@ -224,6 +236,7 @@ export class FormularioPessoasCompoennt implements OnInit {
           //console.log('aaaaaaaaaa')
           this.sharedService.toast('Sucesso!', data as string, 1);
           this.form.reset();
+          this.sysImage = '';
           this.refresh.emit();
         },
         error: (error) => {
@@ -236,6 +249,7 @@ export class FormularioPessoasCompoennt implements OnInit {
 
   //FUNÇÃO SETA INFORMACAO NO FORMULARIO
   setForm(data: Pessoa){
+    this.showwebcam = false;
     this.form.patchValue(data);
 
     if(data.cidade){
@@ -259,5 +273,42 @@ export class FormularioPessoasCompoennt implements OnInit {
         this.getNiveis();    
     }
     
+  }
+
+  public getSnapshot(): void {
+    this.trigger.next(void 0);
+  }
+  public captureImg(webcamImage: WebcamImage): void {
+    this.webcamImage = webcamImage;
+    this.sysImage = webcamImage.imageAsDataUrl;
+   
+
+    var myFormData = new FormData();
+    const headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    myFormData.append('image', webcamImage.imageAsDataUrl);
+    
+    this.http.post(`${environment.url}/upload-foto`, myFormData, {
+    headers: headers
+    }).subscribe({
+      next: (data) => {
+       this.form.get('foto')?.patchValue(data);
+       //console.log('data');
+       //console.log(data);
+      },
+      error: (error) => {
+        //console.log('error');
+        //console.log(error);
+      }
+    }); 
+  }
+
+  public get invokeObservable(): Observable<any> {
+    return this.trigger.asObservable();
+  }
+
+  public get nextWebcamObservable(): Observable<any> {
+    return this.nextWebcam.asObservable();
   }
 }

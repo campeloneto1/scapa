@@ -61,5 +61,7 @@ export class InicioComponent implements OnInit{
         });
     }
 
-    
+    onSelect(data:any){
+
+    }
 }

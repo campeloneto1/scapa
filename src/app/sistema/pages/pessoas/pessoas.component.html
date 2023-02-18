@@ -8,9 +8,10 @@
       <!--INICIO CARD -->
       <div class="card">
         <!--INICIO CARD HEADER-->
-        <div class="card-header">
-          <h3 class="card-title">
+        <div class="card-header border-0">
+          <h3 class="card-title ">
             <button 
+              (click)="child.showwebcam = true;"
               *ngIf="perfil.pessoas_cad"
               class="btn btn-outline-primary" 
               data-bs-toggle="modal"
@@ -41,7 +42,7 @@
               <th>RG</th>
               <th>Telefone 1</th>
               <th>E-mail</th>
-              
+              <th>Foto</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -58,7 +59,10 @@
               <td>{{ row.rg }}</td>
               <td>{{ row.telefone1 | mask : "(00) 0 0000-0000" }}</td>
               <td>{{ row.email }}</td>
-              
+              <td>
+                <!--<i class="fas fa-portrait point" *ngIf="perfil.pessoas_cad" [ngClass]="row.foto ? 'text-success' : 'text-danger'" (click)="foto(row)" data-bs-toggle="modal" data-bs-target="#modalfoto"></i>-->
+                <i class="fas fa-portrait"  [ngClass]="row.foto ? 'text-success' : 'text-danger'"></i>
+              </td>
               <td>               
                 <a             
                 *ngIf="perfil.pessoas_edt"  

@@ -3,6 +3,7 @@ import { Component, OnInit } from "@angular/core";
 import { SharedModule } from "../../shared/shared.module";
 import { InicioService } from "./inicio.service";
 
+
 @Component({
     selector: 'app-inicio',
     templateUrl: './inicio.component.html',

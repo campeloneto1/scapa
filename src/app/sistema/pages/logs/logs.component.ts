@@ -41,7 +41,7 @@ export class LogsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
-    this.dtOptions = { ...this.dtOptions, order: [1, 'desc'] };
+    this.dtOptions = { ...this.dtOptions, order: [0, 'desc'] };
 
     this.data$ = this.logsService.index().pipe(
       tap(() => {

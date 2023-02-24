@@ -34,7 +34,7 @@
               </li>
               
               <li class="list-group-item" *ngIf="pessoa.rg">
-                <b>RG</b> <a class="float-right">{{pessoa.rg}}</a>
+                <b>RG</b> <a class="float-right">{{pessoa.rg}} {{pessoa.uf_rg?.nome}}</a>
               </li>
               <li class="list-group-item">
                 <b>Data Nascimento</b> <a class="float-right">{{pessoa.data_nascimento | date: 'dd/MM/yyyy'}}</a>
@@ -99,8 +99,10 @@
                   <tr>
                     <th>Orgão</th>
                     <th>Setor</th>
+                    <th>Observação</th>
                     <th>Posto</th>
                     <th>Data Hora</th>
+                    
                     <th>Verificação</th>
 
                   </tr>
@@ -108,7 +110,8 @@
                 <tbody>
                   <tr *ngFor="let acesso of pessoa?.acessos">                  
                     <td>{{acesso.setor.orgao.nome}}</td>       
-                    <td>{{acesso.setor.nome}}</td>   
+                    <td>{{acesso.setor.nome}}</td>  
+                    <td>{{acesso.obs}}</td>   
                     <td>{{acesso.posto.nome}}</td>   
                     <td>{{acesso.data_hora | date: 'dd/MM/yyyy HH:mm:ss'}}</td>   
                     <td>{{acesso.createdby.nome}}</td>                                   

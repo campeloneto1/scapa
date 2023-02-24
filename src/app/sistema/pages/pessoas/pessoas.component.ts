@@ -10,6 +10,8 @@ import { Perfil } from '../perfis/perfis';
 import { FormularioPessoasCompoennt } from './formulario/formulario-pessoas.component';
 import { Pessoa, Pessoas } from './pessoas';
 import { PessoasService } from './pessoas.service';
+import { environment } from 'src/environments/environments';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 @Component({
   selector: 'app-pessoas',
@@ -22,7 +24,9 @@ export class PessoasComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
   data$!: Observable<Pessoas>;
   excluir!: Pessoa;
+  foto!: Pessoa;
   perfil!: Perfil;
+  url: string = environment.image;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -38,9 +42,10 @@ export class PessoasComponent implements OnInit, OnDestroy {
   dtTrigger: Subject<any> = new Subject<Pessoas>();
 
   constructor(
+    private http: HttpClient,
     private sharedService: SharedService,
     private sessionService: SessionService,
-    private PessoasService: PessoasService
+    private pessoasService: PessoasService
   ) {}
 
   ngOnInit(): void {
@@ -50,7 +55,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
 
     this.perfil = this.sessionService.retornaPerfil();
 
-    this.data$ = this.PessoasService.index().pipe(
+    this.data$ = this.pessoasService.index().pipe(
       tap(() => {
         this.dtTrigger.next(this.dtOptions);
       })
@@ -63,7 +68,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.data$ = this.PessoasService.index().pipe(
+    this.data$ = this.pessoasService.index().pipe(
       tap(() => {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           // Destroy the table first
@@ -87,7 +92,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
 
   //CONFIRMA A ESCLUSAO DO USUARIO
   confirm(id:number){
-    this.PessoasService.destroy(id).subscribe({
+    this.pessoasService.destroy(id).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
         this.refresh();
@@ -98,8 +103,35 @@ export class PessoasComponent implements OnInit, OnDestroy {
     })
   }
 
-  foto(data: Pessoa){
+  showFoto(data: Pessoa){
+    this.foto = data;
+  }
 
+  fileEvent(e: any){
+    var filedata = e.target.files[0];
+    //console.log(this.filedata);
+
+    var myFormData = new FormData();
+      const headers = new HttpHeaders();
+      headers.append('Content-Type', 'multipart/form-data');
+      headers.append('Accept', 'application/json');
+      myFormData.append('image', filedata);
+      myFormData.append('id', this.foto?.id+'');
+      /* Image Post Request */
+      this.http.post(`${environment.url}/upload-foto2`, myFormData, {
+      headers: headers
+      }).subscribe({
+        next: data => {       
+            this.pessoasService.show(this.foto.id || 0).subscribe(data => {
+              this.foto = data;
+            })
+            this.refresh();
+            this.sharedService.toast('Sucesso!', data as string, 3);          
+         },
+         error: (error) => {
+           this.sharedService.toast('Error!', error.erro as string, 2);
+         }
+      });  
   }
 
 }

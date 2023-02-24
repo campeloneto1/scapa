@@ -7,7 +7,6 @@ import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { InputSelectModule } from '../components/input-select/input-select.module';
 import { InputTextModule } from '../components/input-text/input-text.module';
-//import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   declarations: [],
@@ -20,7 +19,6 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     ReactiveFormsModule,
     InputTextModule, 
     InputSelectModule,
-    //NgxChartsModule
   ],
   providers: [provideNgxMask()],
   exports: [
@@ -32,7 +30,6 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     InputTextModule, 
     InputSelectModule,
     RouterModule,
-    //NgxChartsModule
   ],
 })
 export class SharedModule {}

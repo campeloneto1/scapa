@@ -21,6 +21,10 @@ export class PessoasService{
         return this.http.get<Pessoa>(`${API}/pessoas/${id}`);
       }
 
+      checkCpf(id: number) {
+        return this.http.get(`${API}/pessoas/${id}/checkcpf`);
+      }
+
       store(data: Pessoa){
         return this.http.post(`${API}/pessoas`,data);
       }

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { SessionService } from 'src/app/sistema/shared/session.service';
@@ -27,7 +27,7 @@ import { environment } from 'src/environments/environments';
   standalone: true,
   imports: [CommonModule, SharedModule, WebcamModule],
 })
-export class FormularioPessoasCompoennt implements OnInit {
+export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   private trigger: Subject<any> = new Subject();
   public webcamImage!: WebcamImage;
   private nextWebcam: Subject<any> = new Subject();
@@ -44,6 +44,8 @@ export class FormularioPessoasCompoennt implements OnInit {
   estados2$!: Observable<Estados>;
   cidades$!: Observable<Cidades>;
   perfil!: Perfil;
+  cpfexist: boolean = false;
+  pessoacpf!: Pessoa;
 
   protected config!: any
   protected config2!: any
@@ -62,6 +64,7 @@ export class FormularioPessoasCompoennt implements OnInit {
     private sharedService: SharedService,
     private SessionService: SessionService
   ) {}
+ 
 
   ngOnInit(): void {
     //RETORNA OS PERFIS
@@ -101,10 +104,7 @@ export class FormularioPessoasCompoennt implements OnInit {
       //nivel_id: [''],
       //nivel: ['', [Validators.required,]],
       sexo_id: [''],
-      sexo: ['',
-   [
-        Validators.required,
-      ]],
+      sexo: [''],
       nome: [
         '',
         Validators.compose([
@@ -124,7 +124,7 @@ export class FormularioPessoasCompoennt implements OnInit {
       rg: [''],
       uf_rg: [''],
       uf_rg_id: [''],
-      data_nascimento: ['', Validators.compose([Validators.required])],
+      data_nascimento: [''],
       email: ['', [Validators.email]],
       mae: [''],
       pai: [''],
@@ -154,11 +154,32 @@ export class FormularioPessoasCompoennt implements OnInit {
       cidade: [''],
       complemento: [''],
       cep: [''],
-      foto: ['',  [
-        Validators.required,
-      ]],
+      foto: [''],
       obs: [''],
     });
+  }
+
+  ngOnDestroy(): void {
+    this.showwebcam = false
+  }
+
+  checkCpf(){
+    this.pessoasService.checkCpf(this.form.value.cpf).subscribe({
+      next: (data) => {
+        if(Object.keys(data).length >= 1){
+          console.log(data);
+          this.cpfexist = true;
+          //@ts-ignore
+          this.pessoacpf = data[0];
+        }else{
+          this.cpfexist = false;
+        }
+        
+      },
+      error: (error) => {
+
+      }
+    })
   }
 
   getNiveis(){
@@ -182,18 +203,7 @@ export class FormularioPessoasCompoennt implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-   /* if(this.form.value.orgao){
-      this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
-      this.form.get('orgao')?.patchValue('');
-    }
-
-    if(this.form.value.nivel){
-      this.form.get('nivel_id')?.patchValue(this.form.value.nivel.id);
-      this.form.get('nivel')?.patchValue('');
-    }else{
-      this.form.get('nivel_id')?.patchValue(1);
-    }*/
-    
+   
     if(this.form.value.uf_rg){
       this.form.get('uf_rg_id')?.patchValue(this.form.value.uf_rg.id);
       this.form.get('uf_rg')?.patchValue('');
@@ -294,12 +304,10 @@ export class FormularioPessoasCompoennt implements OnInit {
     }).subscribe({
       next: (data) => {
        this.form.get('foto')?.patchValue(data);
-       //console.log('data');
-       //console.log(data);
+       
       },
       error: (error) => {
-        //console.log('error');
-        //console.log(error);
+       
       }
     }); 
   }

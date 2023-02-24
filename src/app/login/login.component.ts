@@ -5,6 +5,7 @@ import { Router } from "@angular/router";
 import { Session } from "../sistema/shared/session";
 import { SessionService } from "../sistema/shared/session.service";
 import { SharedModule } from "../sistema/shared/shared.module";
+import { SharedService } from "../sistema/shared/shared.service";
 import { LoginService } from "./login.service";
 
 @Component({
@@ -20,6 +21,7 @@ export class LoginComponent implements OnInit{
     form!: FormGroup;
 
     constructor(
+        private sharedService: SharedService,
         private loginService: LoginService,
         private sessionService: SessionService,
         private router: Router,
@@ -52,7 +54,8 @@ export class LoginComponent implements OnInit{
                 this.router.navigate([''])
             },
             error: (error) => {
-
+                //console.log(error)
+                this.sharedService.toast('Erro', error.error.erro, 2);
             }
         });
     }

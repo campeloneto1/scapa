@@ -118,7 +118,7 @@ export class AcessoComponent implements OnInit{
         })
     }
 
-    teste(){
-        console.log(11111)
+    closeWeb(){
+        this.cadastro = false;
     }
 }

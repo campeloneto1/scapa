@@ -26,6 +26,7 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>Usuário</th>
               <th>Mensagem</th>
               <th>Tabela</th>
               <th>ID</th>
@@ -39,6 +40,7 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
+              <td>{{ row.user.nome }}</td>
               <td>{{ row.mensagem }}</td>
               <td>{{ row.table }}</td>
               <td>{{ row.fk }}</td>

@@ -19,6 +19,7 @@ export class SessionService{
       'Paises',
       'Perfis',      
       'Sexos',
+      'Logs',
     ];
     
     pathgestor = [

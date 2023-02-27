@@ -40,6 +40,22 @@
           </p>
         </a>
       </li>
+      <li class="nav-item" *ngIf="perfil.acessos">
+        <a [routerLink]="['Eventos']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-podcast"></i>
+          <p>
+            Eventos
+          </p>
+        </a>
+      </li>
+      <li class="nav-item" *ngIf="perfil.orgaos">
+        <a [routerLink]="['Orgaos']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-building"></i>
+          <p>
+            Orgãos
+          </p>
+        </a>
+      </li>
       <li class="nav-item" *ngIf="perfil.pessoas">
         <a [routerLink]="['Pessoas']" routerLinkActive="active" class="nav-link">
           <i class="nav-icon fa fa-address-book"></i>
@@ -64,14 +80,7 @@
           </p>
         </a>
       </li>-->
-      <li class="nav-item" *ngIf="perfil.orgaos">
-        <a [routerLink]="['Orgaos']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-building"></i>
-          <p>
-            Orgãos
-          </p>
-        </a>
-      </li>
+      
       
       <li class="nav-item" *ngIf="perfil.setores">
         <a [routerLink]="['Setores']" routerLinkActive="active" class="nav-link">

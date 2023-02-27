@@ -36,7 +36,7 @@ export interface Pessoa{
     key: string,
     foto?: string,
     digital?: string,
-    
+    pivot?: any,
 }
 
 export type Pessoas = Array<Pessoa>;

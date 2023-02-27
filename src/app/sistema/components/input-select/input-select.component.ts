@@ -33,6 +33,7 @@ export class InputSelectComponent {
   @Input() label!: string;
   @Input() data$!: Observable<any>;
   @Input() disabled: boolean = false;
+  @Input() multiple: boolean = false;
 
   @Input() optionid: string = 'id';
   @Input() optionname: any = 'nome';

@@ -34,6 +34,16 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Evento/:id',
+                loadComponent: () => import('./pages/eventos/evento/evento.component').then((c) => c.EventoComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
+                path: 'Eventos',
+                loadComponent: () => import('./pages/eventos/eventos.component').then((c) => c.EventosComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Logs',
                 loadComponent: () => import('./pages/logs/logs.component').then((c) => c.LogsComponent),
                 canActivate: [AlowedGuard]

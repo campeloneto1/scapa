@@ -10,7 +10,7 @@ export interface Acesso{
     posto_id: number,
     pessoa: Pessoa,
     pessoa_id: number,
-    data_hora: any,
+    data_hora: Date,
     obs: string,
     created_by: number,
     createdby: Pessoa,

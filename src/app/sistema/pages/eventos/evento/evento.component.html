@@ -1,0 +1,111 @@
+<div class="content-wrapper">
+    <app-titulo titulo="Evento" />
+  <!--INICIO SECTION content-->
+  <section class="content" >
+    <!--INICIO PROFILE -->
+
+    <div class="row" *ngIf="evento$ | async as evento">
+      <div class="col-sm-3">
+        <div class="card ">
+          <div class="card-body box-profile">
+            
+            <h3 class="profile-username text-center">{{evento.nome}}</h3>
+            <!--<p class="text-muted text-center">{{pessoa.cpf}}</p>-->
+            <ul class="list-group list-group-unbordered mb-3">
+              <li class="list-group-item">
+                <b>Orgão</b> <a class="float-right">{{evento.setor.orgao.nome}}</a>
+              </li>
+              <li class="list-group-item">
+                <b>Setor</b> <a class="float-right">{{evento.setor.nome}}</a>
+              </li>
+              <li class="list-group-item">
+                <b>Data Hora</b> <a class="float-right">{{evento.data_hora | date: 'dd/MM/yyyy HH:mm:ss'}}</a>
+              </li>
+              <li *ngIf="evento?.obs" class="list-group-item">
+                <b>Obs</b> <a class="float-right">{{evento?.obs}}</a>
+              </li>
+          
+              
+              
+            </ul>           
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-sm-9">
+        <div class="card">
+          <div class="card-header border-0 d-flex ">
+            <h3 class="card-title mr-auto p-2">Convidados</h3>  
+            <button class="btn  btn-outline-primary" 
+            data-bs-toggle="modal"
+            data-bs-target="#modalcad">
+              <i class="fa fa-plus" aria-hidden="true"></i>
+            </button>
+          </div>
+          <div class="card-body table-responsive p-0">
+            <!--INICIO CONVIDADOS-->
+            <table class="table table-hover table-valign-middle">
+                <thead>
+                    <tr>
+                        <th>Nome</th>
+                        <th>CPF</th>
+                        <th>Data Nascimento</th>
+                        <th>Compareceu</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let pessoa of evento.pessoas">                  
+                        <td>{{pessoa.nome}}</td>       
+                        <td>{{pessoa.cpf | mask: '000.000.000-00'}}</td>   
+                        <td>{{pessoa.data_nascimento | date: 'dd/MM/yyyy'}}</td>  
+                        <td>
+                            <span *ngIf="pessoa.pivot.presente">Presente</span>
+                        </td>                                   
+                    </tr>
+                </tbody>
+                </table>
+            <!--FIM CONVIDADOS-->
+          </div>
+        </div>
+      </div>
+
+      <!--INICIO MODAL CADASTRO-->
+    <div class="modal fade" id="modalcad" aria-hidden="true">
+      <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Adicionar pessoas</h4>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">×</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="row">
+              <app-input-select
+                class="col-sm-4"
+                [label]="'Pessoas'"
+                [id]="'pessoa'"
+                [data$]="pessoas$"
+                [multiple]="true"
+                [config]="config"
+              />
+            </div>
+            
+          </div>         
+        </div>
+      </div>
+    </div>
+    <!--FIM MODAL CADASTRO-->
+
+    </div>
+
+    <!--FIM PROFILE-->
+  </section>
+  <!--FIM SECTION content-->
+</div>

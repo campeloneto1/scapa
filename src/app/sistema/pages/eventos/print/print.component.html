@@ -1,0 +1,92 @@
+<div *ngIf="evento$ | async as evento">
+  <div class="page-header" style="text-align: center; margin-bottom: 10px">
+    <img src="assets/cabecalho.png" class="cabecalho" />
+    <br />
+    <h4>
+      {{ evento.nome }}
+    </h4>
+  </div>
+
+  <div class="page-footer">
+    <div style="margin-top: 30px;" class="row rodape2" *ngIf="user">
+      <div class="col-sm-3 text-center"></div>
+      <div class="col-sm-6 text-center"></div>
+      <div class="col-sm-3">
+        <p>
+          <b>Usuário:</b> {{ user.nome }}<br />
+          <b>Data:</b> {{ date | date : "dd/MM/yyyy HH:mm" }}
+        </p>
+      </div>
+    </div>
+    <img style="margin-top: 20px;" src="assets/rodape.png" class="rodape" />
+  </div>
+
+  <table style="width: 100%; min-width: 100%">
+    <thead class="thead">
+      <tr>
+        <td>
+          <!--place holder for the fixed-position header-->
+          <div class="page-header-space"></div>
+        </td>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr>
+        <td>
+          <!--*** CONTENT GOES HERE ***
+                <div class="page">PAGE 1</div>
+                <div class="page">PAGE 2</div>-->
+          <div class="page">
+            <div class="noprint text-center">
+              <img src="assets/cabecalho.png" class="cabecalho" />
+              <h4 style="margin-top: 30px">
+                {{ evento.nome }}
+              </h4>
+            </div>
+
+            <h5 style="margin-top: 30px">
+              Fortaleza - CE, {{ date | date : "dd/MM/yyyy" }}
+            </h5>
+
+            <div class="row mt-4">
+              <!--<div class="col-sm-4">
+                <strong>Nome:</strong> {{ evento.nome }}
+              </div>-->
+              <div class="col-sm-3">
+                <strong>Orgão:</strong> {{ evento.setor.orgao.nome }}
+              </div>
+              <div class="col-sm-4">
+                <strong>Setor:</strong> {{ evento.setor.nome }}
+              </div>
+              <div class="col-sm-4">
+                <strong>Data Hora:</strong> {{ evento.data_hora | date : "dd/MM/yyyy HH:mm" }}
+              </div>
+            </div>
+
+            <table class="table table-hover table-valign-middle mt-5">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF</th>
+                  <th>Compareceu</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let pessoa of evento.pessoas" class="optionshover">
+                  <td>{{ pessoa.nome }}</td>
+                  <td>{{ pessoa.cpf | mask : "000.000.000-00" }}</td>
+                  <td>
+                    <span *ngIf="pessoa.pivot.presente">Presente</span>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+
+    
+  </table>
+</div>

@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ReactiveFormsModule, FormGroup } from '@angular/forms';
+import { ReactiveFormsModule, FormGroup, FormsModule   } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
@@ -19,6 +19,8 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     ReactiveFormsModule,
     InputTextModule, 
     InputSelectModule,
+    FormsModule,
+    
   ],
   providers: [provideNgxMask()],
   exports: [
@@ -30,6 +32,7 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     InputTextModule, 
     InputSelectModule,
     RouterModule,
+    FormsModule
   ],
 })
 export class SharedModule {}

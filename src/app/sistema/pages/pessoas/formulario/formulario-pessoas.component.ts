@@ -237,7 +237,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
           this.refresh.emit();
         },
         error: (error) => {
-          this.sharedService.toast('Error!', error.erro as string, 2);
+          this.sharedService.toast('Error!', error.error.erro as string, 2);
         }
       });
     }else{
@@ -250,7 +250,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
           this.refresh.emit();
         },
         error: (error) => {
-          this.sharedService.toast('Error!', error.erro as string, 2);
+          this.sharedService.toast('Error!', error.error.erro as string, 2);
         }
       });
     }

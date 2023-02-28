@@ -98,7 +98,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
         this.refresh();
       },
       error: (error) => {
-        this.sharedService.toast('Error!', error.erro as string, 2);
+        this.sharedService.toast('Error!', error.error.erro as string, 2);
       }
     })
   }
@@ -129,7 +129,8 @@ export class PessoasComponent implements OnInit, OnDestroy {
             this.sharedService.toast('Sucesso!', data as string, 3);          
          },
          error: (error) => {
-           this.sharedService.toast('Error!', error.erro as string, 2);
+          console.log(error)
+           this.sharedService.toast('Error!', error.error.erro as string, 4);
          }
       });  
   }

@@ -78,9 +78,15 @@ const routes: Routes = [
                 loadComponent: () => import('./pages/pessoas/pessoa/pessoa.component').then((c) => c.PessoaComponent),
                 canActivate: [AlowedGuard]
             },
+           
             {
                 path: 'Postos',
                 loadComponent: () => import('./pages/postos/postos.component').then((c) => c.PostosComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
+                path: 'PrintEvento/:id',
+                loadComponent: () => import('./pages/eventos/print/print.component').then((c) => c.PrintEventoComponent),
                 canActivate: [AlowedGuard]
             },
             {

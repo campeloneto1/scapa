@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { NgModule } from "@angular/core";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule  } from "@angular/forms";
 import { SelectDropDownModule } from "ngx-select-dropdown";
 import { InputSelectComponent } from "./input-select.component";
 
@@ -10,6 +10,7 @@ import { InputSelectComponent } from "./input-select.component";
         FormsModule,
         ReactiveFormsModule,
         SelectDropDownModule,
+        
     ],
     exports: [InputSelectComponent]
 })

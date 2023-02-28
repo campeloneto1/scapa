@@ -1,0 +1,73 @@
+/* Styles go here */
+
+.page-header, .page-header-space {
+    height: 200px;
+    display: none;
+  }
+  
+  .page-footer, .page-footer-space {
+    height: 200px;
+    display: none;
+  }
+  
+  .page-footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+  
+  }
+  
+  .page-header {
+    position: fixed;
+    top: 0mm;
+    width: 100%;
+  
+  }
+  
+  .cabecalho {
+    width: 100%;
+    height: 35mm;
+  }
+  
+  .rodape {
+    width: 100%;
+    height: 20mm;
+  }
+  
+  .rodape2 {
+    position: relative;
+    top: 40px;
+  }
+  
+  .page {
+    page-break-after: always;
+    padding: 0 10mm 0 20mm;
+    text-align: justify;
+  }
+   
+  @page {
+    margin: 0;
+    -webkit-print-color-adjust: exact; 
+  }
+  
+  @media print {
+     .thead {display: table-header-group;} 
+     .tfoot {display: table-footer-group;}
+     
+     body {margin: 0;}
+  
+     .noprint{
+      display: none;
+     }
+  
+     .page-header, .page-header-space {
+      height: 200px;
+      display: block;
+    }
+    
+    .page-footer, .page-footer-space {
+      height: 200px;
+      display: block;
+    }
+  }
+  

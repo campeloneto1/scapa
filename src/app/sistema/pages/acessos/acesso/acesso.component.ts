@@ -113,7 +113,7 @@ export class AcessoComponent implements OnInit{
                 
             },
             error: (error) => {
-                this.sharedService.toast('Error!', error.erro as string, 2);
+                this.sharedService.toast('Error!', error.error.erro as string, 2);
             }
         })
     }

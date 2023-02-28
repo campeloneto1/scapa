@@ -11,6 +11,7 @@
         <div class="card-header border-0">
           <h3 class="card-title ">
             <button 
+               title="Cadastrar"
               (click)="child.showwebcam = true;"
               *ngIf="perfil.pessoas_cad"
               class="btn btn-outline-primary" 
@@ -64,7 +65,8 @@
                 <i class="fas fa-portrait" *ngIf="!perfil.pessoas_cad" [ngClass]="row.foto ? 'text-success' : 'text-danger'"></i>
               </td>
               <td>               
-                <a             
+                <a           
+                title="Editar"  
                 *ngIf="perfil.pessoas_edt"  
                   class="options ml-2"
                   (click)="edit(row)"
@@ -77,6 +79,7 @@
                   ></i>
                 </a>
                 <a
+                title="Excluir"
                 *ngIf="perfil.pessoas_del"
                   class="options ml-2"
                   (click)="delete(row)"

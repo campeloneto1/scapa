@@ -4,7 +4,7 @@
   <section class="content" >
     <!--INICIO PROFILE -->
 
-    <div class="row" *ngIf="evento$ | async as evento">
+    <div class="row" *ngIf="evento$ | async as evento; else loading">
       <div class="col-sm-3">
         <div class="card ">
           <div class="card-body box-profile">
@@ -44,8 +44,8 @@
             </button>
           </div>
           <div class="card-body table-responsive p-0">
-            <!--INICIO CONVIDADOS-->
-            <table class="table table-hover table-valign-middle">
+              <!--INICIO CONVIDADOS-->
+              <table class="table table-hover table-valign-middle">
                 <thead>
                     <tr>
                         <th>Nome</th>
@@ -55,7 +55,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let pessoa of evento.pessoas" class="optionshover">                  
+                    <tr *ngFor="let pessoa of evento.pessoas | paginate: { itemsPerPage: 10, currentPage: p, totalItems: evento.pessoas.length }" class="optionshover">                  
                         <td>{{pessoa.nome}}</td>       
                         <td>{{pessoa.cpf | mask: '000.000.000-00'}}</td>   
                         <td>
@@ -99,7 +99,19 @@
                         </td>                                  
                     </tr>
                 </tbody>
-                </table>
+                <tfoot>
+                  <tr>
+                    <td colspan="100%" style="text-align: center;">
+                      <pagination-controls
+                      [autoHide]="true"
+                      [responsive]="true"
+                      previousLabel="Anterior"
+                      nextLabel="Próximo"
+                       (pageChange)="p = $event"></pagination-controls>
+                    </td>
+                  </tr>
+                </tfoot>
+              </table>
             <!--FIM CONVIDADOS-->
           </div>
         </div>
@@ -184,6 +196,16 @@
     <!--FIM MODAL EXCLUSAO-->
 
     </div>
+
+
+    <ng-template  #loading>
+      <div class="text-center">
+        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+        <h2 >Evento não encontrado</h2>      
+        <a routerLink="['/Inicio']">Voltar para o Início</a>
+      </div>
+      
+    </ng-template>
 
     <!--FIM PROFILE-->
   </section>

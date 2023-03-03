@@ -28,6 +28,7 @@ import { environment } from 'src/environments/environments';
   imports: [CommonModule, SharedModule],
 })
 export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
+  urlimage = environment.image;
   public sysImage!: string;
   public webcamImage!: WebcamImage;
   // toggle webcam on/off

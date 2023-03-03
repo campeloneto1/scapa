@@ -1,5 +1,9 @@
 /* Styles go here */
 
+img {
+  pointer-events: none;
+}
+
 .page-header, .page-header-space {
     height: 200px;
     display: none;

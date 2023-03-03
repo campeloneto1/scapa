@@ -4,7 +4,7 @@
   <section class="content" >
     <!--INICIO PROFILE -->
 
-    <div class="row" *ngIf="pessoa$ | async as pessoa">
+    <div class="row" *ngIf="pessoa$ | async as pessoa; else loading">
       <div class="col-sm-3">
         <div class="card ">
           <div class="card-body box-profile">
@@ -36,7 +36,7 @@
               <li class="list-group-item" *ngIf="pessoa.rg">
                 <b>RG</b> <a class="float-right">{{pessoa.rg}} {{pessoa.uf_rg?.nome}}</a>
               </li>
-              <li class="list-group-item">
+              <li class="list-group-item" *ngIf="pessoa.data_nascimento">
                 <b>Data Nascimento</b> <a class="float-right">{{pessoa.data_nascimento | date: 'dd/MM/yyyy'}}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.sexo">
@@ -102,14 +102,13 @@
                     <th>Observação</th>
                     <th>Posto</th>
                     <th>Data Hora</th>
-                    
                     <th>Verificação</th>
 
                   </tr>
                 </thead>
                 <tbody>
-                  <tr *ngFor="let acesso of pessoa?.acessos">                  
-                    <td>{{acesso.setor.orgao.nome}}</td>       
+                  <tr *ngFor="let acesso of pessoa.acessos | paginate: { itemsPerPage: 10, currentPage: p, totalItems: pessoa.acessos.length }">                  
+                    <td>{{acesso?.setor?.orgao?.nome}}</td>       
                     <td>{{acesso.setor.nome}}</td>  
                     <td>{{acesso.obs}}</td>   
                     <td>{{acesso.posto.nome}}</td>   
@@ -117,6 +116,18 @@
                     <td>{{acesso.createdby.nome}}</td>                                   
                   </tr>
                 </tbody>
+                <tfoot>
+                  <tr>
+                    <td colspan="100%" style="text-align: center;">
+                      <pagination-controls
+                      [autoHide]="true"
+                      [responsive]="true"
+                      previousLabel="Anterior"
+                      nextLabel="Próximo"
+                       (pageChange)="p = $event"></pagination-controls>
+                    </td>
+                  </tr>
+                </tfoot>
               </table>
           </div>
         </div>
@@ -154,6 +165,15 @@
         </div>
         <!--FIM MODAL CADASTRO-->
     </div>
+
+    <ng-template  #loading>
+      <div class="text-center">
+        <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+        <h2 >Pessoa não encontrada</h2>      
+        <a routerLink="['/Inicio']">Voltar para o Início</a>
+      </div>
+      
+    </ng-template>
 
     <!--FIM PROFILE-->
   </section>

@@ -57,14 +57,8 @@
 
     <!--INICIO DIV ROW INFORMACOES-->
     <div class="row">
-      <!--INICIO COL SM 3 POR DIA-->
-      <div class="col-sm3">
-
-       
-
-      </div>
-      <!--FIM COL SM 3 POR DIA-->
-      <!--INICIO COL SM 3 POR SETORES-->
+      
+      <!--INICIO COL SM 4 POR SETORES-->
       <div class="col-sm-4">
         <!-- INICIO CARD POR SETORES-->
         <div class="card">
@@ -90,7 +84,36 @@
         </div>
         <!--FIM CARD POR SETORES-->
       </div>
-      <!--FIM COL SM 3 POR SETORES-->
+      <!--FIM COL SM 4 POR SETORES-->
+      <!--INICIO COL SM 4 POR DIA-->
+      <div class="col-sm-6">
+        <!-- INICIO CARD POR SETORES-->
+        <div class="card">
+          <div class="card-header border-0">
+            <h3 class="card-title">Próximos eventos</h3>            
+          </div>
+          <div class="card-body table-responsive p-0">
+            <table class="table table-hover table-valign-middle">
+              <thead>
+                <tr>
+                  <th>Evento</th>
+                  <th>Setor</th>
+                  <th>Data Hora</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let evento of proximosEventos">                  
+                  <td>{{evento.nome}}</td>       
+                  <td>{{evento.setor.nome}}</td>       
+                  <td>{{evento.data_hora | date: 'dd/MM/yyyy HH:mm'}}</td>                             
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!--FIM CARD POR SETORES-->
+      </div>
+      <!--FIM COL SM 4 POR DIA-->
     </div>
     <!--FIM DIV ROW INFORMACOES-->
   </section>

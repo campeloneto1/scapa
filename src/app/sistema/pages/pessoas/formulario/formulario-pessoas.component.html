@@ -1,14 +1,15 @@
 <form  [formGroup]="form" (ngSubmit)="cadastrar()">
     <div class="text-center mb-2">
+      <img *ngIf="form.value.foto && !sysImage" style="height: 200px; " [src]="urlimage+form.value.foto"  /> 
       <img *ngIf="sysImage" style="height: 200px; " [src]="webcamImage.imageAsDataUrl"  /> 
       <!--<webcam  [height]="200" [imageQuality]="1" *ngIf="!sysImage && showwebcam" [trigger]="invokeObservable" (imageCapture)="captureImg($event)" ></webcam>-->
-      <webcam [height]="200" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="!sysImage && showWebcam"
+      <webcam [height]="200" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="!form.value.foto && !sysImage && showWebcam"
 		 [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
 		 (initError)="handleInitError($event)"></webcam>
     </div>
     <div class="text-center mb-4">
-      <a *ngIf="!sysImage && showWebcam" (click)="getSnapshot()" class="btn btn-info">Tirar foto </a>
-      <a *ngIf="sysImage" (click)="sysImage = ''; form.get('foto')?.patchValue('');" class="btn btn-info">Tirar novamente</a>
+      <a *ngIf="!form.value.foto && !sysImage && showWebcam" (click)="getSnapshot()" class="btn btn-info">Tirar foto </a>
+      <a *ngIf="sysImage || form.value.foto" (click)="sysImage = ''; form.get('foto')?.patchValue('');" class="btn btn-info">Tirar novamente</a>
     </div>
     <div *ngIf="cpfexist" class="row">
       <div class="col-sm-6 offset-sm-3 info-box shadow-lg">

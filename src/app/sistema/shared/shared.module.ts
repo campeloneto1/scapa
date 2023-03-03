@@ -8,6 +8,7 @@ import { SelectDropDownModule } from 'ngx-select-dropdown';
 import { WebcamModule } from 'ngx-webcam';
 import { InputSelectModule } from '../components/input-select/input-select.module';
 import { InputTextModule } from '../components/input-text/input-text.module';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   declarations: [],
@@ -22,6 +23,7 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     InputSelectModule,
     FormsModule,
     WebcamModule,
+    NgxPaginationModule
   ],
   providers: [provideNgxMask()],
   exports: [
@@ -34,7 +36,8 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     InputSelectModule,
     RouterModule,
     FormsModule,
-    WebcamModule
+    WebcamModule,
+    NgxPaginationModule
   ],
 })
 export class SharedModule {}

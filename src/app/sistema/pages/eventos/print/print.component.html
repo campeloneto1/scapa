@@ -1,4 +1,4 @@
-<div *ngIf="evento$ | async as evento">
+<div *ngIf="evento$ | async as evento; else loading">
   <div class="page-header" style="text-align: center; margin-bottom: 10px">
     <img src="assets/cabecalho.png" class="cabecalho" />
     <br />
@@ -45,19 +45,16 @@
               </h4>
             </div>
 
-            <h5 style="margin-top: 30px">
+            <!--<h5 style="margin-top: 30px">
               Fortaleza - CE, {{ date | date : "dd/MM/yyyy" }}
-            </h5>
+            </h5>-->
 
             <div class="row mt-4">
               <!--<div class="col-sm-4">
                 <strong>Nome:</strong> {{ evento.nome }}
               </div>-->
-              <div class="col-sm-3">
-                <strong>Orgão:</strong> {{ evento.setor.orgao.nome }}
-              </div>
-              <div class="col-sm-4">
-                <strong>Setor:</strong> {{ evento.setor.nome }}
+              <div class="col-sm-7">
+                <strong>Setor / Orgão:</strong> {{ evento.setor.nome }} - {{ evento.setor.orgao.nome }}
               </div>
               <div class="col-sm-4">
                 <strong>Data Hora:</strong> {{ evento.data_hora | date : "dd/MM/yyyy HH:mm" }}
@@ -70,6 +67,7 @@
             <table class="table table-hover table-valign-middle mt-5">
               <thead>
                 <tr>
+                  <th>Foto</th>
                   <th>Nome</th>
                   <th>CPF</th>
                   <th>Compareceu</th>
@@ -77,6 +75,9 @@
               </thead>
               <tbody>
                 <tr *ngFor="let pessoa of evento.pessoas" class="optionshover">
+                  <td>
+                    <img class="img-circle" *ngIf="pessoa.foto" [src]="urlimage+pessoa.foto" height="70px"/>
+                  </td>
                   <td>{{ pessoa.nome }}</td>
                   <td>{{ pessoa.cpf | mask : "000.000.000-00" }}</td>
                   <td>
@@ -93,3 +94,12 @@
     
   </table>
 </div>
+
+<ng-template  #loading>
+  <div class="text-center">
+    <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
+    <h2 >Evento não encontrado</h2>      
+    <a routerLink="['/Inicio']">Voltar para o Início</a>
+  </div>
+  
+</ng-template>

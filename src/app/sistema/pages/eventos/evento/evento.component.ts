@@ -31,6 +31,7 @@ export class EventoComponent implements OnInit{
     urlimage = environment.image;
     pessoas!: Pessoas;
     cadastro: boolean = false;
+    p: number = 0;
 
     protected config!: any
 
@@ -50,8 +51,9 @@ export class EventoComponent implements OnInit{
 
         this.id = this.activatedRoute.snapshot.params['id'];
         this.evento$ = this.eventosService.show(this.id);
-
+        
         this.pessoas$ = this.pessoasService.index();
+        //console.log(this.evento$);
     }
 
     refresh(){

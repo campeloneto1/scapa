@@ -8,18 +8,20 @@ import { Pessoa } from "../pessoas";
 import { PessoasService } from "../pessoas.service";
 import { environment } from "src/environments/environments";
 
+
 @Component({
     selector: 'app-pessoa',
     templateUrl: './pessoa.component.html',
     styleUrls: ['./pessoa.component.css'],
     standalone: true,
-    imports: [CommonModule, SharedModule, TituloComponent]
+    imports: [CommonModule, SharedModule, TituloComponent, ]
 })
 
 export class PessoaComponent implements OnInit{
     id!: number;
     pessoa$!: Observable<Pessoa>;
     urlimage = environment.image;
+    p: number = 0;
 
     constructor(
         private activatedRoute: ActivatedRoute,

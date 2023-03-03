@@ -8,7 +8,7 @@ export interface Evento{
     nome: string,
     data_hora: Date,
     obs: string,
-    pessoas?: Pessoas
+    pessoas?: Pessoas|any
 }
 
 export type Eventos = Array<Evento>;

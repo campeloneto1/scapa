@@ -1,4 +1,5 @@
 import { CommonModule } from "@angular/common";
+import { IfStmt } from "@angular/compiler";
 import { Component, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
@@ -31,6 +32,8 @@ export class LoginComponent implements OnInit{
     }
 
     ngOnInit(): void {
+        
+
         this.form = this.formBuilder.group({
             'cpf': ['', Validators.compose([
                 Validators.required,
@@ -40,13 +43,21 @@ export class LoginComponent implements OnInit{
             'password': ['', Validators.compose([
                 Validators.required,
                 Validators.minLength(6),
-            ])]
+            ])],
+            'lembrarme': ['']
         });
+
+        if(localStorage.getItem('usuario')){
+            this.form.get('cpf')?.patchValue(localStorage.getItem('usuario'));
+        }
     }
 
     entrar(){
         //console.log(this.form.value)
-        
+        if(this.form.value.lembrarme){
+            localStorage.setItem('usuario', this.form.value.cpf);
+        }
+    
         this.loginService.entrar(this.form.value).subscribe({
             next: (data) => {
                 //console.log(data);

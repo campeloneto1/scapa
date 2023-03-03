@@ -7,7 +7,7 @@ import { Sexo } from "../sexos/sexos";
 
 export interface Pessoa{
     id?: number,
-    acessos?: Acessos,
+    acessos?: Acessos|any,
     orgao_id: number,
     orgao: Orgao,
     nivel_id: number,

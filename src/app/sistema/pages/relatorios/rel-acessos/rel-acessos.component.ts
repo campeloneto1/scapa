@@ -29,6 +29,7 @@ export class RelAcessosComponent implements OnInit{
     postos$!: Observable<Postos>;
     setores$!: Observable<Setores>;
     data$!: Observable<Acessos>;
+    orgao!: Orgao;
 
     protected config!: any
     protected config2!: any
@@ -78,6 +79,7 @@ export class RelAcessosComponent implements OnInit{
     }
 
     consultar(){
+        this.orgao = this.form.value.orgao;
         this.show = true;
         this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
         this.form.get('orgao')?.patchValue('');
@@ -95,6 +97,11 @@ export class RelAcessosComponent implements OnInit{
         this.data$ = this.relatoriosService.relAcessos(this.form.value);
            
         //console.log(this.form.value)
+    }
+
+    voltar(){
+        this.show= false;
+        this.form.get('orgao')?.patchValue(this.orgao);
     }
 
     

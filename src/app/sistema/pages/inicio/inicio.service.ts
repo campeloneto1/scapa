@@ -26,5 +26,9 @@ export class InicioService{
     acessosPorSetor(){
         return this.http.get(`${API}/inicio-acessos-por-setor`);
     }
+
+    proximosEventos(){
+        return this.http.get(`${API}/inicio-proximos-eventos`);
+    }
    
 }

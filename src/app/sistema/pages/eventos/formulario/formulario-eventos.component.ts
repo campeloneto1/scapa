@@ -83,6 +83,9 @@ export class FormularioEventosComponent implements OnInit {
     this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
     this.form.get('orgao')?.patchValue('');
 
+    this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
+    this.form.get('setor')?.patchValue('');
+
     this.form.get('evento_id')?.patchValue(this.form.value.evento.id);
     this.form.get('evento')?.patchValue('');
 

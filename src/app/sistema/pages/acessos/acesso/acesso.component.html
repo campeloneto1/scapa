@@ -132,7 +132,17 @@
                                 <span *ngIf="form.value.pessoa?.cidade?.estado.uf"> - {{form.value.pessoa?.cidade?.estado.uf}}</span>
                             </dd>
                             <dt class="col-sm-4">Observações</dt><dd class="col-sm-8">{{form.value.pessoa?.obs}}</dd>
+
+
+                            <dt *ngIf="eventos[0]" class="col-sm-4">Evento:</dt>
+                            <dd *ngIf="eventos[0]" class="col-sm-8">
+                              <span *ngFor="let evento of eventos">
+                                {{evento.nome}} - {{evento.data_hora | date: 'dd/MM/yyyy HH:mm'}} - {{evento.setor.nome}}
+                              </span>
+                            </dd>
+                           
                         </dl>
+
                     </div>
                     <!--FIM IDENTIFICACAO PESSOA-->
                     <!-- SETOR QUE IRA VISITAR-->

@@ -11,6 +11,7 @@
         <div class="card-header border-0">
           <h3 class="card-title">
             <button 
+            title="Cadastrar"
             *ngIf="perfil.setores_cad"
               class="btn btn-outline-primary" 
               data-bs-toggle="modal"
@@ -48,7 +49,8 @@
               <td>{{ row.orgao.nome }}</td>
               <td>{{ row.nome }}</td>
               <td>               
-                <a             
+                <a     
+                title="Editar"        
                 *ngIf="perfil.setores_edt"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -61,6 +63,7 @@
                   ></i>
                 </a>
                 <a
+                title="Excluir"
                 *ngIf="perfil.setores_del"
                   class="options ml-2"
                   (click)="delete(row)"

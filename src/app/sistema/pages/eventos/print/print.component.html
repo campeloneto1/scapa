@@ -37,7 +37,7 @@
           <!--*** CONTENT GOES HERE ***
                 <div class="page">PAGE 1</div>
                 <div class="page">PAGE 2</div>-->
-          <div class="page">
+          <div class="page" >
             <div class="noprint text-center">
               <img src="assets/cabecalho.png" class="cabecalho" />
               <h4 style="margin-top: 30px">
@@ -61,6 +61,9 @@
               </div>
               <div class="col-sm-4">
                 <strong>Data Hora:</strong> {{ evento.data_hora | date : "dd/MM/yyyy HH:mm" }}
+              </div>
+              <div class="col-sm-1">
+                <button class="btn btn-primary noprint" (click)="print()"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</button>
               </div>
             </div>
 

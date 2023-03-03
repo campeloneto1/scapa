@@ -12,7 +12,7 @@
           <h3 class="card-title ">
             <button 
                title="Cadastrar"
-              (click)="child.showwebcam = true;"
+              (click)="child.showWebcam = true;"
               *ngIf="perfil.pessoas_cad"
               class="btn btn-outline-primary" 
               data-bs-toggle="modal"
@@ -198,7 +198,7 @@
           
           <div class="modal-body text-center" >                
             <h1 style="font-size: 90px;" *ngIf="!foto?.foto"><i class="fas fa-portrait" [ngClass]="foto.foto ? 'text-success' : 'text-danger'" ></i></h1>
-            <img [src]="url+foto.foto" *ngIf="foto?.foto" alt="user-avatar" width="120px" height="120px" class="img-circle img-fluid">
+            <img [src]="url+foto.foto" *ngIf="foto?.foto" alt="user-avatar"  height="120px" class="img-circle img-fluid">
             <form >
               <div class="row">
                 <div class="col-sm-12">

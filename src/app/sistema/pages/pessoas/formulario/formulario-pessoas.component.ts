@@ -16,7 +16,7 @@ import { SexosService } from '../../sexos/sexos.service';
 import { Pessoa } from '../pessoas';
 import { PessoasService } from '../pessoas.service';
 import { Orgao, Orgaos } from '../../orgaos/orgaos';
-import { WebcamModule, WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environments';
 
@@ -25,16 +25,31 @@ import { environment } from 'src/environments/environments';
   templateUrl: './formulario-pessoas.component.html',
   styleUrls: ['./formulario-pessoas.component.css'],
   standalone: true,
-  imports: [CommonModule, SharedModule, WebcamModule],
+  imports: [CommonModule, SharedModule],
 })
 export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
-  private trigger: Subject<any> = new Subject();
+  public sysImage!: string;
   public webcamImage!: WebcamImage;
-  private nextWebcam: Subject<any> = new Subject();
-  sysImage = '';
-  showwebcam = true;
+  // toggle webcam on/off
+  public showWebcam = true;
+  public allowCameraSwitch = true;
+  public multipleWebcamsAvailable = false;
+  public deviceId!: string;
+  public videoOptions: MediaTrackConstraints = {
+    // width: {ideal: 1024},
+    // height: {ideal: 576}
+  };
+  public errors: WebcamInitError[] = [];
+
+  // webcam snapshot trigger
+  private trigger: Subject<void> = new Subject<void>();
+  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  private nextWebcam: Subject<boolean | string> = new Subject<
+    boolean | string
+  >();
 
   form!: FormGroup;
+
   @Output('refresh') refresh: EventEmitter<Pessoa> = new EventEmitter();
   orgaos$!: Observable<Orgaos>;
   niveis$!: Observable<Niveis>;
@@ -67,6 +82,11 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
  
 
   ngOnInit(): void {
+    WebcamUtil.getAvailableVideoInputs().then(
+      (mediaDevices: MediaDeviceInfo[]) => {
+        this.multipleWebcamsAvailable = mediaDevices && mediaDevices.length > 1;
+      }
+    );
     //RETORNA OS PERFIS
     this.orgaos$ = this.orgaosService.index();
     this.sexos$ = this.sexosService.index();
@@ -160,7 +180,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.showwebcam = false
+    this.showWebcam = false
   }
 
   checkCpf(){
@@ -259,7 +279,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
 
   //FUNÇÃO SETA INFORMACAO NO FORMULARIO
   setForm(data: Pessoa){
-    this.showwebcam = false;
+    //this.showwebcam = false;
     this.form.patchValue(data);
 
     if(data.cidade){
@@ -276,19 +296,20 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     if(data.uf_rg){
         this.form.get('uf_rg')?.patchValue(data.uf_rg);        
     }
-
+    /*
     if(data.nivel){
         this.form.get('nivel')?.patchValue(data.nivel);   
         
         this.getNiveis();    
-    }
+    }*/
     
   }
 
   public getSnapshot(): void {
     this.trigger.next(void 0);
   }
-  public captureImg(webcamImage: WebcamImage): void {
+
+  public handleImage(webcamImage: WebcamImage): void {
     this.webcamImage = webcamImage;
     this.sysImage = webcamImage.imageAsDataUrl;
    
@@ -312,11 +333,35 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     }); 
   }
 
-  public get invokeObservable(): Observable<any> {
+  public triggerSnapshot(): void {
+    this.trigger.next();
+  }
+
+  public toggleWebcam(): void {
+    this.showWebcam = !this.showWebcam;
+  }
+
+  public handleInitError(error: WebcamInitError): void {
+    this.errors.push(error);
+  }
+
+  public showNextWebcam(directionOrDeviceId: boolean | string): void {
+    // true => move forward through devices
+    // false => move backwards through devices
+    // string => move to device with given deviceId
+    this.nextWebcam.next(directionOrDeviceId);
+  }
+
+  public cameraWasSwitched(deviceId: string): void {
+    //console.log('active device: ' + deviceId);
+    this.deviceId = deviceId;
+  }
+
+  public get triggerObservable(): Observable<void> {
     return this.trigger.asObservable();
   }
 
-  public get nextWebcamObservable(): Observable<any> {
+  public get nextWebcamObservable(): Observable<boolean | string> {
     return this.nextWebcam.asObservable();
   }
 }

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { DataTablesModule } from 'angular-datatables';
 import { NgxMaskDirective, NgxMaskPipe, provideNgxMask } from 'ngx-mask';
 import { SelectDropDownModule } from 'ngx-select-dropdown';
+import { WebcamModule } from 'ngx-webcam';
 import { InputSelectModule } from '../components/input-select/input-select.module';
 import { InputTextModule } from '../components/input-text/input-text.module';
 
@@ -20,7 +21,7 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     InputTextModule, 
     InputSelectModule,
     FormsModule,
-    
+    WebcamModule,
   ],
   providers: [provideNgxMask()],
   exports: [
@@ -32,7 +33,8 @@ import { InputTextModule } from '../components/input-text/input-text.module';
     InputTextModule, 
     InputSelectModule,
     RouterModule,
-    FormsModule
+    FormsModule,
+    WebcamModule
   ],
 })
 export class SharedModule {}

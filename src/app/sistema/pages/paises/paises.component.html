@@ -11,6 +11,7 @@
         <div class="card-header border-0">
           <h3 class="card-title">
             <button 
+              title="Cadastrar"
               class="btn btn-outline-primary" 
               data-bs-toggle="modal"
               data-bs-target="#modalcad">
@@ -47,7 +48,8 @@
               <td>{{ row.nome }}</td>
              
               <td>               
-                <a             
+                <a     
+                 title="Editar"        
                   class="options ml-2"
                   (click)="edit(row)"
                   data-bs-toggle="modal"
@@ -59,6 +61,7 @@
                   ></i>
                 </a>
                 <a
+                title="Excluir"
                   class="options ml-2"
                   (click)="delete(row)"
                   data-bs-toggle="modal"

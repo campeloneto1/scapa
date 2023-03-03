@@ -9,6 +9,11 @@ export interface Perfil{
     acessos_edt?: boolean,
     acessos_del?: boolean,
 
+    eventos?: boolean,
+    eventos_cad?: boolean,
+    eventos_edt?: boolean,
+    eventos_del?: boolean,
+
     pessoas?: boolean,
     pessoas_cad?: boolean,
     pessoas_edt?: boolean,

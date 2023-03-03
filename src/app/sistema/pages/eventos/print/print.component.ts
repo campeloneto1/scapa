@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { AfterViewInit, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Observable } from "rxjs";
 import { TituloComponent } from "src/app/sistema/components/titulo/titulo.component";
@@ -20,7 +20,7 @@ import { Usuario } from "../../usuarios/usuarios";
     imports: [CommonModule, SharedModule, TituloComponent, FormularioPessoasCompoennt]
 })
 
-export class PrintEventoComponent implements OnInit{
+export class PrintEventoComponent implements OnInit, AfterViewInit{
     id!: number;
     evento$!: Observable<Evento>;
     urlimage = environment.image;   
@@ -35,13 +35,21 @@ export class PrintEventoComponent implements OnInit{
     ){
 
     }
+    
     ngOnInit(): void {
        
         this.user = this.sessionService.retornaUser();
         this.id = this.activatedRoute.snapshot.params['id'];
         this.evento$ = this.eventosService.show(this.id);
 
-       
+    }
+
+    print(){
+        window.print();
+    }
+
+    ngAfterViewInit(): void {
+        
     }
 
     

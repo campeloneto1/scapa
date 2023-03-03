@@ -9,6 +9,7 @@ import { SharedService } from '../../shared/shared.service';
 import { FormularioEventosComponent } from './formulario/formulario-eventos.component';
 import { Evento, Eventos } from './eventos';
 import { EventosService } from './eventos.service';
+import { Perfil } from '../perfis/perfis';
 
 @Component({
   selector: 'app-eventos',
@@ -21,7 +22,7 @@ export class EventosComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
   data$!: Observable<Eventos>;
   excluir!: Evento;
-
+  perfil!: Perfil;
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
 
@@ -45,6 +46,8 @@ export class EventosComponent implements OnInit, OnDestroy {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
     this.dtOptions = { ...this.dtOptions, order: [[1, 'asc'],[2, 'asc'] ] };
+
+    this.perfil = this.sessionService.retornaPerfil();
 
     this.data$ = this.eventosService.index().pipe(
       tap(() => {

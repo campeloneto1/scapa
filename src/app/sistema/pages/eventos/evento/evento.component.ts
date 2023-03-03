@@ -55,6 +55,10 @@ export class EventoComponent implements OnInit{
     }
 
     refresh(){
+      this.pessoas$ = this.pessoasService.index(); 
+  }
+
+    refresh2(){
         this.evento$ = this.eventosService.show(this.id);  
     }
 
@@ -65,7 +69,7 @@ export class EventoComponent implements OnInit{
             next: (data) => {
               //console.log('aaaaaaaaaa')
               this.sharedService.toast('Sucesso!', data as string, 1);
-                this.refresh();
+                this.refresh2();
             },
             error: (error) => {
               this.sharedService.toast('Error!', error.error.erro as string, 2);
@@ -79,7 +83,7 @@ export class EventoComponent implements OnInit{
         this.eventosPessoasService.presente(id).subscribe({
             next: (data) => {
                 this.sharedService.toast('Sucesso!', data as string, 3);
-                this.refresh();
+                this.refresh2();
               },
               error: (error) => {
                 this.sharedService.toast('Error!', error.erro as string, 2);
@@ -95,7 +99,7 @@ export class EventoComponent implements OnInit{
         this.eventosPessoasService.destroy(this.excluir.pivot.id).subscribe({
             next: (data) => {
                 this.sharedService.toast('Sucesso!', data as string, 3);
-                this.refresh();
+                this.refresh2();
               },
               error: (error) => {
                 this.sharedService.toast('Error!', error.erro as string, 2);

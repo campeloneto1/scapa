@@ -73,6 +73,17 @@
                                 aria-hidden="true"
                               ></i
                             ></a>
+                            <a
+                              title="Ausente"
+                              *ngIf="pessoa.pivot.presente"
+                              class="options ml-2"
+                              (click)="presente(pessoa.pivot.id)"                              
+                            >
+                              <i
+                                class="fa fa-square text-warning point "
+                                aria-hidden="true"
+                              ></i
+                            ></a>
                           <a
                             title="Excluir"
                               class="options ml-2"
@@ -121,7 +132,7 @@
                 [(ngModel)]="pessoas"
               />
               <div class="col-sm-2">
-                <button style="margin-top: 30px;" (click)="adicionar(evento.id || 0)" data-bs-dismiss="modal" class="btn btn-primary">Adicionar</button>
+                <button style="margin-top: 30px;" [disabled]="!pessoas" (click)="adicionar(evento.id || 0)" data-bs-dismiss="modal" class="btn btn-primary">Adicionar</button>
               </div>
               <div class="col-sm-3" style="padding-top: 30px;">
                 ou <button  (click)="cadastro = true;" class="btn btn-link">Cadastre uma pessoa</button>

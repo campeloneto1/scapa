@@ -25,6 +25,10 @@ export class PessoasService{
         return this.http.get(`${API}/pessoas/${id}/checkcpf`);
       }
 
+      whereEvento(id: number) {
+        return this.http.get(`${API}/pessoas/${id}/evento`);
+      }
+
       store(data: Pessoa){
         return this.http.post(`${API}/pessoas`,data);
       }

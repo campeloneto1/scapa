@@ -14,6 +14,7 @@ import { Setor, Setores } from "../../setores/setores";
 import { SetoresService } from "../../setores/setores.service";
 import { AcessosService } from "../acessos.service";
 import { environment } from "src/environments/environments";
+import { Eventos } from "../../eventos/eventos";
 @Component({
     selector: 'app-acesso',
     templateUrl: './acesso.component.html',
@@ -28,6 +29,7 @@ export class AcessoComponent implements OnInit{
     postos$!: Observable<Postos>;
     setores$!: Observable<Setores>;
     pessoas$!: Observable<Pessoas>;
+    eventos!: Eventos;
     cadastro:boolean = false;
 
     protected config!: any
@@ -120,5 +122,14 @@ export class AcessoComponent implements OnInit{
 
     closeWeb(){
         this.cadastro = false;
+        this.pessoasService.whereEvento(this.form.value.pessoa.id).subscribe({
+            next: (data) => {
+                this.eventos = data as Eventos;
+                
+            },
+            error: (error) => {
+                this.sharedService.toast('Error!', error.error.erro as string, 2);
+            }
+        })
     }
 }

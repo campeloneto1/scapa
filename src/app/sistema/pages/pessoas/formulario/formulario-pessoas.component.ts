@@ -52,6 +52,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   form!: FormGroup;
 
   @Output('refresh') refresh: EventEmitter<Pessoa> = new EventEmitter();
+  @Output('refresh2') refresh2: EventEmitter<any> = new EventEmitter();
   orgaos$!: Observable<Orgaos>;
   niveis$!: Observable<Niveis>;
   sexos$!: Observable<Sexos>;
@@ -250,12 +251,13 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     
     if(this.form.value.id){
       this.pessoasService.update(this.form.value).subscribe({
-        next: (data) => {
+        next: (data:any) => {
           //console.log('aaaaaaaaaa')
-          this.sharedService.toast('Sucesso!', data as string, 3);
+          this.sharedService.toast('Sucesso!', data.mensagem as string, 3);
           this.form.reset();
           this.sysImage = '';
           this.refresh.emit();
+          this.refresh2.emit({id: data.id, cpf: data.cpf});
         },
         error: (error) => {
           this.sharedService.toast('Error!', error.error.erro as string, 2);
@@ -263,12 +265,13 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
       });
     }else{
       this.pessoasService.store(this.form.value).subscribe({
-        next: (data) => {
+        next: (data:any) => {
           //console.log('aaaaaaaaaa')
-          this.sharedService.toast('Sucesso!', data as string, 1);
+          this.sharedService.toast('Sucesso!', data.mensagem as string, 1);
           this.form.reset();
           this.sysImage = '';
           this.refresh.emit();
+          this.refresh2.emit({id: data.id, cpf: data.cpf});
         },
         error: (error) => {
           this.sharedService.toast('Error!', error.error.erro as string, 2);

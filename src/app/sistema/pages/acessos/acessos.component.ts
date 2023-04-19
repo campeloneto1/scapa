@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { Observable, Subject, tap } from 'rxjs';
+import { interval, Observable, Subject, Subscription, tap } from 'rxjs';
 import { TituloComponent } from '../../components/titulo/titulo.component';
 import { SharedModule } from '../../shared/shared.module';
 import { SharedService } from '../../shared/shared.service';
@@ -37,6 +37,8 @@ export class AcessosComponent implements OnInit, OnDestroy {
   // thus we ensure the data is fetched before rendering
   dtTrigger: Subject<any> = new Subject<Acessos>();
 
+  private updateSubscription: any;
+
   constructor(
     private sharedService: SharedService,
     private sessionService: SessionService,
@@ -55,11 +57,18 @@ export class AcessosComponent implements OnInit, OnDestroy {
         this.dtTrigger.next(this.dtOptions);
       })
     );
+
+    this.updateSubscription = interval(30000).subscribe(
+      (val) => { 
+        this.refresh()
+      }
+    );
   }
 
   ngOnDestroy(): void {
     // Do not forget to unsubscribe the event
     this.dtTrigger.unsubscribe();
+    this.updateSubscription.unsubscribe();
   }
 
   refresh() {

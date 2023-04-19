@@ -1,4 +1,4 @@
-<form [formGroup]="form" class="content-wrapper">
+<form [formGroup]="form" class="content-wrapper" >
 <!--IMPORTA COMPONENT TITULO DA PAGINA-->
 <app-titulo titulo="Acesso" />
     <!--INICIO SECTION CONTENT-->
@@ -27,7 +27,7 @@
     <!--INICIO DIV ROW selecao pessoa-->
     <div class="row" *ngIf="form.value.posto">
         <!--INICIO COL-SM4 SELECAO PESSOA-->
-      <div class="col-sm-4">
+      <div class="col-sm-3">
         <!--INICIO CARD -->
         <div class="card">
             <div class="card-header border-0">
@@ -38,6 +38,20 @@
             </div>
             <div class="card-body">
                 <div class="row">
+                  
+                  <div class="form-group">
+                    <label for="cpfpesquisa">Pesquisar pessoa</label>
+
+                    <input class="form-control" autocomplete="off" formControlName="cpfpesquisa" type="search" 
+                    (click)="teste()" (keyup)="searchCpf()" list="pessoas" name="cpfpesquisa" id="cpfpesquisa" 
+                    placeholder="Pesquisar por cpf ou nome" />
+
+                    <datalist id="pessoas" *ngIf="pessoas" >
+                      <option   *ngFor="let pessoa of pessoas" value="{{pessoa.cpf}}">{{pessoa.nome}}</option>
+                    </datalist>
+                  </div>
+                    <!--<app-input-text class="col-sm-12" (change)="getPessoa()" formControlName="cpf" label="CPF" id="cpf" tipo="text" mascara="000.000.000-00" />
+
                     <app-input-select (ngModelChange)="closeWeb()"  class="col-sm-12" formControlName="pessoa"  [config]="config2" [data$]="pessoas$" id="pessoa" label="Pessoa" />
                     <p class="text-center">ou</p>
                     <button class="btn btn-primary"
@@ -46,13 +60,13 @@
                       (click)="cadastro = true;"
                     >
                       Cadastre uma pessoa
-                    </button>
+                    </button>-->
                 </div>
             </div>
           </div>
         <!--FIM CARD-->
 
-          <!--INICIO MODAL CADASTRO-->
+          <!--INICIO MODAL CADASTRO
           <div class="modal fade" id="modalcad"  aria-hidden="true">
             <div class="modal-dialog modal-xl" >
               <div class="modal-content">
@@ -75,15 +89,26 @@
                 </div>         
               </div>
             </div>
-          </div>
+          </div>-->
           <!--FIM MODAL CADASTRO-->
 
       </div>
       <!--FIM COL-SM-4  SELECAO PESSOA-->
       <!--INICIO COL-SM-8  IDENTIFICACAO PESSOA-->
-      <div class="col-sm-8">
+      <div class="col-sm-9">
+        <!--INICIO CARD -->
+        <div *ngIf="cadpessoa" class="card">
+          <div class="card-header border-0">
+            <h3 class="card-title">Cadastro Pessoa</h3>
+          </div>
+          <!--INICIO CARD BOSY IDENTIFICACAO PESSOA-->
+          <div class="card-body" >   
+            <app-formulario-pessoas (refresh2)="refresh($event)" />
+          </div>
+        </div>
+        <!--FIM CARD -->
          <!--INICIO CARD -->
-         <div class="card">
+         <div *ngIf="!cadpessoa" class="card">
             <div class="card-header border-0">
               <h3 class="card-title">Identificação</h3>
             </div>
@@ -113,17 +138,17 @@
                     <div class="col-sm-6">
                         <dl class="row">
                             <dt class="col-sm-4">CPF</dt><dd class="col-sm-8">{{form.value.pessoa?.cpf | mask: '000.000.000-00'}}</dd>
-                            <dt class="col-sm-4">RG</dt><dd class="col-sm-8">{{form.value.pessoa?.rg}} - {{form.value.pessoa?.uf_rg?.uf}}</dd>
-                            <dt class="col-sm-4">Data Nascimento</dt><dd class="col-sm-8">{{form.value.pessoa?.data_nascimento | date: 'dd/MM/yyyy'}}</dd>
-                            <dt class="col-sm-4">Sexo</dt><dd class="col-sm-8">{{form.value.pessoa?.sexo?.nome}}</dd>
-                            <dt class="col-sm-4">Mãe</dt><dd class="col-sm-8">{{form.value.pessoa?.mae}}</dd>
-                            <dt class="col-sm-4">Pai</dt><dd class="col-sm-8">{{form.value.pessoa?.pai}}</dd>
+                            <dt *ngIf="form.value.pessoa?.rg" class="col-sm-4">RG</dt><dd *ngIf="form.value.pessoa?.rg" class="col-sm-8">{{form.value.pessoa?.rg}} - {{form.value.pessoa?.uf_rg?.uf}}</dd>
+                            <dt *ngIf="form.value.pessoa?.data_nascimento" class="col-sm-4">Data Nascimento</dt><dd *ngIf="form.value.pessoa?.data_nascimento" class="col-sm-8">{{form.value.pessoa?.data_nascimento | date: 'dd/MM/yyyy'}}</dd>
+                            <dt *ngIf="form.value.pessoa?.sexo?.nome" class="col-sm-4">Sexo</dt><dd *ngIf="form.value.pessoa?.sexo?.nome" class="col-sm-8">{{form.value.pessoa?.sexo?.nome}}</dd>
+                            <dt *ngIf="form.value.pessoa?.mae" class="col-sm-4">Mãe</dt><dd *ngIf="form.value.pessoa?.mae" class="col-sm-8">{{form.value.pessoa?.mae}}</dd>
+                            <dt *ngIf="form.value.pessoa?.pai" class="col-sm-4">Pai</dt><dd *ngIf="form.value.pessoa?.pai" class="col-sm-8">{{form.value.pessoa?.pai}}</dd>
                             
-                            <dt class="col-sm-4">Telefone 1</dt><dd class="col-sm-8">{{form.value.pessoa?.telefone1 | mask: '(00) 00000-0000'}}</dd>
-                            <dt class="col-sm-4">Telefone 2</dt><dd class="col-sm-8">{{form.value.pessoa?.telefone2}}</dd>
-                            <dt class="col-sm-4">E-mail</dt><dd class="col-sm-8">{{form.value.pessoa?.email}}</dd>
+                            <dt *ngIf="form.value.pessoa?.telefone1" class="col-sm-4">Telefone 1</dt><dd *ngIf="form.value.pessoa?.telefone1" class="col-sm-8">{{form.value.pessoa?.telefone1 | mask: '(00) 00000-0000'}}</dd>
+                            <dt *ngIf="form.value.pessoa?.telefone2" class="col-sm-4">Telefone 2</dt><dd *ngIf="form.value.pessoa?.telefone2" class="col-sm-8">{{form.value.pessoa?.telefone2}}</dd>
+                            <dt *ngIf="form.value.pessoa?.email" class="col-sm-4">E-mail</dt><dd *ngIf="form.value.pessoa?.email" class="col-sm-8">{{form.value.pessoa?.email}}</dd>
 
-                            <dt class="col-sm-4">Endereço</dt><dd class="col-sm-8">
+                            <dt *ngIf="form.value.pessoa?.rua" class="col-sm-4">Endereço</dt><dd *ngIf="form.value.pessoa?.rua" class="col-sm-8">
                                 {{form.value.pessoa?.rua}} 
                                 <span *ngIf="form.value.pessoa?.numero">, {{form.value.pessoa?.numero}}</span>
                                 <span *ngIf="form.value.pessoa?.bairro">, {{form.value.pessoa?.bairro}}</span>
@@ -131,15 +156,15 @@
                                 <span *ngIf="form.value.pessoa?.cidade?.nome">, {{form.value.pessoa?.cidade?.nome}}</span>
                                 <span *ngIf="form.value.pessoa?.cidade?.estado.uf"> - {{form.value.pessoa?.cidade?.estado.uf}}</span>
                             </dd>
-                            <dt class="col-sm-4">Observações</dt><dd class="col-sm-8">{{form.value.pessoa?.obs}}</dd>
+                            <dt *ngIf="form.value.pessoa?.obs" class="col-sm-4">Observações</dt><dd *ngIf="form.value.pessoa?.obs" class="col-sm-8">{{form.value.pessoa?.obs}}</dd>
 
-
-                            <dt *ngIf="eventos[0]" class="col-sm-4">Evento:</dt>
+                            
+                            <!--<dt *ngIf="eventos[0]" class="col-sm-4">Evento:</dt>
                             <dd *ngIf="eventos[0]" class="col-sm-8">
                               <span *ngFor="let evento of eventos">
                                 {{evento.nome}} - {{evento.data_hora | date: 'dd/MM/yyyy HH:mm'}} - {{evento.setor.nome}}
                               </span>
-                            </dd>
+                            </dd>-->
                            
                         </dl>
 

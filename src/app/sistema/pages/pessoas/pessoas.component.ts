@@ -37,6 +37,8 @@ export class PessoasComponent implements OnInit, OnDestroy {
 
   @ViewChild(FormularioPessoasCompoennt) child!: FormularioPessoasCompoennt;
 
+  @ViewChild('fecharmodalcadastro') closebuttoncadastro: any;
+
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
   dtTrigger: Subject<any> = new Subject<Pessoas>();
@@ -68,6 +70,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
+    this.closebuttoncadastro.nativeElement.click();
     this.data$ = this.pessoasService.index().pipe(
       tap(() => {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
@@ -75,6 +78,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
           dtInstance.destroy();
           // Call the dtTrigger to rerender again
           this.dtTrigger.next(this.dtOptions);
+          
         });
       })
     );

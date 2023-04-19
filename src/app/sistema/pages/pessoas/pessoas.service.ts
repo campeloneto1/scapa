@@ -25,6 +25,14 @@ export class PessoasService{
         return this.http.get(`${API}/pessoas/${id}/checkcpf`);
       }
 
+      checkCpf2(id: number) {
+        return this.http.get<Pessoa>(`${API}/pessoas/${id}/checkcpf`);
+      }
+
+      searchCpf(id: number) {
+        return this.http.get<Pessoa>(`${API}/pessoas/${id}/searchcpf`);
+      }
+
       whereEvento(id: number) {
         return this.http.get(`${API}/pessoas/${id}/evento`);
       }

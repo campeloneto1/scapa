@@ -39,12 +39,19 @@
             <div class="card-body">
                 <div class="row">
                   
-                  <div class="form-group">
+                  <div class="form-group" style="position: relative;">
                     <label for="cpfpesquisa">Pesquisar pessoa</label>
 
-                    <input class="form-control" autocomplete="off" formControlName="cpfpesquisa" type="search" 
-                    (click)="teste()" (keyup)="searchCpf()" list="pessoas" name="cpfpesquisa" id="cpfpesquisa" 
+                    <input class="form-control" autocomplete="off" formControlName="cpfpesquisa" type="text" 
+                     (keyup)="searchCpf()" list="pessoas" name="cpfpesquisa" id="cpfpesquisa" 
                     placeholder="Pesquisar por cpf ou nome" />
+                    <i
+                    *ngIf="form.value.cpfpesquisa"
+                    style="position: absolute; right: 25px; top: 43px; "
+                    class="fa fa-close text-primary point"
+                    aria-hidden="true"
+                    (click)="clearSearch()"
+                    ></i>
 
                     <datalist id="pessoas" *ngIf="pessoas" >
                       <option   *ngFor="let pessoa of pessoas" value="{{pessoa.cpf}}">{{pessoa.nome}}</option>

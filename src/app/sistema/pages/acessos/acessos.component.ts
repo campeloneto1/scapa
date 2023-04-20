@@ -58,7 +58,7 @@ export class AcessosComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.updateSubscription = interval(30000).subscribe(
+    this.updateSubscription = interval(20000).subscribe(
       (val) => { 
         this.refresh()
       }

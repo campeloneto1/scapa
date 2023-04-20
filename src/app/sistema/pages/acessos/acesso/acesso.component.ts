@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { Observable } from "rxjs";
+import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap } from "rxjs";
 import { TituloComponent } from "src/app/sistema/components/titulo/titulo.component";
 import { SharedModule } from "src/app/sistema/shared/shared.module";
 import { SharedService } from "src/app/sistema/shared/shared.service";
@@ -34,13 +34,19 @@ export class AcessoComponent implements OnInit, OnDestroy{
     pessoas2!: Pessoas;
     eventos!: Eventos;
     cadastro:boolean = false;
-    protected cadpessoa = true;
+    protected cadpessoa = false;
 
     protected config!: any
     protected config2!: any
     protected config3!: any
 
     protected subscription!: any;
+    protected subscription2!: any;
+    protected subscription3!: any;
+    protected subscription4!: any;
+    protected subscription5!: any;
+
+    private readonly searchSubject = new Subject<string | undefined>();
 
     constructor(
         private acessosService: AcessosService,
@@ -76,11 +82,13 @@ export class AcessoComponent implements OnInit, OnDestroy{
         this.setores$ = this.setoresService.index();
         //this.pessoas$ = this.pessoasService.index();
 
-        this.pessoasService.index().subscribe({
+        /*this.pessoasService.index().subscribe({
             next: (data) => {
                 this.pessoas2 = data;
             }
-        })
+        });*/
+
+     
 
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
         this.config = this.sharedService.getConfig();
@@ -91,11 +99,48 @@ export class AcessoComponent implements OnInit, OnDestroy{
 
         this.config3 = this.sharedService.getConfig();
         this.config3 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
+    
+    
+        this.subscription2 = this.searchSubject.pipe(
+            debounceTime(1000),
+            distinctUntilChanged(),
+            switchMap((data:any) => this.pessoasService.searchCpf(data))
+          ).subscribe({
+            next: (data:any) => {
+                if(data.length > 0){
+                    //this.pessoa = data[0];
+                    //this.form.get('pessoa')?.patchValue(data[0]);
+                    //console.log('cccccccccccc');
+                    this.pessoas = data;
+                    if(data.length > 1){
+                        this.cadpessoa = true;
+                    }
+                    
+                }else{
+                   this.cadpessoa = true;
+                }
+            },
+            error: (erro) => {
+                //console.log('bbbbbb')
+            }
+        });
     }
 
     ngOnDestroy(): void {
         if(this.subscription){
             this.subscription.unsubscribe();
+        }
+        if(this.subscription2){
+            this.subscription2.unsubscribe();
+        }
+        if(this.subscription3){
+            this.subscription3.unsubscribe();
+        }
+        if(this.subscription4){
+            this.subscription4.unsubscribe();
+        }
+        if(this.subscription5){
+            this.subscription5.unsubscribe();
         }
     }
 
@@ -140,7 +185,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
         //console.log('aaaaaaaaaaaaaa')
         //console.log('aaaaaaaaaaaaaa')
         if(this.form.value.cpf.length == 11){
-            this.subscription = this.pessoasService.checkCpf2(this.form.value.cpf).subscribe({
+            this.subscription3 = this.pessoasService.checkCpf2(this.form.value.cpf).subscribe({
                 next: (data:any) => {
                     if(data.length > 0){
                         //this.pessoa = data[0];
@@ -158,61 +203,46 @@ export class AcessoComponent implements OnInit, OnDestroy{
         }else{
             this.cadpessoa = true;
         }
-        
-        
+    }
+
+    checkCpf2(){
+        this.subscription4 = this.pessoasService.checkCpf2(this.form.value.cpfpesquisa).subscribe({
+            next: (data:any) => {
+                if(data.length == 1){
+                    //this.pessoa = data[0];
+                    this.form.get('pessoa')?.patchValue(data[0]);
+                    //console.log('cccccccccccc');
+                    this.cadpessoa = false;
+                }else{
+                    this.pessoas = data;
+                   this.cadpessoa = true;
+                }
+            },
+            error: (erro) => {
+                //console.log('bbbbbb')
+            }
+        });
     }
 
     searchCpf(){
         //console.log('aaaaaaaaaa')
-        if(this.form.value.cpfpesquisa.length < 4){
+        if(this.form.value.cpfpesquisa.length < 5){
             this.form.get('pessoa')?.patchValue('');
-            this.cadpessoa = true;
-        }
-        if(this.form.value.cpfpesquisa.length >= 4 && this.form.value.cpfpesquisa.length < 11){
-            this.subscription = this.pessoasService.searchCpf(this.form.value.cpfpesquisa).subscribe({
-                next: (data:any) => {
-                    if(data.length > 0){
-                        //this.pessoa = data[0];
-                        //this.form.get('pessoa')?.patchValue(data[0]);
-                        //console.log('cccccccccccc');
-                        this.pessoas = data;
-                        if(data.length > 1){
-                            this.cadpessoa = true;
-                        }
-                        
-                    }else{
-                       this.cadpessoa = true;
-                    }
-                },
-                error: (erro) => {
-                    //console.log('bbbbbb')
-                }
-            });
+            this.cadpessoa = false;
+        }else if(this.form.value.cpfpesquisa.length >= 5 && this.form.value.cpfpesquisa.length < 11){
+            this.searchSubject.next(this.form.value.cpfpesquisa.trim());
         }else if(this.form.value.cpfpesquisa.length == 11){
-            this.subscription = this.pessoasService.checkCpf2(this.form.value.cpfpesquisa).subscribe({
-                next: (data:any) => {
-                    if(data.length == 1){
-                        //this.pessoa = data[0];
-                        this.form.get('pessoa')?.patchValue(data[0]);
-                        //console.log('cccccccccccc');
-                        this.cadpessoa = false;
-                    }else{
-                       this.cadpessoa = true;
-                    }
-                },
-                error: (erro) => {
-                    //console.log('bbbbbb')
-                }
-            });
+            this.checkCpf2();
         }else{
-            this.cadpessoa = true;
+            this.searchSubject.next(this.form.value.cpfpesquisa.trim());
         }
     }
 
-    teste(){
-        if(this.form.value.cpf == '' ){
-            this.cadpessoa = true;
-        }
+    clearSearch(){
+        this.form.get('cpfpesquisa')?.patchValue('');
+        this.form.get('pessoa')?.patchValue('');
+        this.form.get('pessoa')?.patchValue('');
+        this.cadpessoa = false;
     }
 
     registrar(){
@@ -227,16 +257,14 @@ export class AcessoComponent implements OnInit, OnDestroy{
             this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
             this.form.get('setor')?.patchValue('');
     
-            this.acessosService.store(this.form.value).subscribe({
+            this.subscription5 = this.acessosService.store(this.form.value).subscribe({
                 next: (data) => {
                     this.sharedService.toast('Sucesso!', data as string, 1);
     
                     this.form.get('pessoa_id')?.patchValue('');
-                    this.form.get('pessoa')?.patchValue('');
                     this.form.get('setor_id')?.patchValue('');
-                    this.form.get('setor')?.patchValue('');
                     this.form.get('obs')?.patchValue('');
-                    this.cadpessoa = true;
+                    this.cadpessoa = false;
                 },
                 error: (error) => {
                     this.sharedService.toast('Error!', error.error.erro as string, 2);

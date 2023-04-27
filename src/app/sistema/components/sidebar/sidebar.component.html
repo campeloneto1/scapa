@@ -81,7 +81,14 @@
         </a>
       </li>-->
       
-      
+      <li class="nav-item" *ngIf="perfil.funcionarios">
+        <a [routerLink]="['Funcionarios']" routerLinkActive="active" class="nav-link">
+          <i class="nav-icon fa fa-user"></i>
+          <p>
+            Funcionários
+          </p>
+        </a>
+      </li>
       <li class="nav-item" *ngIf="perfil.setores">
         <a [routerLink]="['Setores']" routerLinkActive="active" class="nav-link">
           <i class="nav-icon fa fa-sitemap"></i>

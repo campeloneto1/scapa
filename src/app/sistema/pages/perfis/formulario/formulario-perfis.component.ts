@@ -50,6 +50,11 @@ export class FormularioPerfisComponent implements OnInit {
       eventos_edt: [''],
       eventos_del: [''],
 
+      funcionarios: [''],
+      funcionarios_cad: [''],
+      funcionarios_edt: [''],
+      funcionarios_del: [''],
+
       orgaos: [''],
       orgaos_cad: [''],
       orgaos_edt: [''],

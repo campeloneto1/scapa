@@ -14,6 +14,11 @@ export interface Perfil{
     eventos_edt?: boolean,
     eventos_del?: boolean,
 
+    funcionarios?: boolean,
+    funcionarios_cad?: boolean,
+    funcionarios_edt?: boolean,
+    funcionarios_del?: boolean,
+
     pessoas?: boolean,
     pessoas_cad?: boolean,
     pessoas_edt?: boolean,

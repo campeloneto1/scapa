@@ -1,28 +1,29 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper" >
     <!--INICIO COMPONENT TITULO DA PAGINA-->
-    <app-titulo titulo="Acessos" />
+    <app-titulo titulo="Funcionários" />
     <!--FIM COMPONENT TITULO DA PAGINA-->
     <!--INICIO SECTION TABLE-->
     <section class="content">
       <!--INICIO CARD -->
       <div class="card">
         <!--INICIO CARD HEADER-->
-        <!--<div class="card-header border-0">
+        <div class="card-header border-0">
           <h3 class="card-title">
             <button 
-                *ngIf="perfil.acessos_cad"
+              *ngIf="perfil.funcionarios_cad"  
+            title="Cadastrar"
               class="btn btn-outline-primary" 
               data-bs-toggle="modal"
               data-bs-target="#modalcad">
-              <i class="fa fa-plus" aria-hidden="true"></i>
+              <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar
             </button>
           </h3>
           
-        </div>-->
+        </div>
         <!--FIM CARD HEADER-->
         <!--INICIO CARD BODY-->
-        <div class="card-body table-responsive">
+        <div class="card-body">
           <!--INICIO TABLE-->
           <table
           datatable
@@ -36,14 +37,9 @@
               <th>#</th>
               <th>Orgão</th>
               <th>Setor</th>
-              <th>Funcionário</th>
-              <th>Visitante</th>
-              <th>CPF</th>
-              <th>Observações</th>
-              <th>Posto</th>
-              <th>Data Hora</th>
-              <th>Verificação</th>
-             
+              <th>Nome</th>   
+              <th>Ramal 1</th>             
+              <th>Ramal 2</th>   
               <th>Opções</th>
             </tr>
           </thead>
@@ -55,16 +51,13 @@
               <td>{{ row.id }}</td>
               <td>{{ row.setor.orgao.nome }}</td>
               <td>{{ row.setor.nome }}</td>
-              <td>{{ row.funcionario?.nome }}</td>
-              <td><a [routerLink]="['/Pessoa', row.pessoa_id]">{{ row.pessoa.nome }}</a></td>
-              <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
-              <td>{{ row.obs }}</td>
-              <td>{{ row.posto.nome }}</td>
-              <td>{{ row.data_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
-              <td>{{ row.createdby.nome }}</td>
+              <td>{{ row.nome }}</td> 
+              <td>{{ row.ramal1 }}</td> 
+              <td>{{ row.ramal2 }}</td>             
               <td>               
-                <!--<a             
-                *ngIf="perfil.acessos_edt"
+                <a           
+                *ngIf="perfil.funcionarios_edt"  
+                title="Editar"  
                   class="options ml-2"
                   (click)="edit(row)"
                   data-bs-toggle="modal"
@@ -74,9 +67,10 @@
                     class="fas fa-edit text-primary point"
                     aria-hidden="true"
                   ></i>
-                </a>-->
+                </a>
                 <a
-                  *ngIf="perfil.acessos_del"
+                *ngIf="perfil.funcionarios_del"  
+                title="Excluir"
                   class="options ml-2"
                   (click)="delete(row)"
                   data-bs-toggle="modal"
@@ -136,7 +130,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <app-formulario-acessos
+            <app-formulario-funcionarios
               (refresh)="refresh()"
             />
           </div>         
@@ -161,7 +155,7 @@
             </button>
           </div>
           <div class="modal-body" >
-            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.pessoa.nome}}</strong>?</p>
+            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.nome}}</strong>?</p>
           </div> 
           <div class="modal-footer justify-right">
             <button type="button" class="btn btn-link" data-bs-dismiss="modal">

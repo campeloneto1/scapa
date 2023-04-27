@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { debounceTime, distinctUntilChanged, Observable, Subject, switchMap } from "rxjs";
+import { debounceTime, distinctUntilChanged, Observable, of, Subject, switchMap } from "rxjs";
 import { TituloComponent } from "src/app/sistema/components/titulo/titulo.component";
 import { SharedModule } from "src/app/sistema/shared/shared.module";
 import { SharedService } from "src/app/sistema/shared/shared.service";
@@ -15,6 +15,7 @@ import { SetoresService } from "../../setores/setores.service";
 import { AcessosService } from "../acessos.service";
 import { environment } from "src/environments/environments";
 import { Eventos } from "../../eventos/eventos";
+import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
 @Component({
     selector: 'app-acesso',
     templateUrl: './acesso.component.html',
@@ -29,6 +30,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
     postos$!: Observable<Postos>;
     setores$!: Observable<Setores>;
     pessoas$!: Observable<Pessoas>;
+    funcionarios$!: Observable<Funcionarios>;
     pessoa!: Pessoa;
     pessoas!: Pessoas;
     pessoas2!: Pessoas;
@@ -39,12 +41,14 @@ export class AcessoComponent implements OnInit, OnDestroy{
     protected config!: any
     protected config2!: any
     protected config3!: any
+    protected config4!: any
 
     protected subscription!: any;
     protected subscription2!: any;
     protected subscription3!: any;
     protected subscription4!: any;
     protected subscription5!: any;
+    protected subscription6!: any;
 
     private readonly searchSubject = new Subject<string | undefined>();
 
@@ -69,6 +73,8 @@ export class AcessoComponent implements OnInit, OnDestroy{
             'pessoa_id': [''],
             'setor': ['', Validators.required],
             'setor_id': [''],
+            'funcionario': [''],
+            'funcionario_id': [''],
             'data_hora': [''],
             'obs': [''],
         });
@@ -99,6 +105,9 @@ export class AcessoComponent implements OnInit, OnDestroy{
 
         this.config3 = this.sharedService.getConfig();
         this.config3 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
+
+        this.config4 = this.sharedService.getConfig();
+        this.config4 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item?.ramal1 ? item?.ramal1 : ''}${item?.ramal2 ? " | "+item?.ramal2 : ''})`; }, placeholder:'Funcionário'};
     
     
         this.subscription2 = this.searchSubject.pipe(
@@ -149,11 +158,17 @@ export class AcessoComponent implements OnInit, OnDestroy{
         localStorage.setItem('posto', JSON.stringify(this.form.value.posto))
     }
 
+    getFuncionarios(){
+        this.funcionarios$ = of([]);
+        this.funcionarios$ = this.setoresService.where(this.form.value.setor.id);
+    }
+
     unsetPosto(){
         localStorage.removeItem('posto');
         this.form.get('posto')?.patchValue('');
         this.form.get('pessoa')?.patchValue('');
         this.form.get('setor')?.patchValue('');
+        this.form.get('funcionario')?.patchValue('');
         this.form.get('obs')?.patchValue('');
         this.form.get('cpf')?.patchValue('');
     }
@@ -241,7 +256,9 @@ export class AcessoComponent implements OnInit, OnDestroy{
     clearSearch(){
         this.form.get('cpfpesquisa')?.patchValue('');
         this.form.get('pessoa')?.patchValue('');
-        this.form.get('pessoa')?.patchValue('');
+        this.form.get('setor')?.patchValue('');
+        this.form.get('funcionario')?.patchValue('');
+
         this.cadpessoa = false;
     }
 
@@ -256,6 +273,11 @@ export class AcessoComponent implements OnInit, OnDestroy{
     
             this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
             this.form.get('setor')?.patchValue('');
+
+            if(this.form.value.funcionario){
+                this.form.get('funcionario_id')?.patchValue(this.form.value.funcionario.id);
+                this.form.get('funcionario')?.patchValue('');
+            }
     
             this.subscription5 = this.acessosService.store(this.form.value).subscribe({
                 next: (data) => {

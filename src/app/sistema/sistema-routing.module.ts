@@ -44,6 +44,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Funcionarios',
+                loadComponent: () => import('./pages/funcionarios/funcionarios.component').then((c) => c.FuncionariosComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Logs',
                 loadComponent: () => import('./pages/logs/logs.component').then((c) => c.LogsComponent),
                 canActivate: [AlowedGuard]

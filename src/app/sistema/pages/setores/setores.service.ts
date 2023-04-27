@@ -2,6 +2,7 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { environment } from "src/environments/environments";
+import { Funcionarios } from "../funcionarios/funcionarios";
 import { Setor, Setores } from "./setores";
 
 const API = environment.url;
@@ -15,6 +16,10 @@ export class SetoresService{
 
     index(): Observable<Setores> {
         return this.http.get<Setores>(`${API}/setores`);
+      }
+
+      where(id: number): Observable<Funcionarios> {
+        return this.http.get<Funcionarios>(`${API}/setores/${id}/funcionarios`);
       }
 
       show(id: number): Observable<Setor> {

@@ -41,12 +41,14 @@
                         <th>#</th>
                         <th>Orgão</th>
                         <th>Setor</th>
+                        <th>Funcionário</th>
                         <th>Pessoa</th>
                         <th>CPF</th>
+                        <th>Observações</th>
                         <th>Posto</th>
                         <th>Data Hora</th>
                         <th>Verificação</th>
-                        <th>Observações</th>
+                        
                         </tr>
                     </thead>
                     <!--FIM THEAD-->
@@ -57,12 +59,14 @@
                             <td>{{ row.id }}</td>
                             <td>{{ row.setor.orgao.nome }}</td>
                             <td>{{ row.setor.nome }}</td>
+                            <td>{{ row.funcionario?.nome }}</td>
                             <td>{{ row.pessoa.nome }}</td>
                             <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
+                            <td>{{ row.obs }}</td>
                             <td>{{ row.posto.nome }}</td>
                             <td>{{ row.data_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
                             <td>{{ row.createdby.nome }}</td>
-                            <td>{{ row.obs }}</td>
+                          
                         
                         </tr>
                         <!-- FIM TR -->

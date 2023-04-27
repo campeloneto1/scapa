@@ -1,3 +1,4 @@
+import { Funcionario } from "../funcionarios/funcionarios";
 import { Pessoa } from "../pessoas/pessoas";
 import { Posto } from "../postos/postos";
 import { Setor } from "../setores/setores";
@@ -6,6 +7,8 @@ export interface Acesso{
     id?: number,
     setor: Setor,
     setor_id: number,
+    funcionario?: Funcionario,
+    funcionario_id?: number,
     posto: Posto,
     posto_id: number,
     pessoa: Pessoa,

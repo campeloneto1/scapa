@@ -1,0 +1,34 @@
+<form  [formGroup]="form" (ngSubmit)="cadastrar()">
+    <div class="row">
+        <app-input-select
+        (ngModelChange)="getSetores()"
+        class="col-sm-2"
+        [label]="'Orgão'"
+        [id]="'orgao'"
+        [data$]="orgaos$"
+        formControlName="orgao"
+        [config]="config"
+      />
+      <app-input-select
+        class="col-sm-4"
+        [label]="'Setor'"
+        [id]="'setor'"
+        [data$]="setores$"
+        formControlName="setor"
+        [config]="config2"
+      />
+        <app-input-text class="col-sm-4" formControlName="nome" label="Nome" id="nome" tipo="text" />
+        <app-input-text class="col-sm-2" formControlName="ramal1" label="Ramal 1" id="ramal1" tipo="text" />
+        <app-input-text class="col-sm-2" formControlName="ramal2" label="Ramal 2" id="ramal2" tipo="text" />
+    </div>
+   
+    <hr />
+    <div class="float-right">
+        <a (click)="form.reset()" data-bs-dismiss="modal" class="btn btn-link text-danger">
+            Cancelar
+        </a>
+        <button [disabled]="form.invalid"  data-bs-dismiss="modal" type="submit" class="btn btn-primary ">
+            Cadastrar
+        </button>        
+    </div>
+</form>

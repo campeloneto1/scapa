@@ -179,7 +179,8 @@
                     <!--FIM IDENTIFICACAO PESSOA-->
                     <!-- SETOR QUE IRA VISITAR-->
                     <div class="col-sm-6">
-                        <app-input-select formControlName="setor"  [config]="config3" [data$]="setores$" id="setor" label="Setor" />
+                        <app-input-select formControlName="setor" (ngModelChange)="getFuncionarios()" [config]="config3" [data$]="setores$" id="setor" label="Setor" />
+                        <app-input-select formControlName="funcionario"  [config]="config4" [data$]="funcionarios$" id="funcionario" label="Funcionário" />
                         <app-input-text  formControlName="obs" label="Observações" id="obs" tipo="textarea" />
                     </div>
                     <!--FIM SETOR QUE IRA VISITAR-->

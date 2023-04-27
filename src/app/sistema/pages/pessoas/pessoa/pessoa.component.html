@@ -99,6 +99,7 @@
                   <tr>
                     <th>Orgão</th>
                     <th>Setor</th>
+                    <th>Funcionário</th>
                     <th>Observação</th>
                     <th>Posto</th>
                     <th>Data Hora</th>
@@ -109,7 +110,8 @@
                 <tbody>
                   <tr *ngFor="let acesso of pessoa.acessos | paginate: { itemsPerPage: 10, currentPage: p, totalItems: pessoa.acessos.length }">                  
                     <td>{{acesso?.setor?.orgao?.nome}}</td>       
-                    <td>{{acesso.setor.nome}}</td>  
+                    <td>{{acesso.setor.nome}}</td> 
+                    <td>{{acesso.funcionario?.nome}}</td>  
                     <td>{{acesso.obs}}</td>   
                     <td>{{acesso.posto.nome}}</td>   
                     <td>{{acesso.data_hora | date: 'dd/MM/yyyy HH:mm:ss'}}</td>   

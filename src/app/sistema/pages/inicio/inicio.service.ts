@@ -23,6 +23,10 @@ export class InicioService{
         return this.http.get(`${API}/inicio-acessos-por-dia`);
     }
 
+    acessosPorMes(){
+        return this.http.get(`${API}/inicio-acessos-por-mes`);
+    }
+
     acessosPorSetor(){
         return this.http.get(`${API}/inicio-acessos-por-setor`);
     }

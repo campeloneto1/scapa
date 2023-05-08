@@ -32,6 +32,7 @@ export class EventoComponent implements OnInit{
     pessoas!: Pessoas;
     cadastro: boolean = false;
     p: number = 0;
+    evento_id!:number;
 
     protected config!: any
 
@@ -56,17 +57,35 @@ export class EventoComponent implements OnInit{
         //console.log(this.evento$);
     }
 
-    refresh(){
+    refresh($event:any){
+      
       this.pessoas$ = this.pessoasService.index(); 
+
+      var obj = {evento: this.evento_id, pessoas: [{id: $event.id}]};
+        this.eventosPessoasService.store(obj).subscribe({
+            next: (data) => {
+              //console.log('aaaaaaaaaa')
+              this.sharedService.toast('Sucesso!', data as string, 1);
+              this.cadastro = false;
+              this.refresh2();
+            },
+            error: (error) => {
+              this.sharedService.toast('Error!', error.error.erro as string, 2);
+            }
+          })
   }
 
     refresh2(){
         this.evento$ = this.eventosService.show(this.id);  
     }
 
-    adicionar(id: number){
+    addPessoas(id:number){
+      this.evento_id = id;
+    }
+
+    adicionar(){
         
-        var obj = {evento: id, pessoas: this.pessoas};
+        var obj = {evento: this.evento_id, pessoas: this.pessoas};
         this.eventosPessoasService.store(obj).subscribe({
             next: (data) => {
               //console.log('aaaaaaaaaa')
@@ -100,6 +119,7 @@ export class EventoComponent implements OnInit{
     confirm(){
         this.eventosPessoasService.destroy(this.excluir.pivot.id).subscribe({
             next: (data) => {
+              
                 this.sharedService.toast('Sucesso!', data as string, 3);
                 this.refresh2();
               },

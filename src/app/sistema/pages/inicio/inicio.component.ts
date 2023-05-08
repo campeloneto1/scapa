@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit } from "@angular/core";
 import { SharedModule } from "../../shared/shared.module";
 import { Eventos } from "../eventos/eventos";
 import { InicioService } from "./inicio.service";
@@ -13,20 +13,28 @@ import { InicioService } from "./inicio.service";
     imports: [CommonModule, SharedModule]
 })
 
-export class InicioComponent implements OnInit{
+export class InicioComponent implements OnInit, OnDestroy{
 
     quantDia!: number;
     quantMes!: number;
     quantPorDia!: any;
+    quantPorMes!: any;
     quantPorSetor!: any;
     proximosEventos!: any;
+
+    subscription1!:any;
+    subscription2!:any;
+    subscription3!:any;
+    subscription4!:any;
+    subscription5!:any;
+    subscription6!:any;
 
     constructor(private inicioService: InicioService){
         
     }
 
     ngOnInit(): void {
-        this.inicioService.acessosDia().subscribe({
+        this.subscription1 = this.inicioService.acessosDia().subscribe({
             next: (data) => {
                 this.quantDia = data as number;
             },
@@ -35,7 +43,7 @@ export class InicioComponent implements OnInit{
             }
         });
 
-        this.inicioService.acessosMes().subscribe({
+        this.subscription2 = this.inicioService.acessosMes().subscribe({
             next: (data) => {
                 this.quantMes = data as number;
             },
@@ -44,7 +52,7 @@ export class InicioComponent implements OnInit{
             }
         });
 
-        this.inicioService.acessosPorSetor().subscribe({
+        this.subscription3 = this.inicioService.acessosPorSetor().subscribe({
             next: (data) => {
                 this.quantPorSetor = data;
                 
@@ -54,7 +62,7 @@ export class InicioComponent implements OnInit{
             }
         });
 
-        this.inicioService.acessosPorDia().subscribe({
+        this.subscription4 = this.inicioService.acessosPorDia().subscribe({
             next: (data) => {
                 this.quantPorDia = data;
                 
@@ -64,7 +72,7 @@ export class InicioComponent implements OnInit{
             }
         });
 
-        this.inicioService.proximosEventos().subscribe({
+        this.subscription5 = this.inicioService.proximosEventos().subscribe({
             next: (data) => {
                 this.proximosEventos = data;            
             },
@@ -72,6 +80,39 @@ export class InicioComponent implements OnInit{
 
             }
         });
+
+        this.subscription6 = this.inicioService.acessosPorMes().subscribe({
+            next: (data) => {
+                this.quantPorMes = data;
+                
+            },
+            error: (error) => {
+
+            }
+        });
+    }
+
+    ngOnDestroy(): void {
+        if(this.subscription1){
+            this.subscription1.unsubscrib();
+        }
+
+        if(this.subscription2){
+            this.subscription2.unsubscrib();
+        }
+
+        if(this.subscription3){
+            this.subscription3.unsubscrib();
+        }
+
+        if(this.subscription4){
+            this.subscription4.unsubscrib();
+        }
+
+        if(this.subscription5){
+            this.subscription5.unsubscrib();
+        }
+
     }
 
     onSelect(data:any){

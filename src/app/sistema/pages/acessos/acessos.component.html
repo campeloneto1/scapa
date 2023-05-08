@@ -1,14 +1,14 @@
 <!-- INICIO CONTENT WRAPER-->
-<div class="content-wrapper" >
-    <!--INICIO COMPONENT TITULO DA PAGINA-->
-    <app-titulo titulo="Acessos" />
-    <!--FIM COMPONENT TITULO DA PAGINA-->
-    <!--INICIO SECTION TABLE-->
-    <section class="content">
-      <!--INICIO CARD -->
-      <div class="card">
-        <!--INICIO CARD HEADER-->
-        <!--<div class="card-header border-0">
+<div class="content-wrapper">
+  <!--INICIO COMPONENT TITULO DA PAGINA-->
+  <app-titulo titulo="Acessos" />
+  <!--FIM COMPONENT TITULO DA PAGINA-->
+  <!--INICIO SECTION TABLE-->
+  <section class="content">
+    <!--INICIO CARD -->
+    <div class="card">
+      <!--INICIO CARD HEADER-->
+      <!--<div class="card-header border-0">
           <h3 class="card-title">
             <button 
                 *ngIf="perfil.acessos_cad"
@@ -20,11 +20,11 @@
           </h3>
           
         </div>-->
-        <!--FIM CARD HEADER-->
-        <!--INICIO CARD BODY-->
-        <div class="card-body table-responsive">
-          <!--INICIO TABLE-->
-          <table
+      <!--FIM CARD HEADER-->
+      <!--INICIO CARD BODY-->
+      <div class="card-body table-responsive">
+        <!--INICIO TABLE-->
+        <table
           datatable
           [dtOptions]="dtOptions"
           [dtTrigger]="dtTrigger"
@@ -43,7 +43,7 @@
               <th>Posto</th>
               <th>Data Hora</th>
               <th>Verificação</th>
-             
+
               <th>Opções</th>
             </tr>
           </thead>
@@ -56,13 +56,19 @@
               <td>{{ row.setor.orgao.nome }}</td>
               <td>{{ row.setor.nome }}</td>
               <td>{{ row.funcionario?.nome }}</td>
-              <td><a [routerLink]="['/Pessoa', row.pessoa_id]">{{ row.pessoa.nome }}</a></td>
+              <td>
+                <a
+                  [routerLink]="['/Pessoa', row.pessoa_id]"
+                  title="{{ row.pessoa.obs }}"
+                  >{{ row.pessoa.nome }}</a
+                >
+              </td>
               <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.obs }}</td>
               <td>{{ row.posto.nome }}</td>
-              <td>{{ row.data_hora | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+              <td>{{ row.data_hora | date : "dd/MM/yyyy HH:mm:ss" }}</td>
               <td>{{ row.createdby.nome }}</td>
-              <td>               
+              <td>
                 <!--<a             
                 *ngIf="perfil.acessos_edt"
                   class="options ml-2"
@@ -83,7 +89,7 @@
                   data-bs-target="#modaldel"
                 >
                   <i
-                    class="fas fa-trash text-danger point "
+                    class="fas fa-trash text-danger point"
                     aria-hidden="true"
                   ></i
                 ></a>
@@ -107,79 +113,79 @@
           </tbody>
         </ng-template>
         <!--FIM NGTEMPLATE-->
-
-        </div>
-        <!--FIM CARD BODY-->
-        <!--INICIO CARD FOOTER
+      </div>
+      <!--FIM CARD BODY-->
+      <!--INICIO CARD FOOTER
         <div class="card-footer">
 
         </div>-->
-        <!--FIM CARD FOOTER-->
-      </div>
-      <!--FIM CARD -->
-    </section>
-    <!--FIM SECTION TABLE-->
+      <!--FIM CARD FOOTER-->
+    </div>
+    <!--FIM CARD -->
+  </section>
+  <!--FIM SECTION TABLE-->
 
-    <!--INICIO MODAL CADASTRO-->
-    <div class="modal fade" id="modalcad" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Cadastrar</h4>
-            <button
-              type="button"
-              class="close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-formulario-acessos
-              (refresh)="refresh()"
-            />
-          </div>         
+  <!--INICIO MODAL CADASTRO-->
+  <div class="modal fade" id="modalcad" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Cadastrar</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-formulario-acessos (refresh)="refresh()" />
         </div>
       </div>
     </div>
-    <!--FIM MODAL CADASTRO-->
-
-    <!--INICIO MODAL EXCLUSAO-->
-    <div class="modal fade" id="modaldel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content" *ngIf="excluir">
-          <div class="modal-header">
-            <h4 class="modal-title">Excluir</h4>
-            <button
-              type="button"
-              class="close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body" >
-            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.pessoa.nome}}</strong>?</p>
-          </div> 
-          <div class="modal-footer justify-right">
-            <button type="button" class="btn btn-link" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button
-              (click)="confirm(excluir.id || 0)"
-              data-bs-dismiss="modal"
-              type="button"
-              class="btn btn-danger"
-            >
-              Confirmar
-            </button>
-          </div>        
-        </div>
-      </div>
-    </div>
-    <!--FIM MODAL EXCLUSAO-->
-
   </div>
-  <!-- FIM CONTENT WRAPER-->
+  <!--FIM MODAL CADASTRO-->
+
+  <!--INICIO MODAL EXCLUSAO-->
+  <div class="modal fade" id="modaldel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="excluir">
+        <div class="modal-header">
+          <h4 class="modal-title">Excluir</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Tem certeza que deseja excluir a informação
+            <strong>{{ excluir.pessoa.nome }}</strong
+            >?
+          </p>
+        </div>
+        <div class="modal-footer justify-right">
+          <button type="button" class="btn btn-link" data-bs-dismiss="modal">
+            Fechar
+          </button>
+          <button
+            (click)="confirm(excluir.id || 0)"
+            data-bs-dismiss="modal"
+            type="button"
+            class="btn btn-danger"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--FIM MODAL EXCLUSAO-->
+</div>
+<!-- FIM CONTENT WRAPER-->

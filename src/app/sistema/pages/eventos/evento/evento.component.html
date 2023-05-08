@@ -1,123 +1,184 @@
 <div class="content-wrapper">
-    <app-titulo titulo="Evento" />
+  <app-titulo titulo="Evento" />
   <!--INICIO SECTION content-->
-  <section class="content" >
+  <section class="content">
     <!--INICIO PROFILE -->
 
     <div class="row" *ngIf="evento$ | async as evento; else loading">
       <div class="col-sm-3">
-        <div class="card ">
+        <div class="card">
           <div class="card-body box-profile">
-            
-            <h3 class="profile-username text-center">{{evento.nome}}</h3>
+            <h3 class="profile-username text-center">{{ evento.nome }}</h3>
             <!--<p class="text-muted text-center">{{pessoa.cpf}}</p>-->
             <ul class="list-group list-group-unbordered mb-3">
               <li class="list-group-item">
-                <b>Orgão</b> <a class="float-right">{{evento.setor.orgao.nome}}</a>
+                <b>Orgão</b>
+                <a class="float-right">{{ evento.setor.orgao.nome }}</a>
               </li>
               <li class="list-group-item">
-                <b>Setor</b> <a class="float-right">{{evento.setor.nome}}</a>
+                <b>Setor</b> <a class="float-right">{{ evento.setor.nome }}</a>
               </li>
               <li class="list-group-item">
-                <b>Data Hora</b> <a class="float-right">{{evento.data_hora | date: 'dd/MM/yyyy HH:mm:ss'}}</a>
+                <b>Data Hora</b>
+                <a class="float-right">{{
+                  evento.data_hora | date : "dd/MM/yyyy HH:mm:ss"
+                }}</a>
               </li>
               <li *ngIf="evento?.obs" class="list-group-item">
-                <b>Obs</b> <a class="float-right">{{evento?.obs}}</a>
-              </li>              
-              
-
-            </ul>      
-            <a target="_blank" class="btn btn-primary btn-block" [routerLink]="['/PrintEvento', evento.id]"><i class="fa fa-print" aria-hidden="true"></i> Imprimir</a>     
+                <b>Obs</b> <a class="float-right">{{ evento?.obs }}</a>
+              </li>
+            </ul>
+            <a
+              target="_blank"
+              class="btn btn-primary btn-block"
+              [routerLink]="['/PrintEvento', evento.id]"
+              ><i class="fa fa-print" aria-hidden="true"></i> Imprimir</a
+            >
           </div>
         </div>
-
       </div>
 
       <div class="col-sm-9">
         <div class="card">
-          <div class="card-header border-0 d-flex ">
-            <h3 class="card-title mr-auto p-2">Convidados</h3>  
-            <button class="btn  btn-outline-primary noprint" 
-            data-bs-toggle="modal"
-            data-bs-target="#modalcad">
-              <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar Pessoas
+          <div class="card-header border-0 d-flex">
+            <h3 class="card-title mr-auto p-2">Convidados</h3>
+            <button
+              class="btn btn-outline-primary noprint"
+              data-bs-toggle="modal"
+              data-bs-target="#modalcad"
+              (click)="addPessoas(evento.id || 0)"
+            >
+              <i class="fa fa-plus" aria-hidden="true"></i> Adicionar Pessoas no
+              Evento
             </button>
           </div>
           <div class="card-body table-responsive p-0">
-              <!--INICIO CONVIDADOS-->
-              <table class="table table-hover table-valign-middle">
-                <thead>
-                    <tr>
-                        <th>Nome</th>
-                        <th>CPF</th>
-                        <th>Compareceu</th>
-                        <th  class="noprint">Opções</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let pessoa of evento.pessoas | paginate: { itemsPerPage: 10, currentPage: p, totalItems: evento.pessoas.length }" class="optionshover">                  
-                        <td>{{pessoa.nome}}</td>       
-                        <td>{{pessoa.cpf | mask: '000.000.000-00'}}</td>   
-                        <td>
-                            <span *ngIf="pessoa.pivot.presente">Presente</span>
-                        </td> 
-                        <td class="noprint">
-                          <a
-                              title="Presente"
-                              *ngIf="!pessoa.pivot.presente"
-                              class="options ml-2"
-                              (click)="presente(pessoa.pivot.id)"                              
-                            >
-                              <i
-                                class="fa fa-check-square text-success point "
-                                aria-hidden="true"
-                              ></i
-                            ></a>
-                            <a
-                              title="Ausente"
-                              *ngIf="pessoa.pivot.presente"
-                              class="options ml-2"
-                              (click)="presente(pessoa.pivot.id)"                              
-                            >
-                              <i
-                                class="fa fa-square text-warning point "
-                                aria-hidden="true"
-                              ></i
-                            ></a>
-                          <a
-                            title="Excluir"
-                              class="options ml-2"
-                              (click)="delete(pessoa)"
-                              data-bs-toggle="modal"
-                              data-bs-target="#modaldel"
-                            >
-                              <i
-                                class="fas fa-trash text-danger point "
-                                aria-hidden="true"
-                              ></i
-                            ></a>
-                        </td>                                  
-                    </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colspan="100%" style="text-align: center;">
-                      <pagination-controls
+            <!--INICIO CONVIDADOS-->
+            <table class="table table-hover table-valign-middle">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF</th>
+                  <th>Compareceu</th>
+                  <th class="noprint">Opções</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let pessoa of evento.pessoas
+                      | paginate
+                        : {
+                            itemsPerPage: 10,
+                            currentPage: p,
+                            totalItems: evento.pessoas.length
+                          }
+                  "
+                  class="optionshover"
+                >
+                  <td>{{ pessoa.nome }}</td>
+                  <td>{{ pessoa.cpf | mask : "000.000.000-00" }}</td>
+                  <td>
+                    <span *ngIf="pessoa.pivot.presente">Presente</span>
+                  </td>
+                  <td class="noprint">
+                    <a
+                      title="Presente"
+                      class="options ml-2"
+                      (click)="presente(pessoa.pivot.id)"
+                    >
+                      <i
+                        *ngIf="!pessoa.pivot.presente"
+                        class="fa fa-check-square text-success point"
+                        aria-hidden="true"
+                      ></i>
+                      <i
+                        *ngIf="pessoa.pivot.presente"
+                        class="fa fa-square text-warning point"
+                        aria-hidden="true"
+                      ></i>
+                    </a>
+                    <a
+                      *ngIf="!pessoa.pivot.presente"
+                      title="Excluir"
+                      class="options ml-2"
+                      (click)="delete(pessoa)"
+                      data-bs-toggle="modal"
+                      data-bs-target="#modaldel"
+                    >
+                      <i
+                        class="fas fa-trash text-danger point"
+                        aria-hidden="true"
+                      ></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="100%" style="text-align: center">
+                    <pagination-controls
                       [autoHide]="true"
                       [responsive]="true"
                       previousLabel="Anterior"
                       nextLabel="Próximo"
-                       (pageChange)="p = $event"></pagination-controls>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+                      (pageChange)="p = $event"
+                    ></pagination-controls>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
             <!--FIM CONVIDADOS-->
           </div>
         </div>
       </div>
 
-      <!--INICIO MODAL CADASTRO-->
+      <!--INICIO MODAL EXCLUSAO-->
+      <div class="modal fade" id="modaldel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content" *ngIf="excluir">
+            <div class="modal-header">
+              <h4 class="modal-title">Excluir</h4>
+              <button
+                type="button"
+                class="close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <p>
+                Tem certeza que deseja excluir a informação
+                <strong>{{ excluir.nome }}</strong
+                >?
+              </p>
+            </div>
+            <div class="modal-footer justify-right">
+              <button
+                type="button"
+                class="btn btn-link"
+                data-bs-dismiss="modal"
+              >
+                Fechar
+              </button>
+              <button
+                (click)="confirm()"
+                data-bs-dismiss="modal"
+                type="button"
+                class="btn btn-danger"
+              >
+                Confirmar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!--FIM MODAL EXCLUSAO-->
+    </div>
+
+    <!--INICIO MODAL CADASTRO-->
     <div class="modal fade" id="modalcad" aria-hidden="true">
       <div class="modal-dialog modal-xl">
         <div class="modal-content">
@@ -144,67 +205,38 @@
                 [(ngModel)]="pessoas"
               />
               <div class="col-sm-2">
-                <button style="margin-top: 30px;" [disabled]="!pessoas" (click)="adicionar(evento.id || 0)" data-bs-dismiss="modal" class="btn btn-primary">Adicionar</button>
+                <button
+                  style="margin-top: 30px"
+                  [disabled]="!pessoas"
+                  (click)="adicionar()"
+                  data-bs-dismiss="modal"
+                  class="btn btn-primary"
+                >
+                  Adicionar
+                </button>
               </div>
-              <div class="col-sm-3" style="padding-top: 30px;">
-                ou <button  (click)="cadastro = true;" class="btn btn-link">Cadastre uma pessoa</button>
+              <div class="col-sm-3" style="padding-top: 30px">
+                ou
+                <button (click)="cadastro = true" class="btn btn-link">
+                  Cadastre uma pessoa
+                </button>
               </div>
             </div>
             <div class="row" *ngIf="cadastro">
-              <app-formulario-pessoas (refresh)="refresh()" />
+              <app-formulario-pessoas (refresh2)="refresh($event)" />
             </div>
-          </div>         
+          </div>
         </div>
       </div>
     </div>
     <!--FIM MODAL CADASTRO-->
 
-    <!--INICIO MODAL EXCLUSAO-->
-    <div class="modal fade" id="modaldel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content" *ngIf="excluir">
-          <div class="modal-header">
-            <h4 class="modal-title">Excluir</h4>
-            <button
-              type="button"
-              class="close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body" >
-            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.nome}}</strong>?</p>
-          </div> 
-          <div class="modal-footer justify-right">
-            <button type="button" class="btn btn-link" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button
-              (click)="confirm()"
-              data-bs-dismiss="modal"
-              type="button"
-              class="btn btn-danger"
-            >
-              Confirmar
-            </button>
-          </div>        
-        </div>
-      </div>
-    </div>
-    <!--FIM MODAL EXCLUSAO-->
-
-    </div>
-
-
-    <ng-template  #loading>
+    <ng-template #loading>
       <div class="text-center">
         <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
-        <h2 >Evento não encontrado</h2>      
+        <h2>Evento não encontrado</h2>
         <a routerLink="['/Inicio']">Voltar para o Início</a>
       </div>
-      
     </ng-template>
 
     <!--FIM PROFILE-->

@@ -8,6 +8,7 @@ import { Estados } from '../pages/estados/estados';
 import { EstadosService } from '../pages/estados/estados.service';
 import { Paises } from '../pages/paises/paises';
 import { PaisesService } from '../pages/paises/paises.service';
+import type { ChartData, ChartOptions } from 'chart.js';
 
 const API = environment.url;
 
@@ -36,8 +37,39 @@ export class SharedService {//
     clearOnSelection: false ,// clears search criteria when an option is selected if set to true, default is false
     inputDirection: 'ltr', // the direction of the search input can be rtl or ltr(default)
     selectAllLabel: 'Selecionar todos', // label that is displayed in multiple selection for select all
-    enableSelectAll: false, // enable select all option to select all available items, default is false
+    enableSelectAll: false, // enable select all option to select all available items, default is false gba(61, 153, 112)
   }
+
+  chartdata: ChartData = {
+    labels: [],
+    datasets: [
+      {
+        label: '',
+        data: [],
+        fill: false,
+        backgroundColor: [
+          'rgba(253, 126, 20)',
+        ],
+        borderColor: [
+          'rgb(253, 126, 20)',
+        ],
+        borderWidth: 1,
+      },
+    ],
+  };
+
+  chartoptions: ChartOptions = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Doughnut Chart',
+      },
+    },
+  };
 
   
 
@@ -76,6 +108,30 @@ export class SharedService {//
 
   getDtOptions(): DataTables.Settings{
     return this.dtOptions;
+  }
+
+  getChartData(){
+    return {
+      labels: [],
+      datasets: [
+        {
+          label: '',
+          data: [],
+          fill: false,
+          backgroundColor: [
+            'gba(61, 153, 112)',
+          ],
+          borderColor: [
+            'gba(61, 153, 112)',
+          ],
+          borderWidth: 1,
+        },
+      ],
+    } as ChartData;
+  }
+
+  getChartOptions(){
+    return this.chartoptions;
   }
 
   getConfig(){

@@ -1,6 +1,6 @@
 {
   "name": "scapa",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -18,9 +18,11 @@
     "@angular/platform-browser": "^15.0.0",
     "@angular/platform-browser-dynamic": "^15.0.0",
     "@angular/router": "^15.0.0",
+    "@ctrl/ngx-chartjs": "^8.0.0",
     "admin-lte": "^3.2.0",
     "angular-datatables": "^15.0.0",
     "bootstrap": "^5.2.3",
+    "chart.js": "^3.6.2",
     "datatables.net": "^1.13.2",
     "datatables.net-dt": "^1.13.2",
     "jquery": "^3.6.3",

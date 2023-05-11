@@ -10,6 +10,21 @@ import { InputSelectModule } from '../components/input-select/input-select.modul
 import { InputTextModule } from '../components/input-text/input-text.module';
 import { NgxPaginationModule } from 'ngx-pagination';
 
+import { ChartjsModule } from '@ctrl/ngx-chartjs';
+import {
+    BarController,
+    BarElement,
+    Chart,
+    CategoryScale,
+    LinearScale,
+    Title,
+    Tooltip,
+    Legend,
+  } from 'chart.js';
+// What you register will depend on what chart you are using and features used.
+Chart.register(BarController, BarElement, CategoryScale, LinearScale, Title, Tooltip, Legend);
+
+
 @NgModule({
   declarations: [],
   imports: [
@@ -23,7 +38,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     InputSelectModule,
     FormsModule,
     WebcamModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ChartjsModule
   ],
   providers: [provideNgxMask()],
   exports: [
@@ -37,7 +53,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
     RouterModule,
     FormsModule,
     WebcamModule,
-    NgxPaginationModule
+    NgxPaginationModule,
+    ChartjsModule
   ],
 })
 export class SharedModule {}

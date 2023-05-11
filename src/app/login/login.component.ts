@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit } from "@angular/core";
-import { FormBuilder, FormGroup, FormsModule, Validators } from "@angular/forms";
+import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 import { Session } from "../sistema/shared/session";
 import { SessionService } from "../sistema/shared/session.service";
@@ -13,7 +13,7 @@ import { LoginService } from "./login.service";
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.css'],
     standalone: true,
-    imports: [CommonModule,FormsModule, SharedModule]
+    imports: [CommonModule, SharedModule]
 })
 
 export class LoginComponent implements OnInit{

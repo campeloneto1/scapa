@@ -55,15 +55,93 @@
     </div>
     <!--Fim DIV ROW-->
 
-    <!--INICIO DIV ROW INFORMACOES-->
+    <!--INICIO ROW CHARTS E INFOS-->
     <div class="row">
-      
-      <!--INICIO COL SM 4 POR SETORES-->
+      <!--INICIO COL-SM-8 CHARTS-->
+      <div class="col-sm-8">
+        <!--INICIO DIV ROW INFORMACOES-->
+        <div class="row">
+          <!--INICIO COL SM 6 CHART ACESSOS POR MES-->
+          <div class="col-sm-6">
+            <!-- INICIO CARD POR MES-->
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Acessos por mês</h3>
+              </div>
+              <div class="card-body table-responsive">
+                <ngx-chartjs
+                  id="chart1"
+                  type="bar"
+                  [data]="chartdata1"
+                  [options]="chartoptions1"
+                ></ngx-chartjs>
+              </div>
+            </div>
+            <!--FIM CARD POR MES-->
+          </div>
+          <!--FIM COL SM 6 CHART ACESSOS POR MES-->
+
+          <!--INICIO COL SM 6 POR DIA CHART ACESSOS POR DIA-->
+          <div class="col-sm-6">
+            <!-- INICIO CARD POR SETORES-->
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Acessos por dia</h3>
+              </div>
+              <div class="card-body table-responsive">
+                <ngx-chartjs
+                  id="chart2"
+                  type="bar"
+                  [data]="chartdata2"
+                  [options]="chartoptions2"
+                ></ngx-chartjs>
+              </div>
+            </div>
+            <!--FIM CARD POR SETORES-->
+          </div>
+          <!--FIM COL SM 6 POR DIA CHART ACESSOS POR DIA-->
+
+          <!--INICIO COL SM 12 POR SETORES-->
+          <div class="col-sm-12">
+            <!-- INICIO CARD POR SETORES-->
+            <div class="card">
+              <div class="card-header border-0">
+                <h3 class="card-title">Próximos eventos</h3>
+              </div>
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover table-valign-middle">
+                  <thead>
+                    <tr>
+                      <th>Evento</th>
+                      <th>Setor</th>
+                      <th>Data Hora</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let evento of proximosEventos">
+                      <td>{{ evento.nome }}</td>
+                      <td>{{ evento.setor.nome }}</td>
+                      <td>
+                        {{ evento.data_hora | date : "dd/MM/yyyy HH:mm" }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <!--FIM CARD POR SETORES-->
+          </div>
+          <!--FIM COL SM 12 POR SETORES-->
+        </div>
+        <!--FIM DIV ROW INFORMACOES-->
+      </div>
+      <!--FIM COL-SM-8 CHARTS-->
+      <!--INICIO COL-SM-4 POR SETORES-->
       <div class="col-sm-4">
         <!-- INICIO CARD POR SETORES-->
         <div class="card">
           <div class="card-header border-0">
-            <h3 class="card-title">Acessos por setor no dia</h3>            
+            <h3 class="card-title">Acessos por setor no dia</h3>
           </div>
           <div class="card-body table-responsive p-0">
             <table class="table table-hover table-valign-middle">
@@ -74,9 +152,9 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let setor of quantPorSetor">                  
-                  <td>{{setor.nome}}</td>       
-                  <td>{{setor.quant}}</td>                                   
+                <tr *ngFor="let setor of quantPorSetor">
+                  <td>{{ setor.nome }}</td>
+                  <td>{{ setor.quant }}</td>
                 </tr>
               </tbody>
             </table>
@@ -84,38 +162,9 @@
         </div>
         <!--FIM CARD POR SETORES-->
       </div>
-      <!--FIM COL SM 4 POR SETORES-->
-      <!--INICIO COL SM 4 POR DIA-->
-      <div class="col-sm-6">
-        <!-- INICIO CARD POR SETORES-->
-        <div class="card">
-          <div class="card-header border-0">
-            <h3 class="card-title">Próximos eventos</h3>            
-          </div>
-          <div class="card-body table-responsive p-0">
-            <table class="table table-hover table-valign-middle">
-              <thead>
-                <tr>
-                  <th>Evento</th>
-                  <th>Setor</th>
-                  <th>Data Hora</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let evento of proximosEventos">                  
-                  <td>{{evento.nome}}</td>       
-                  <td>{{evento.setor.nome}}</td>       
-                  <td>{{evento.data_hora | date: 'dd/MM/yyyy HH:mm'}}</td>                             
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-        <!--FIM CARD POR SETORES-->
-      </div>
-      <!--FIM COL SM 4 POR DIA-->
+      <!--FIM COL-SM-4 POR SETORES-->
     </div>
-    <!--FIM DIV ROW INFORMACOES-->
+    <!--FIM ROW CHARTS E INFOS-->
   </section>
   <!--FIM SECTION content-->
 </div>

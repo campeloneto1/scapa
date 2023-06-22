@@ -16,63 +16,87 @@
         role="menu"
         data-accordion="false"
       >
-      <li class="nav-item">
-        <a [routerLink]="['Inicio']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-home"></i>
-          <p>
-            Início
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.acessos">
-        <a [routerLink]="['Acesso']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fas fa-address-card"></i>
-          <p>
-            Cadastrar Acesso
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.acessos">
-        <a [routerLink]="['Acessos']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-list"></i>
-          <p>
-            Acessos do dia
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.eventos">
-        <a [routerLink]="['Eventos']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-podcast"></i>
-          <p>
-            Consultar Eventos
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.orgaos">
-        <a [routerLink]="['Orgaos']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-building"></i>
-          <p>
-            Orgãos
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.pessoas">
-        <a [routerLink]="['Pessoas']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-address-book"></i>
-          <p>
-            Consultar Pessoas
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.postos">
-        <a [routerLink]="['Postos']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-laptop"></i>
-          <p>
-            Postos
-          </p>
-        </a>
-      </li>
-      <!--<li class="nav-item" *ngIf="perfil.orgaos">
+        <li class="nav-item">
+          <a
+            [routerLink]="['Inicio']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-home"></i>
+            <p>Início</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.acessos">
+          <a
+            [routerLink]="['Acesso']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fas fa-address-card"></i>
+            <p>Cadastrar Acesso</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.acessos">
+          <a
+            [routerLink]="['Acessos']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-list"></i>
+            <p>Acessos do dia</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.eventos">
+          <a
+            [routerLink]="['Eventos']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-podcast"></i>
+            <p>Consultar Eventos</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.chaves">
+          <a
+            [routerLink]="['Chaves']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-key"></i>
+            <p>Entrega de Chaves</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.orgaos">
+          <a
+            [routerLink]="['Orgaos']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-building"></i>
+            <p>Orgãos</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.pessoas">
+          <a
+            [routerLink]="['Pessoas']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-address-book"></i>
+            <p>Consultar Pessoas</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.postos">
+          <a
+            [routerLink]="['Postos']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-laptop"></i>
+            <p>Postos</p>
+          </a>
+        </li>
+        <!--<li class="nav-item" *ngIf="perfil.orgaos">
         <a [routerLink]="['Niveis']" routerLinkActive="active" class="nav-link">
           <i class="nav-icon fa fa-signal"></i>
           <p>
@@ -80,31 +104,37 @@
           </p>
         </a>
       </li>-->
-      
-      <li class="nav-item" *ngIf="perfil.funcionarios">
-        <a [routerLink]="['Funcionarios']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-user"></i>
-          <p>
-            Funcionários
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.setores">
-        <a [routerLink]="['Setores']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-sitemap"></i>
-          <p>
-            Setores
-          </p>
-        </a>
-      </li>
-      <li class="nav-item" *ngIf="perfil.gestor">
-        <a [routerLink]="['Usuarios']" routerLinkActive="active" class="nav-link">
-          <i class="nav-icon fa fa-users"></i>
-          <p>
-            Usuários
-          </p>
-        </a>
-      </li>
+
+        <li class="nav-item" *ngIf="perfil.funcionarios">
+          <a
+            [routerLink]="['Funcionarios']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-user"></i>
+            <p>Funcionários</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.setores">
+          <a
+            [routerLink]="['Setores']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-sitemap"></i>
+            <p>Setores</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.gestor">
+          <a
+            [routerLink]="['Usuarios']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-users"></i>
+            <p>Usuários</p>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="perfil.administrador">
           <a href="#" class="nav-link">
             <i class="nav-icon fa fa-cogs"></i>
@@ -115,43 +145,67 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a [routerLink]="['Cidades']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['Cidades']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Cidades</p>
               </a>
             </li>
             <li class="nav-item">
-              <a [routerLink]="['Estados']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['Estados']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Estados</p>
               </a>
             </li>
             <li class="nav-item">
-              <a [routerLink]="['Logs']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['Logs']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Logs</p>
               </a>
             </li>
             <li class="nav-item">
-              <a [routerLink]="['Paises']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['Paises']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Países</p>
               </a>
             </li>
             <li class="nav-item">
-              <a [routerLink]="['Perfis']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['Perfis']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Perfis</p>
               </a>
             </li>
             <li class="nav-item">
-              <a [routerLink]="['Sexos']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['Sexos']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Sexos</p>
               </a>
             </li>
           </ul>
-        </li>   
+        </li>
         <li class="nav-item" *ngIf="perfil.gestor">
           <a href="#" class="nav-link">
             <i class="nav-icon fa fa-file"></i>
@@ -162,14 +216,17 @@
           </a>
           <ul class="nav nav-treeview">
             <li class="nav-item">
-              <a [routerLink]="['RelAcessos']" routerLinkActive="active" class="nav-link">
+              <a
+                [routerLink]="['RelAcessos']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Acessos</p>
               </a>
             </li>
-            
           </ul>
-        </li>    
+        </li>
       </ul>
     </nav>
   </div>

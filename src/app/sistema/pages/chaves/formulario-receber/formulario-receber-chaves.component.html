@@ -1,0 +1,39 @@
+<form [formGroup]="form" (ngSubmit)="cadastrar()">
+  <div class="row">
+    <app-input-select
+      class="col-sm-4"
+      [label]="'Funcionário devolução'"
+      [id]="'funcionario_devolucao'"
+      [data$]="funcionarios$"
+      formControlName="funcionario_devolucao"
+      [config]="config2"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-12"
+      formControlName="obs"
+      label="Observações"
+      id="obs"
+      tipo="textarea"
+    />
+  </div>
+  <hr />
+  <div class="float-right">
+    <a
+      (click)="form.reset()"
+      data-bs-dismiss="modal"
+      class="btn btn-link text-danger"
+    >
+      Cancelar
+    </a>
+    <button
+      [disabled]="form.invalid"
+      data-bs-dismiss="modal"
+      type="submit"
+      class="btn btn-primary"
+    >
+      Cadastrar
+    </button>
+  </div>
+</form>

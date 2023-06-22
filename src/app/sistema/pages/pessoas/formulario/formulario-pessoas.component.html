@@ -1,136 +1,253 @@
-<form  [formGroup]="form" (ngSubmit)="cadastrar()">
-    <div class="text-center mb-2">
-      <img *ngIf="form.value.foto && !sysImage" style="height: 200px; " [src]="urlimage+form.value.foto"  /> 
-      <img *ngIf="sysImage" style="height: 200px; " [src]="webcamImage.imageAsDataUrl"  /> 
-      <!--<webcam  [height]="200" [imageQuality]="1" *ngIf="!sysImage && showwebcam" [trigger]="invokeObservable" (imageCapture)="captureImg($event)" ></webcam>-->
-      <webcam [height]="200" [trigger]="triggerObservable" (imageCapture)="handleImage($event)" *ngIf="!form.value.foto && !sysImage && showWebcam"
-		 [allowCameraSwitch]="allowCameraSwitch" [switchCamera]="nextWebcamObservable" [videoOptions]="videoOptions" (cameraSwitched)="cameraWasSwitched($event)"
-		 (initError)="handleInitError($event)"></webcam>
-    </div>
-    <div class="text-center mb-4">
-      <a *ngIf="!form.value.foto && !sysImage && showWebcam" (click)="getSnapshot()" class="btn btn-info">Tirar foto </a>
-      <a *ngIf="sysImage || form.value.foto" (click)="sysImage = ''; form.get('foto')?.patchValue('');" class="btn btn-info">Tirar novamente</a>
-    </div>
-    <div *ngIf="cpfexist" class="row">
-      <div class="col-sm-6 offset-sm-3 info-box shadow-lg">
-        <span class="info-box-icon bg-danger"><i class="fa fa-warning"></i></span>
-        <div class="info-box-content">
+<form [formGroup]="form" (ngSubmit)="cadastrar()">
+  <div class="text-center mb-2">
+    <img
+      *ngIf="form.value.foto && !sysImage"
+      style="height: 200px"
+      [src]="urlimage + form.value.foto"
+    />
+    <img
+      *ngIf="sysImage"
+      style="height: 200px"
+      [src]="webcamImage.imageAsDataUrl"
+    />
+    <!--<webcam  [height]="200" [imageQuality]="1" *ngIf="!sysImage && showwebcam" [trigger]="invokeObservable" (imageCapture)="captureImg($event)" ></webcam>-->
+    <webcam
+      [height]="200"
+      [trigger]="triggerObservable"
+      (imageCapture)="handleImage($event)"
+      *ngIf="!form.value.foto && !sysImage && showWebcam"
+      [allowCameraSwitch]="allowCameraSwitch"
+      [switchCamera]="nextWebcamObservable"
+      [videoOptions]="videoOptions"
+      (cameraSwitched)="cameraWasSwitched($event)"
+      (initError)="handleInitError($event)"
+    ></webcam>
+  </div>
+  <div class="text-center mb-4">
+    <a
+      *ngIf="!form.value.foto && !sysImage && showWebcam"
+      (click)="getSnapshot()"
+      class="btn btn-info"
+      >Tirar foto
+    </a>
+    <a
+      *ngIf="sysImage || form.value.foto"
+      (click)="sysImage = ''; form.get('foto')?.patchValue('')"
+      class="btn btn-info"
+      >Tirar novamente</a
+    >
+  </div>
+  <div *ngIf="cpfexist" class="row">
+    <div class="col-sm-6 offset-sm-3 info-box shadow-lg">
+      <span class="info-box-icon bg-danger"><i class="fa fa-warning"></i></span>
+      <div class="info-box-content">
         <span class="info-box-text">CPF já cadastrado</span>
-        <span class="info-box-number">Consultar pelo nome: "{{pessoacpf.nome}}".</span>
-        </div>
-        
-        </div>
+        <span class="info-box-number"
+          >Consultar pelo nome: "{{ pessoacpf.nome }}".</span
+        >
+      </div>
     </div>
-    <div class="row">
-        <app-input-text class="col-sm-4" formControlName="nome" label="Nome" id="nome" tipo="text" />
-        <app-input-text (change)="checkCpf()" class="col-sm-2" mascara="000.000.000-00" formControlName="cpf" label="CPF" id="cpf" tipo="text" />
-       
-        <app-input-text class="col-sm-2"  formControlName="data_nascimento" label="Data Nascimento" id="data_nascimento" tipo="date" />
-        <app-input-select class="col-sm-2" formControlName="sexo" [config]="config2" [data$]="sexos$" id="sexo" label="Sexo" />
+  </div>
+  <div *ngIf="cpfnotvalid" class="row">
+    <div class="col-sm-6 offset-sm-3 info-box shadow-lg">
+      <span class="info-box-icon bg-danger"><i class="fa fa-warning"></i></span>
+      <div class="info-box-content">
+        <span class="info-box-text">CPF não é valido</span>
+        <span class="info-box-number">Por favor, cadastrar um CPF válido.</span>
+      </div>
     </div>
-    <div class="row">
-      <app-input-text class="col-sm-4"  formControlName="mae" label="Mãe" id="mae" tipo="text" />
-      <app-input-text class="col-sm-4"  formControlName="pai" label="Pai" id="pai" tipo="text" />
-    </div>
-    <div class="row">
-        <app-input-text class="col-sm-2" mascara="(00) 0 0000-0000" formControlName="telefone1" label="Telefone 1" id="telefone1" tipo="text" />
-        <app-input-text class="col-sm-2" mascara="(00) 0 0000-0000" formControlName="telefone2" label="Telefone 2" id="telefone2" tipo="text" />
-        <app-input-text class="col-sm-4"  formControlName="email" label="E-mail" id="email" tipo="email" />
-        <app-input-text class="col-sm-2"  formControlName="rg" label="RG" id="rg" tipo="text" />
-        <app-input-select class="col-sm-2" formControlName="uf_rg" [config]="config" [data$]="estados2$" id="uf_rg" label="UF RG" />
-       
-    </div>   
-    <!--<div class="row" *ngIf="perfil.gestor">
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-4"
+      formControlName="nome"
+      label="Nome"
+      id="nome"
+      tipo="text"
+    />
+    <app-input-text
+      (change)="checkCpf()"
+      class="col-sm-2"
+      mascara="000.000.000-00"
+      formControlName="cpf"
+      label="CPF"
+      id="cpf"
+      tipo="text"
+    />
+
+    <app-input-text
+      class="col-sm-2"
+      formControlName="data_nascimento"
+      label="Data Nascimento"
+      id="data_nascimento"
+      tipo="date"
+    />
+    <app-input-select
+      class="col-sm-2"
+      formControlName="sexo"
+      [config]="config2"
+      [data$]="sexos$"
+      id="sexo"
+      label="Sexo"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-4"
+      formControlName="mae"
+      label="Mãe"
+      id="mae"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-4"
+      formControlName="pai"
+      label="Pai"
+      id="pai"
+      tipo="text"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-2"
+      mascara="(00) 0 0000-0000"
+      formControlName="telefone1"
+      label="Telefone 1"
+      id="telefone1"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      mascara="(00) 0 0000-0000"
+      formControlName="telefone2"
+      label="Telefone 2"
+      id="telefone2"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-4"
+      formControlName="email"
+      label="E-mail"
+      id="email"
+      tipo="email"
+    />
+    <app-input-text
+      class="col-sm-2"
+      formControlName="rg"
+      label="RG"
+      id="rg"
+      tipo="text"
+    />
+    <app-input-select
+      class="col-sm-2"
+      formControlName="uf_rg"
+      [config]="config"
+      [data$]="estados2$"
+      id="uf_rg"
+      label="UF RG"
+    />
+  </div>
+  <!--<div class="row" *ngIf="perfil.gestor">
       <app-input-select (ngModelChange)="getNiveis()" class="col-sm-2" formControlName="orgao" [config]="config7" [data$]="orgaos$" id="orgao" label="Orgão" />  
       <app-input-select class="col-sm-2" formControlName="nivel" [config]="config3" [data$]="niveis$" id="nivel" label="Nível" />
     </div>-->
-    <div class="row">
-  
-        <app-input-select
-          (ngModelChange)="getEstados()"
-          class="col-sm-2"
-          [label]="'País'"
-          [id]="'pais'"
-          [data$]="paises$"
-          formControlName="pais"
-          [config]="config4"
-        />
-    
-        <app-input-select
-         
-          (ngModelChange)="getCidades()"
-          class="col-sm-2"
-          [label]="'Estado'"
-          [id]="'estado'"
-          [data$]="estados$"
-          formControlName="estado"
-          [config]="config5"
-        />
-    
-        <app-input-select
-          class="col-sm-2"
-          [label]="'Cidade'"
-          [id]="'cidade'"
-          [data$]="cidades$"
-          formControlName="cidade"
-          [config]="config6"
-        />
+  <div class="row">
+    <app-input-select
+      (ngModelChange)="getEstados()"
+      class="col-sm-2"
+      [label]="'País'"
+      [id]="'pais'"
+      [data$]="paises$"
+      formControlName="pais"
+      [config]="config4"
+    />
 
-        <app-input-text
-          class="col-sm-2"
-          [label]="'Bairro'"
-          [id]="'bairro'"
-          [tipo]="'text'"
-          formControlName="bairro"
-        />
-    
-      </div>
-      <div class="row">
-        <app-input-text
-          class="col-sm-4"
-          [label]="'Rua'"
-          [id]="'rua'"
-          [tipo]="'text'"
-          formControlName="rua"
-        />
-    
-        <app-input-text
-          class="col-sm-2"
-          [label]="'Número'"
-          [id]="'numero'"
-          [tipo]="'text'"
-          formControlName="numero"
-        />
-    
-        <app-input-text
-          class="col-sm-4"
-          [label]="'Complemento'"
-          [id]="'complemento'"
-          [tipo]="'text'"
-          formControlName="complemento"
-        />
-    
-        <app-input-text
-          class="col-sm-2"
-          [label]="'CEP'"
-          [id]="'cep'"
-          [tipo]="'text'"
-          [mascara]="'00000-000'"
-          formControlName="cep"
-    
-        />
-      </div>
-    <div class="row">
-        <app-input-text  class="col-sm-12"  formControlName="obs" label="Observações" id="obs" tipo="textarea" />
-    </div>
+    <app-input-select
+      (ngModelChange)="getCidades()"
+      class="col-sm-2"
+      [label]="'Estado'"
+      [id]="'estado'"
+      [data$]="estados$"
+      formControlName="estado"
+      [config]="config5"
+    />
 
-    <hr />
-    <div class="float-right">
-        <a (click)="form.reset()" data-bs-dismiss="modal" class="btn btn-link text-danger">
-            Cancelar
-        </a>
-        <button [disabled]="form.invalid || cpfexist" type="submit" class="btn btn-primary ">
-            Cadastrar
-        </button>        
-    </div>
+    <app-input-select
+      class="col-sm-2"
+      [label]="'Cidade'"
+      [id]="'cidade'"
+      [data$]="cidades$"
+      formControlName="cidade"
+      [config]="config6"
+    />
+
+    <app-input-text
+      class="col-sm-2"
+      [label]="'Bairro'"
+      [id]="'bairro'"
+      [tipo]="'text'"
+      formControlName="bairro"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-4"
+      [label]="'Rua'"
+      [id]="'rua'"
+      [tipo]="'text'"
+      formControlName="rua"
+    />
+
+    <app-input-text
+      class="col-sm-2"
+      [label]="'Número'"
+      [id]="'numero'"
+      [tipo]="'text'"
+      formControlName="numero"
+    />
+
+    <app-input-text
+      class="col-sm-4"
+      [label]="'Complemento'"
+      [id]="'complemento'"
+      [tipo]="'text'"
+      formControlName="complemento"
+    />
+
+    <app-input-text
+      class="col-sm-2"
+      [label]="'CEP'"
+      [id]="'cep'"
+      [tipo]="'text'"
+      [mascara]="'00000-000'"
+      formControlName="cep"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-12"
+      formControlName="obs"
+      label="Observações"
+      id="obs"
+      tipo="textarea"
+    />
+  </div>
+
+  <hr />
+  <div class="float-right">
+    <a
+      (click)="form.reset()"
+      data-bs-dismiss="modal"
+      class="btn btn-link text-danger"
+    >
+      Cancelar
+    </a>
+    <button
+      [disabled]="form.invalid || cpfexist || cpfnotvalid"
+      type="submit"
+      class="btn btn-primary"
+    >
+      Cadastrar
+    </button>
+  </div>
 </form>

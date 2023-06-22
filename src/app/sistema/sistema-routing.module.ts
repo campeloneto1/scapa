@@ -29,6 +29,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Chaves',
+                loadComponent: () => import('./pages/chaves/chaves.component').then((c) => c.ChavesComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Estados',
                 loadComponent: () => import('./pages/estados/estados.component').then((c) => c.EstadosComponent),
                 canActivate: [AlowedGuard]

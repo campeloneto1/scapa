@@ -1,7 +1,7 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper">
   <!--INICIO COMPONENT TITULO DA PAGINA-->
-  <app-titulo titulo="Entrega de Chaves" />
+  <app-titulo titulo="Autoridades" />
   <!--FIM COMPONENT TITULO DA PAGINA-->
   <!--INICIO SECTION TABLE-->
   <section class="content">
@@ -11,19 +11,18 @@
       <div class="card-header border-0">
         <h3 class="card-title">
           <button
-            *ngIf="perfil.chaves_cad"
             title="Cadastrar"
             class="btn btn-outline-primary"
             data-bs-toggle="modal"
             data-bs-target="#modalcad"
           >
-            <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar
+            <i class="fa fa-plus" aria-hidden="true"></i>
           </button>
         </h3>
       </div>
       <!--FIM CARD HEADER-->
       <!--INICIO CARD BODY-->
-      <div class="card-body table-responsive">
+      <div class="card-body">
         <!--INICIO TABLE-->
         <table
           datatable
@@ -35,13 +34,9 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Orgão</th>
-              <th>Setor</th>
-              <th>Funcionário Entrega</th>
-              <th>Data Entrega</th>
-              <th>Funcionário Devolução</th>
-              <th>Data Devolução</th>
-              <th>Observações</th>
+              <th>Cargo</th>
+              <th>Nome</th>
+
               <th>Opções</th>
             </tr>
           </thead>
@@ -51,29 +46,11 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>{{ row.setor.orgao.nome }}</td>
-              <td>{{ row.setor.nome }}</td>
-              <td>{{ row.funcionario_entrega.nome }}</td>
-              <td>{{ row.data_hora_entrega | date : "dd/MM/yyyy HH:mm" }}</td>
-              <td>{{ row.funcionario_devolucao?.nome }}</td>
-              <td>{{ row.data_hora_devolucao | date : "dd/MM/yyyy HH:mm" }}</td>
-              <td>{{ row.obs }}</td>
+              <td>{{ row.cargo.nome }}</td>
+              <td>{{ row.nome }}</td>
+
               <td>
                 <a
-                  *ngIf="!row.funcionario_devolucao_id && perfil.chaves_edt"
-                  title="Receber"
-                  class="options ml-2"
-                  (click)="receber(row)"
-                  data-bs-toggle="modal"
-                  data-bs-target="#modalrecebe"
-                >
-                  <i
-                    class="fa fa-download text-primary point"
-                    aria-hidden="true"
-                  ></i>
-                </a>
-                <a
-                  *ngIf="!row.funcionario_devolucao_id && perfil.chaves_edt"
                   title="Editar"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -86,7 +63,6 @@
                   ></i>
                 </a>
                 <a
-                  *ngIf="perfil.chaves_del"
                   title="Excluir"
                   class="options ml-2"
                   (click)="delete(row)"
@@ -102,19 +78,6 @@
             </tr>
             <!-- FIM TR -->
           </tbody>
-          <!--<tfoot>
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                
-                <span *ngFor="let pag of data.links">
-                  <li [ngClass]="{'active': pag.active, 'disabled': !pag.url}" class="page-item point">
-                    <a class="page-link" (click)="paginate(pag.url)" [innerHTML]="pag.label"></a>
-                  </li>
-                </span>
-                
-              </ul>
-            </nav>
-          </tfoot>-->
           <!-- FIM TBODY -->
         </table>
         <!--FIM TABLE-->
@@ -134,9 +97,9 @@
       </div>
       <!--FIM CARD BODY-->
       <!--INICIO CARD FOOTER
-        <div class="card-footer">
-
-        </div>-->
+          <div class="card-footer">
+  
+          </div>-->
       <!--FIM CARD FOOTER-->
     </div>
     <!--FIM CARD -->
@@ -159,35 +122,12 @@
           </button>
         </div>
         <div class="modal-body">
-          <app-formulario-chaves (refresh)="refresh()" />
+          <app-formulario-autoridades (refresh)="refresh()" />
         </div>
       </div>
     </div>
   </div>
   <!--FIM MODAL CADASTRO-->
-
-  <!--INICIO MODAL RECEBER-->
-  <div class="modal fade" id="modalrecebe" aria-hidden="true">
-    <div class="modal-dialog modal-xl">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title">Receber</h4>
-          <button
-            type="button"
-            class="close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          >
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <app-formulario-receber-chaves (refresh)="refresh()" />
-        </div>
-      </div>
-    </div>
-  </div>
-  <!--FIM MODAL RECEBER-->
 
   <!--INICIO MODAL EXCLUSAO-->
   <div class="modal fade" id="modaldel" aria-hidden="true">
@@ -207,7 +147,7 @@
         <div class="modal-body">
           <p>
             Tem certeza que deseja excluir a informação
-            <strong>{{ excluir.setor.nome }}</strong
+            <strong>{{ excluir.nome }}</strong
             >?
           </p>
         </div>

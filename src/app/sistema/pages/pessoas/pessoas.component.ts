@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { DataTableDirective } from 'angular-datatables';
-import { Observable, Subject, tap } from 'rxjs';
+import { Observable, Subject, of, tap } from 'rxjs';
 import { TituloComponent } from '../../components/titulo/titulo.component';
 import { SessionService } from '../../shared/session.service';
 import { SharedModule } from '../../shared/shared.module';
@@ -27,6 +27,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
   foto!: Pessoa;
   perfil!: Perfil;
   url: string = environment.image;
+  search!: string;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -56,12 +57,13 @@ export class PessoasComponent implements OnInit, OnDestroy {
     this.dtOptions = { ...this.dtOptions, order: [[1, 'asc'],[2, 'asc'] ] };
 
     this.perfil = this.sessionService.retornaPerfil();
-
-    this.data$ = this.pessoasService.index().pipe(
+    this.data$ = of([]);
+    /*this.data$ = this.pessoasService.index().pipe(
       tap(() => {
         this.dtTrigger.next(this.dtOptions);
       })
-    );
+    );*/
+   
   }
 
   ngOnDestroy(): void {
@@ -82,6 +84,31 @@ export class PessoasComponent implements OnInit, OnDestroy {
         });
       })
     );
+  }
+
+  searchpessoa(){
+    //console.log(this.search);
+    //this.pessoasService.searchPessoa(this.search)
+    if(this.dtElement.dtInstance){
+      this.data$ = this.pessoasService.searchPessoa(this.search).pipe(
+        tap(() => {
+          this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+            // Destroy the table first
+            dtInstance.destroy();
+            // Call the dtTrigger to rerender again
+            this.dtTrigger.next(this.dtOptions);
+            
+          });
+        })
+      );
+    }else{
+      this.data$ = this.pessoasService.searchPessoa(this.search).pipe(
+        tap(() => {
+          this.dtTrigger.next(this.dtOptions);
+        })
+      );
+    }
+   
   }
 
   //SETA INFORMACAO NO FORMULARIO CHILD

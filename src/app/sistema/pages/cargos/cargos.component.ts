@@ -6,23 +6,22 @@ import { TituloComponent } from '../../components/titulo/titulo.component';
 import { SessionService } from '../../shared/session.service';
 import { SharedModule } from '../../shared/shared.module';
 import { SharedService } from '../../shared/shared.service';
-import { FormularioEventosComponent } from './formulario/formulario-eventos.component';
-import { Evento, Eventos } from './eventos';
-import { EventosService } from './eventos.service';
-import { Perfil } from '../perfis/perfis';
+import { FormularioCargosCompoennt } from './formulario/formulario-cargos.component';
+import { Cargo, Cargos } from './cargos';
+import { CargosService } from './cargos.service';
 
 @Component({
-  selector: 'app-eventos',
-  templateUrl: './eventos.component.html',
-  styleUrls: ['eventos.component.css'],
+  selector: 'app-cargos',
+  templateUrl: './cargos.component.html',
+  styleUrls: ['cargos.component.css'],
   standalone: true,
-  imports: [CommonModule, TituloComponent, SharedModule, FormularioEventosComponent],
+  imports: [CommonModule, TituloComponent, SharedModule, FormularioCargosCompoennt],
 })
-export class EventosComponent implements OnInit, OnDestroy {
+export class CargosComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
-  data$!: Observable<Eventos>;
-  excluir!: Evento;
-  perfil!: Perfil;
+  data$!: Observable<Cargos>;
+  excluir!: Cargo;
+
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
 
@@ -30,26 +29,23 @@ export class EventosComponent implements OnInit, OnDestroy {
   @ViewChild(DataTableDirective, { static: false })
   dtElement!: DataTableDirective;
 
-  @ViewChild(FormularioEventosComponent) child!: FormularioEventosComponent;
+  @ViewChild(FormularioCargosCompoennt) child!: FormularioCargosCompoennt;
 
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
-  dtTrigger: Subject<any> = new Subject<Eventos>();
+  dtTrigger: Subject<any> = new Subject<Cargos>();
 
   constructor(
     private sharedService: SharedService,
-    private sessionService: SessionService,
-    private eventosService: EventosService
+    private cargosService: CargosService
   ) {}
 
   ngOnInit(): void {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
-    this.dtOptions = { ...this.dtOptions, order: [[0, 'desc'] ] };
+    this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
 
-    this.perfil = this.sessionService.retornaPerfil();
-
-    this.data$ = this.eventosService.index().pipe(
+    this.data$ = this.cargosService.index().pipe(
       tap(() => {
         this.dtTrigger.next(this.dtOptions);
       })
@@ -62,7 +58,7 @@ export class EventosComponent implements OnInit, OnDestroy {
   }
 
   refresh() {
-    this.data$ = this.eventosService.index().pipe(
+    this.data$ = this.cargosService.index().pipe(
       tap(() => {
         this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
           // Destroy the table first
@@ -75,18 +71,18 @@ export class EventosComponent implements OnInit, OnDestroy {
   }
 
   //SETA INFORMACAO NO FORMULARIO CHILD
-  edit(data: Evento) {
+  edit(data: Cargo) {
     this.child.setForm(data);
   }
 
   //SETA VARIAVEL EXCLUIR COM INFORMACOES DO USUARIO
-  delete(data: Evento) {
+  delete(data: Cargo) {
     this.excluir = data;
   }
 
   //CONFIRMA A ESCLUSAO DO USUARIO
   confirm(id:number){
-    this.eventosService.destroy(id).subscribe({
+    this.cargosService.destroy(id).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
         this.refresh();

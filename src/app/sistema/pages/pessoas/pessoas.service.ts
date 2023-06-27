@@ -33,6 +33,10 @@ export class PessoasService{
         return this.http.get<Pessoa>(`${API}/pessoas/${id}/searchcpf`);
       }
 
+      searchPessoa(id: string) {
+        return this.http.get<Pessoas>(`${API}/pessoas/${id}/search`);
+      }
+
       whereEvento(id: number) {
         return this.http.get(`${API}/pessoas/${id}/evento`);
       }

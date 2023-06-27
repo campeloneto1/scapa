@@ -1,32 +1,45 @@
 <!-- INICIO CONTENT WRAPER-->
-<div class="content-wrapper" >
-    <!--INICIO COMPONENT TITULO DA PAGINA-->
-    <app-titulo titulo="Pessoas" />
-    <!--FIM COMPONENT TITULO DA PAGINA-->
-    <!--INICIO SECTION TABLE-->
-    <section class="content">
-      <!--INICIO CARD -->
-      <div class="card">
-        <!--INICIO CARD HEADER-->
-        <div class="card-header border-0">
-          <h3 class="card-title ">
-            <button 
-               title="Cadastrar"
-              (click)="child.showWebcam = true;"
-              *ngIf="perfil.pessoas_cad"
-              class="btn btn-outline-primary" 
-              data-bs-toggle="modal"
-              data-bs-target="#modalcad">
-              <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar
-            </button>
-          </h3>
-          
+<div class="content-wrapper">
+  <!--INICIO COMPONENT TITULO DA PAGINA-->
+  <app-titulo titulo="Pessoas" />
+  <!--FIM COMPONENT TITULO DA PAGINA-->
+  <!--INICIO SECTION TABLE-->
+  <section class="content">
+    <!--INICIO CARD -->
+    <div class="card">
+      <!--INICIO CARD HEADER-->
+      <div class="card-header border-0">
+        <div class="row">
+          <div class="col-sm-3">
+            <h3 class="card-title">
+              <button
+                title="Cadastrar"
+                (click)="child.showWebcam = true"
+                *ngIf="perfil.pessoas_cad"
+                class="btn btn-outline-primary"
+                data-bs-toggle="modal"
+                data-bs-target="#modalcad"
+              >
+                <i class="fa fa-plus" aria-hidden="true"></i> Cadastrar
+              </button>
+            </h3>
+          </div>
+          <div class="col-sm-3 offset-sm-6">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Pesquisar..."
+              [(ngModel)]="search"
+              (change)="searchpessoa()"
+            />
+          </div>
         </div>
-        <!--FIM CARD HEADER-->
-        <!--INICIO CARD BODY-->
-        <div class="card-body table-responsive">
-          <!--INICIO TABLE-->
-          <table
+      </div>
+      <!--FIM CARD HEADER-->
+      <!--INICIO CARD BODY-->
+      <div class="card-body table-responsive">
+        <!--INICIO TABLE-->
+        <table
           datatable
           [dtOptions]="dtOptions"
           [dtTrigger]="dtTrigger"
@@ -55,19 +68,32 @@
               <td>{{ row.id }}</td>
               <!--<td>{{ row.orgao.nome }}</td>
               <td>{{ row.nivel.nome }}</td>-->
-              <td><a [routerLink]="['/Pessoa', row.id]">{{ row.nome }}</a></td>
+              <td>
+                <a [routerLink]="['/Pessoa', row.id]">{{ row.nome }}</a>
+              </td>
               <td>{{ row.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.rg }}</td>
               <td>{{ row.telefone1 | mask : "(00) 0 0000-0000" }}</td>
               <td>{{ row.email }}</td>
               <td>
-                <i class="fas fa-portrait point" *ngIf="perfil.pessoas_cad" [ngClass]="row.foto ? 'text-success' : 'text-danger'" (click)="showFoto(row)" data-bs-toggle="modal" data-bs-target="#modalfoto"></i>
-                <i class="fas fa-portrait" *ngIf="!perfil.pessoas_cad" [ngClass]="row.foto ? 'text-success' : 'text-danger'"></i>
+                <i
+                  class="fas fa-portrait point"
+                  *ngIf="perfil.pessoas_cad"
+                  [ngClass]="row.foto ? 'text-success' : 'text-danger'"
+                  (click)="showFoto(row)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalfoto"
+                ></i>
+                <i
+                  class="fas fa-portrait"
+                  *ngIf="!perfil.pessoas_cad"
+                  [ngClass]="row.foto ? 'text-success' : 'text-danger'"
+                ></i>
               </td>
-              <td>               
-                <a           
-                title="Editar"  
-                *ngIf="perfil.pessoas_edt"  
+              <td>
+                <a
+                  title="Editar"
+                  *ngIf="perfil.pessoas_edt"
                   class="options ml-2"
                   (click)="edit(row)"
                   data-bs-toggle="modal"
@@ -79,15 +105,15 @@
                   ></i>
                 </a>
                 <a
-                title="Excluir"
-                *ngIf="perfil.pessoas_del"
+                  title="Excluir"
+                  *ngIf="perfil.pessoas_del"
                   class="options ml-2"
                   (click)="delete(row)"
                   data-bs-toggle="modal"
                   data-bs-target="#modaldel"
                 >
                   <i
-                    class="fas fa-trash text-danger point "
+                    class="fas fa-trash text-danger point"
                     aria-hidden="true"
                   ></i
                 ></a>
@@ -111,116 +137,149 @@
           </tbody>
         </ng-template>
         <!--FIM NGTEMPLATE-->
-
-        </div>
-        <!--FIM CARD BODY-->
-        <!--INICIO CARD FOOTER
+      </div>
+      <!--FIM CARD BODY-->
+      <!--INICIO CARD FOOTER
         <div class="card-footer">
 
         </div>-->
-        <!--FIM CARD FOOTER-->
-      </div>
-      <!--FIM CARD -->
-    </section>
-    <!--FIM SECTION TABLE-->
+      <!--FIM CARD FOOTER-->
+    </div>
+    <!--FIM CARD -->
+  </section>
+  <!--FIM SECTION TABLE-->
 
-    <!--INICIO MODAL CADASTRO-->
-    <div class="modal fade" id="modalcad" aria-hidden="true">
-      <div class="modal-dialog modal-xl">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h4 class="modal-title">Cadastrar</h4>
-            <button
-              type="button"
-              class="close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-              #fecharmodalcadastro
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <app-formulario-pessoas
-              (refresh)="refresh()"
-            />
-          </div>         
+  <!--INICIO MODAL CADASTRO-->
+  <div class="modal fade" id="modalcad" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Cadastrar</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+            #fecharmodalcadastro
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <app-formulario-pessoas (refresh)="refresh()" />
         </div>
       </div>
     </div>
-    <!--FIM MODAL CADASTRO-->
+  </div>
+  <!--FIM MODAL CADASTRO-->
 
-    <!--INICIO MODAL EXCLUSAO-->
-    <div class="modal fade" id="modaldel" aria-hidden="true">
-      <div class="modal-dialog">
-        <div class="modal-content" *ngIf="excluir">
-          <div class="modal-header">
-            <h4 class="modal-title">Excluir</h4>
-            <button
-              type="button"
-              class="close"
-              data-bs-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          <div class="modal-body" >
-            <p>Tem certeza que deseja excluir a informação <strong>{{excluir.nome}}</strong>?</p>
-          </div> 
-          <div class="modal-footer justify-right">
-            <button type="button" class="btn btn-link" data-bs-dismiss="modal">
-              Fechar
-            </button>
-            <button
-              (click)="confirm(excluir.id || 0)"
-              data-bs-dismiss="modal"
-              type="button"
-              class="btn btn-danger"
-            >
-              Confirmar
-            </button>
-          </div>        
+  <!--INICIO MODAL EXCLUSAO-->
+  <div class="modal fade" id="modaldel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="excluir">
+        <div class="modal-header">
+          <h4 class="modal-title">Excluir</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Tem certeza que deseja excluir a informação
+            <strong>{{ excluir.nome }}</strong
+            >?
+          </p>
+        </div>
+        <div class="modal-footer justify-right">
+          <button type="button" class="btn btn-link" data-bs-dismiss="modal">
+            Fechar
+          </button>
+          <button
+            (click)="confirm(excluir.id || 0)"
+            data-bs-dismiss="modal"
+            type="button"
+            class="btn btn-danger"
+          >
+            Confirmar
+          </button>
         </div>
       </div>
     </div>
-    <!--FIM MODAL EXCLUSAO-->
+  </div>
+  <!--FIM MODAL EXCLUSAO-->
 
-    <!-- /.INICIO MODAL foto -->
-    <div class="modal fade" id="modalfoto" style="display: none;" aria-hidden="true">
-      <div class="modal-dialog ">
-        <div class="modal-content" *ngIf="foto">
-          <div class="modal-header">
-            <h4 class="modal-title">Cadastrar foto do usuário <b>{{foto.nome}}</b></h4>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-              <span aria-hidden="true">×</span>
-            </button>
-          </div>
-          
-          <div class="modal-body text-center" >                
-            <h1 style="font-size: 90px;" *ngIf="!foto?.foto"><i class="fas fa-portrait" [ngClass]="foto.foto ? 'text-success' : 'text-danger'" ></i></h1>
-            <img [src]="url+foto.foto" *ngIf="foto?.foto" alt="user-avatar"  height="120px" class="img-circle img-fluid">
-            <form >
-              <div class="row">
-                <div class="col-sm-12">
-                  <div class="form-group">
-                    <label for="foto">Foto<span class="text-danger">*</span></label>
-                    <input type="file"  class="form-control form-control-border" accept="image/x-png,image/gif,image/jpeg" (change)="fileEvent($event)"  id="foto" required >                          
-                  </div>
+  <!-- /.INICIO MODAL foto -->
+  <div
+    class="modal fade"
+    id="modalfoto"
+    style="display: none"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="foto">
+        <div class="modal-header">
+          <h4 class="modal-title">
+            Cadastrar foto do usuário <b>{{ foto.nome }}</b>
+          </h4>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+
+        <div class="modal-body text-center">
+          <h1 style="font-size: 90px" *ngIf="!foto?.foto">
+            <i
+              class="fas fa-portrait"
+              [ngClass]="foto.foto ? 'text-success' : 'text-danger'"
+            ></i>
+          </h1>
+          <img
+            [src]="url + foto.foto"
+            *ngIf="foto?.foto"
+            alt="user-avatar"
+            height="120px"
+            class="img-circle img-fluid"
+          />
+          <form>
+            <div class="row">
+              <div class="col-sm-12">
+                <div class="form-group">
+                  <label for="foto"
+                    >Foto<span class="text-danger">*</span></label
+                  >
+                  <input
+                    type="file"
+                    class="form-control form-control-border"
+                    accept="image/x-png,image/gif,image/jpeg"
+                    (change)="fileEvent($event)"
+                    id="foto"
+                    required
+                  />
                 </div>
               </div>
-            </form>  
-          </div>
-          <div class="modal-footer ">
-          
-            <button type="button" class="btn btn-link" data-bs-dismiss="modal">Fechar</button>                  
-          </div>
+            </div>
+          </form>
         </div>
-        <!-- /.modal-content -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-link" data-bs-dismiss="modal">
+            Fechar
+          </button>
+        </div>
       </div>
-      <!-- /.modal-dialog -->
+      <!-- /.modal-content -->
     </div>
-    <!-- /.FIM MODAL FOTO -->
-
+    <!-- /.modal-dialog -->
   </div>
-  <!-- FIM CONTENT WRAPER-->
+  <!-- /.FIM MODAL FOTO -->
+</div>
+<!-- FIM CONTENT WRAPER-->

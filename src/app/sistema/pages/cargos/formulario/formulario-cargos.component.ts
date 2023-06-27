@@ -4,23 +4,22 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SharedModule } from 'src/app/sistema/shared/shared.module';
 import { SharedService } from 'src/app/sistema/shared/shared.service';
 
-import { PerfisService } from '../../perfis/perfis.service';
-import { Perfil } from '../perfis';
+import { CargosService } from '../../cargos/cargos.service';
+import { Cargo } from '../cargos';
 
 @Component({
-  selector: 'app-formulario-perfis',
-  templateUrl: './formulario-perfis.component.html',
-  styleUrls: ['./formulario-perfis.component.css'],
+  selector: 'app-formulario-cargos',
+  templateUrl: './formulario-cargos.component.html',
+  styleUrls: ['./formulario-cargos.component.css'],
   standalone: true,
   imports: [CommonModule, SharedModule],
 })
-export class FormularioPerfisComponent implements OnInit {
+export class FormularioCargosCompoennt implements OnInit {
   form!: FormGroup;
-  @Output('refresh') refresh: EventEmitter<Perfil> = new EventEmitter();
-
+  @Output('refresh') refresh: EventEmitter<Cargo> = new EventEmitter();
 
   constructor(
-    private perfisService: PerfisService,
+    private cargosService: CargosService,
     private formBuilder: FormBuilder,
     private sharedService: SharedService,
   ) {}
@@ -37,58 +36,6 @@ export class FormularioPerfisComponent implements OnInit {
           Validators.maxLength(150),
         ]),
       ],
-      administrador: [''],
-      gestor: [''],
-      
-      acessos: [''],
-      acessos_cad: [''],
-      acessos_edt: [''],
-      acessos_del: [''],
-
-      autoridades_acessos: [''],
-      autoridades_acessos_cad: [''],
-      autoridades_acessos_edt: [''],
-      autoridades_acessos_del: [''],
-
-      chaves: [''],
-      chaves_cad: [''],
-      chaves_edt: [''],
-      chaves_del: [''],
-
-      eventos: [''],
-      eventos_cad: [''],
-      eventos_edt: [''],
-      eventos_del: [''],
-
-      funcionarios: [''],
-      funcionarios_cad: [''],
-      funcionarios_edt: [''],
-      funcionarios_del: [''],
-
-      orgaos: [''],
-      orgaos_cad: [''],
-      orgaos_edt: [''],
-      orgaos_del: [''],
-
-      setores: [''],
-      setores_cad: [''],
-      setores_edt: [''],
-      setores_del: [''],
-
-      postos: [''],
-      postos_cad: [''],
-      postos_edt: [''],
-      postos_del: [''],
-
-      pessoas: [''],
-      pessoas_cad: [''],
-      pessoas_edt: [''],
-      pessoas_del: [''],
-
-      niveis: [''],
-      niveis_cad: [''],
-      niveis_edt: [''],
-      niveis_del: [''],
     });
   }
 
@@ -97,7 +44,7 @@ export class FormularioPerfisComponent implements OnInit {
   cadastrar(){  
     //console.log(this.form.value);
     if(this.form.value.id){
-      this.perfisService.update(this.form.value).subscribe({
+      this.cargosService.update(this.form.value).subscribe({
         next: (data) => {
           //console.log('aaaaaaaaaa')
           this.sharedService.toast('Sucesso!', data as string, 3);
@@ -109,7 +56,7 @@ export class FormularioPerfisComponent implements OnInit {
         }
       });
     }else{
-      this.perfisService.store(this.form.value).subscribe({
+      this.cargosService.store(this.form.value).subscribe({
         next: (data) => {
           //console.log('aaaaaaaaaa')
           this.sharedService.toast('Sucesso!', data as string, 1);
@@ -124,7 +71,7 @@ export class FormularioPerfisComponent implements OnInit {
   }
 
   //FUNÇÃO SETA INFORMACAO NO FORMULARIO
-  setForm(data: Perfil){
+  setForm(data: Cargo){
     this.form.patchValue(data);
   }
 }

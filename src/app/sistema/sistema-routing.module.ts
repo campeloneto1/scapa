@@ -29,6 +29,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Autoridades-Acessos',
+                loadComponent: () => import('./pages/autoridades-acessos/autoridades-acessos.component').then((c) => c.AutoridadesAcessosComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Cargos',
                 loadComponent: () => import('./pages/cargos/cargos.component').then((c) => c.CargosComponent),
                 canActivate: [AlowedGuard]

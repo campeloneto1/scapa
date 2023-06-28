@@ -9,6 +9,7 @@ import { SharedService } from '../../shared/shared.service';
 import { FormularioAutoridadesAcessosComponent } from './formulario/formulario-autoridades-acessos.component';
 import { AutoridadeAcesso, AutoridadesAcessos } from './autoridades-acessos';
 import { AutoridadesAcessosService } from './autoridades-acessos.service';
+import { Perfil } from "../perfis/perfis";
 
 @Component({
   selector: 'app-autoridades-acessos',
@@ -21,6 +22,7 @@ export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
   data$!: Observable<AutoridadesAcessos>;
   excluir!: AutoridadeAcesso;
+  perfil!: Perfil;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -37,13 +39,16 @@ export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
 
   constructor(
     private sharedService: SharedService,
+    private sessionService: SessionService,
     private autoridadesAcessosService: AutoridadesAcessosService
   ) {}
 
   ngOnInit(): void {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
-    this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
+    this.dtOptions = { ...this.dtOptions, order: [0, 'desc'] };
+
+    this.perfil = this.sessionService.retornaPerfil();
 
     this.data$ = this.autoridadesAcessosService.index().pipe(
       tap(() => {

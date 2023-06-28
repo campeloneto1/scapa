@@ -9,6 +9,11 @@ export interface Perfil{
     acessos_edt?: boolean,
     acessos_del?: boolean,
 
+    autoridades_acessos?: boolean,
+    autoridades_acessos_cad?: boolean,
+    autoridades_acessos_edt?: boolean,
+    autoridades_acessos_del?: boolean,
+
     chaves?: boolean,
     chaves_cad?: boolean,
     chaves_edt?: boolean,

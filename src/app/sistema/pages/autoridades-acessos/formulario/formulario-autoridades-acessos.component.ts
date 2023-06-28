@@ -36,7 +36,7 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
 
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
     this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Autoridade) => { return `${item.nome}`; }, placeholder:'Autoridade'};
+    this.config = {...this.config, displayFn:(item: Autoridade) => { return `${item.cargo.nome} ${item.nome}`; }, placeholder:'Autoridade'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
@@ -51,7 +51,10 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
         [
           Validators.required,
         ],
-      ],     
+      ],   
+      obs: [
+        '',       
+      ],      
     });
   }
 
@@ -71,7 +74,8 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
           this.refresh.emit();
         },
         error: (error) => {
-          this.sharedService.toast('Error!', error.erro as string, 2);
+          //console.log(error);
+          this.sharedService.toast('Error!', error.error.erro as string, 2);
         }
       });
     }else{
@@ -83,7 +87,8 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
           this.refresh.emit();
         },
         error: (error) => {
-          this.sharedService.toast('Error!', error.erro as string, 2);
+          //console.log(error);
+          this.sharedService.toast('Error!', error.error.erro as string, 2);
         }
       });
     }

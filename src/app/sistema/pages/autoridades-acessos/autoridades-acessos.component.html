@@ -11,6 +11,7 @@
       <div class="card-header border-0">
         <h3 class="card-title">
           <button
+            *ngIf="perfil.autoridades_acessos_cad"
             title="Cadastrar"
             class="btn btn-outline-primary"
             data-bs-toggle="modal"
@@ -34,11 +35,12 @@
           <thead>
             <tr>
               <th>#</th>
+              <th>Orgão</th>
               <th>Cargo</th>
               <th>Nome</th>
               <th>Tipo</th>
               <th>Data Hora</th>
-
+              <th>Observações</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -48,16 +50,19 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
+              <td>{{ row.orgao.nome }}</td>
               <td>{{ row.autoridade.cargo.nome }}</td>
               <td>{{ row.autoridade.nome }}</td>
-              <td>{{ row.data_hora }}</td>
               <td>
                 <span *ngIf="row.tipo == 1">Entrada</span>
                 <span *ngIf="row.tipo == 2">Saída</span>
               </td>
+              <td>{{ row.data_hora | date : "dd/MM/yyyy HH:mm" }}</td>
 
+              <td>{{ row.obs }}</td>
               <td>
                 <a
+                  *ngIf="perfil.autoridades_acessos_edt"
                   title="Editar"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -70,6 +75,7 @@
                   ></i>
                 </a>
                 <a
+                  *ngIf="perfil.autoridades_acessos_del"
                   title="Excluir"
                   class="options ml-2"
                   (click)="delete(row)"

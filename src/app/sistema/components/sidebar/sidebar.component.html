@@ -56,6 +56,16 @@
             <p>Consultar Eventos</p>
           </a>
         </li>
+        <li class="nav-item" *ngIf="perfil.autoridades_acessos">
+          <a
+            [routerLink]="['Autoridades-Acessos']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-male"></i>
+            <p>Cad. Acesso de Aut.</p>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="perfil.chaves">
           <a
             [routerLink]="['Chaves']"

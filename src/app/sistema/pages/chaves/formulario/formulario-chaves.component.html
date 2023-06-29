@@ -1,8 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="cadastrar()">
   <div class="row">
     <app-input-select
-      (ngModelChange)="getFuncionarios()"
-      class="col-sm-4"
+      class="col-sm-6"
       [label]="'Setor'"
       [id]="'setor'"
       [data$]="setores$"
@@ -10,7 +9,7 @@
       [config]="config"
     />
     <app-input-select
-      class="col-sm-4"
+      class="col-sm-6"
       [label]="'Funcionário entrega'"
       [id]="'funcionario_entrega'"
       [data$]="funcionarios$"

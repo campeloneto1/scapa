@@ -1,12 +1,12 @@
 <form [formGroup]="form" (ngSubmit)="cadastrar()">
   <div class="row">
     <app-input-select
-      class="col-sm-4"
+      class="col-sm-6"
       [label]="'Funcionário devolução'"
       [id]="'funcionario_devolucao'"
       [data$]="funcionarios$"
       formControlName="funcionario_devolucao"
-      [config]="config2"
+      [config]="config"
     />
   </div>
   <div class="row">

@@ -9,6 +9,7 @@ import { SharedService } from "src/app/sistema/shared/shared.service";
 import { SetoresService } from "../../setores/setores.service";
 import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
 import { SharedModule } from "src/app/sistema/shared/shared.module";
+import { FuncionariosService } from "../../funcionarios/funcionarios.service";
 
 @Component({
     selector: 'app-formulario-chaves',
@@ -30,6 +31,7 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
     constructor(
         private chavesService: ChavesService,
         private setoresService: SetoresService,
+        private funcionariosService: FuncionariosService,
         private formBuilder: FormBuilder,
         private sharedService: SharedService,
     ){
@@ -38,13 +40,14 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void {
         this.setores$ = this.setoresService.index();
+        this.funcionarios$ = this.funcionariosService.index();
 
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
         this.config = this.sharedService.getConfig();
         this.config = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
 
         this.config2 = this.sharedService.getConfig();
-        this.config2 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome}`; }, placeholder:'Funcionário'};
+        this.config2 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item.setor.nome})`; }, placeholder:'Funcionário'};
 
       
         //BUILD O FORMULARIO COM VALIDACOES

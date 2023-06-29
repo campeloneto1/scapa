@@ -50,7 +50,9 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>{{ row.orgao.nome }}</td>
+              <td>
+                <span *ngIf="row.orgao">{{ row.orgao.nome }}</span>
+              </td>
               <td>{{ row.autoridade.cargo.nome }}</td>
               <td>{{ row.autoridade.nome }}</td>
               <td>

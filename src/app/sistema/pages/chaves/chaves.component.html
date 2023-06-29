@@ -53,9 +53,19 @@
               <td>{{ row.id }}</td>
               <td>{{ row.setor.orgao.nome }}</td>
               <td>{{ row.setor.nome }}</td>
-              <td>{{ row.funcionario_entrega.nome }}</td>
+              <td>
+                {{ row.funcionario_entrega.nome }} ({{
+                  row.funcionario_entrega.setor.nome
+                }})
+              </td>
               <td>{{ row.data_hora_entrega | date : "dd/MM/yyyy HH:mm" }}</td>
-              <td>{{ row.funcionario_devolucao?.nome }}</td>
+              <td>
+                <span *ngIf="row.funcionario_devolucao">
+                  {{ row.funcionario_devolucao.nome }} ({{
+                    row.funcionario_devolucao.setor.nome
+                  }})
+                </span>
+              </td>
               <td>{{ row.data_hora_devolucao | date : "dd/MM/yyyy HH:mm" }}</td>
               <td>{{ row.obs }}</td>
               <td>

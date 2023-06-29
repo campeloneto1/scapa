@@ -9,6 +9,7 @@ import { SharedService } from "src/app/sistema/shared/shared.service";
 import { SetoresService } from "../../setores/setores.service";
 import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
 import { SharedModule } from "src/app/sistema/shared/shared.module";
+import { FuncionariosService } from "../../funcionarios/funcionarios.service";
 
 @Component({
     selector: 'app-formulario-receber-chaves',
@@ -24,11 +25,11 @@ export class FormularioReceberChavesComponent implements OnInit, OnDestroy{
     @Output('refresh') refresh: EventEmitter<Chave> = new EventEmitter();
 
     protected config!: any
-    protected config2!: any
 
     constructor(
         private chavesService: ChavesService,
         private setoresService: SetoresService,
+        private funcionariosService: FuncionariosService,
         private formBuilder: FormBuilder,
         private sharedService: SharedService,
     ){
@@ -37,10 +38,12 @@ export class FormularioReceberChavesComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void {
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-        this.config2 = this.sharedService.getConfig();
-        this.config2 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome}`; }, placeholder:'Funcionário'};
+        this.config = this.sharedService.getConfig();
+        this.config = {...this.config, height: '400px', displayFn:(item: Funcionario) => { return `${item.nome} (${item.setor.nome})`; }, placeholder:'Funcionário'};
 
       
+        this.funcionarios$ = this.funcionariosService.index();
+
         //BUILD O FORMULARIO COM VALIDACOES
         this.form = this.formBuilder.group({
         id: [''],
@@ -102,7 +105,7 @@ export class FormularioReceberChavesComponent implements OnInit, OnDestroy{
   setForm(data: Chave){
     this.form.patchValue(data);
 
-    this.getFuncionarios();
+    //this.getFuncionarios();
   }
 
 }

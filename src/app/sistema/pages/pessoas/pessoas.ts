@@ -37,6 +37,7 @@ export interface Pessoa{
     foto?: string,
     digital?: string,
     pivot?: any,
+    nao_autorizado?: boolean,
 }
 
 export type Pessoas = Array<Pessoa>;

@@ -292,12 +292,24 @@
               <!--BOTAO REGISTRAR-->
               <div class="col-sm-12">
                 <button
+                  *ngIf="!form.value.pessoa?.nao_autorizado"
                   [disabled]="form.invalid"
                   (click)="registrar()"
                   class="btn btn-success btn-block"
                 >
                   Registrar
                 </button>
+
+                <div
+                  class="card bg-danger"
+                  *ngIf="form.value.pessoa?.nao_autorizado"
+                >
+                  <div class="card-body">
+                    Acesso não autorizado para
+                    <strong>{{ form.value.pessoa?.nome }}</strong
+                    >, entrar em contato com a Casa Militar.
+                  </div>
+                </div>
               </div>
               <!--FIM BOTAO REGISTRAR-->
             </div>

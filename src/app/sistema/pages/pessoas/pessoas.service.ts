@@ -41,10 +41,14 @@ export class PessoasService{
         return this.http.get(`${API}/pessoas/${id}/evento`);
       }
 
+      updateAcesso(data: Pessoa){
+        return this.http.patch(`${API}/pessoas/${data.id}/altacesso`, data.id);
+      }
+
       store(data: Pessoa){
         return this.http.post(`${API}/pessoas`,data);
       }
-    
+
       update(data: Pessoa){
         return this.http.put(`${API}/pessoas/${data.id}`,data);
       }

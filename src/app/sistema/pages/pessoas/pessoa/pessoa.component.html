@@ -1,12 +1,12 @@
 <div class="content-wrapper">
-    <app-titulo titulo="Pessoa" />
+  <app-titulo titulo="Pessoa" />
   <!--INICIO SECTION content-->
-  <section class="content" >
+  <section class="content">
     <!--INICIO PROFILE -->
 
     <div class="row" *ngIf="pessoa$ | async as pessoa; else loading">
       <div class="col-sm-3">
-        <div class="card ">
+        <div class="card">
           <div class="card-body box-profile">
             <div class="text-center">
               <img
@@ -18,72 +18,95 @@
               <img
                 data-bs-toggle="modal"
                 data-bs-target="#modalfoto"
-                style="height: 200px; width: 200px;"
+                style="height: 200px; width: 200px"
                 *ngIf="pessoa.foto"
                 class="profile-user-img img-fluid img-circle"
-                [src]="urlimage+pessoa.foto"
+                [src]="urlimage + pessoa.foto"
                 alt="User profile picture"
               />
-
             </div>
-            <h3 class="profile-username text-center">{{pessoa.nome}}</h3>
+            <div class="text-center">
+              <i
+                title="Não Autorizado"
+                *ngIf="pessoa.nao_autorizado"
+                class="fa fa-exclamation-triangle text-danger fa-2x"
+                aria-hidden="true"
+              ></i>
+            </div>
+            <h3 class="profile-username text-center">{{ pessoa.nome }}</h3>
             <!--<p class="text-muted text-center">{{pessoa.cpf}}</p>-->
             <ul class="list-group list-group-unbordered mb-3">
               <li class="list-group-item">
-                <b>CPF</b> <a class="float-right">{{pessoa.cpf | mask: '000.000.000-000'}}</a>
+                <b>CPF</b>
+                <a class="float-right">{{
+                  pessoa.cpf | mask : "000.000.000-000"
+                }}</a>
               </li>
-              
+
               <li class="list-group-item" *ngIf="pessoa.rg">
-                <b>RG</b> <a class="float-right">{{pessoa.rg}} {{pessoa.uf_rg?.nome}}</a>
+                <b>RG</b>
+                <a class="float-right"
+                  >{{ pessoa.rg }} {{ pessoa.uf_rg?.nome }}</a
+                >
               </li>
               <li class="list-group-item" *ngIf="pessoa.data_nascimento">
-                <b>Data Nascimento</b> <a class="float-right">{{pessoa.data_nascimento | date: 'dd/MM/yyyy'}}</a>
+                <b>Data Nascimento</b>
+                <a class="float-right">{{
+                  pessoa.data_nascimento | date : "dd/MM/yyyy"
+                }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.sexo">
-                <b>Sexo</b> <a class="float-right">{{pessoa.sexo.nome}}</a>
+                <b>Sexo</b> <a class="float-right">{{ pessoa.sexo.nome }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.mae">
-                <b>Mãe</b> <a class="float-right">{{pessoa.mae}}</a>
+                <b>Mãe</b> <a class="float-right">{{ pessoa.mae }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.pai">
-                <b>Pai</b> <a class="float-right">{{pessoa.pai}}</a>
+                <b>Pai</b> <a class="float-right">{{ pessoa.pai }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.telefone1">
-                <b>Telefone 1</b> <a class="float-right">{{pessoa.telefone1 | mask: '(00) 0 0000-0000'}}</a>
+                <b>Telefone 1</b>
+                <a class="float-right">{{
+                  pessoa.telefone1 | mask : "(00) 0 0000-0000"
+                }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.telefone2">
-                <b>Telefone 2</b> <a class="float-right">{{pessoa.telefone2 | mask: '(00) 0 0000-0000'}}</a>
+                <b>Telefone 2</b>
+                <a class="float-right">{{
+                  pessoa.telefone2 | mask : "(00) 0 0000-0000"
+                }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.email">
-                <b>E-mail</b> <a class="float-right">{{pessoa.email}}</a>
+                <b>E-mail</b> <a class="float-right">{{ pessoa.email }}</a>
               </li>
               <li class="list-group-item" *ngIf="pessoa.rua">
-                <b>Endereço</b> 
+                <b>Endereço</b>
                 <a class="float-right">
-                    {{pessoa?.rua}} 
-                    <span *ngIf="pessoa?.numero">, {{pessoa?.numero}}</span>
-                    <span *ngIf="pessoa?.bairro">, {{pessoa?.bairro}}</span>
-                    <span *ngIf="pessoa?.complemento">, {{pessoa?.complemento}}</span>
-                    <span *ngIf="pessoa?.cidade?.nome">, {{pessoa?.cidade?.nome}}</span>
-                    <span *ngIf="pessoa?.cidade?.estado?.uf"> - {{pessoa?.cidade?.estado?.uf}}</span>
+                  {{ pessoa?.rua }}
+                  <span *ngIf="pessoa?.numero">, {{ pessoa?.numero }}</span>
+                  <span *ngIf="pessoa?.bairro">, {{ pessoa?.bairro }}</span>
+                  <span *ngIf="pessoa?.complemento"
+                    >, {{ pessoa?.complemento }}</span
+                  >
+                  <span *ngIf="pessoa?.cidade?.nome"
+                    >, {{ pessoa?.cidade?.nome }}</span
+                  >
+                  <span *ngIf="pessoa?.cidade?.estado?.uf">
+                    - {{ pessoa?.cidade?.estado?.uf }}</span
+                  >
                 </a>
               </li>
-              
-            </ul>           
+            </ul>
           </div>
         </div>
 
-        <div class="card " *ngIf="pessoa.obs">
+        <div class="card" *ngIf="pessoa.obs">
           <div class="card-header">
             <h3 class="card-title">Observações</h3>
           </div>
 
           <div class="card-body">
-            
-            <p class="text-muted text-justify" [innerHTML]="pessoa.obs">
-             
-            </p>
-            
+            <p class="text-muted text-justify" [innerHTML]="pessoa.obs"></p>
           </div>
         </div>
       </div>
@@ -91,90 +114,98 @@
       <div class="col-sm-9">
         <div class="card">
           <div class="card-header border-0">
-            <h3 class="card-title">Últimos acessos</h3>     
+            <h3 class="card-title">Últimos acessos</h3>
           </div>
           <div class="card-body table-responsive p-0">
             <table class="table table-hover table-valign-middle">
-                <thead>
-                  <tr>
-                    <th>Orgão</th>
-                    <th>Setor</th>
-                    <th>Funcionário</th>
-                    <th>Observação</th>
-                    <th>Posto</th>
-                    <th>Data Hora</th>
-                    <th>Verificação</th>
-
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let acesso of pessoa.acessos | paginate: { itemsPerPage: 10, currentPage: p, totalItems: pessoa.acessos.length }">                  
-                    <td>{{acesso?.setor?.orgao?.nome}}</td>       
-                    <td>{{acesso.setor.nome}}</td> 
-                    <td>{{acesso.funcionario?.nome}}</td>  
-                    <td>{{acesso.obs}}</td>   
-                    <td>{{acesso.posto.nome}}</td>   
-                    <td>{{acesso.data_hora | date: 'dd/MM/yyyy HH:mm:ss'}}</td>   
-                    <td>{{acesso.createdby.nome}}</td>                                   
-                  </tr>
-                </tbody>
-                <tfoot>
-                  <tr>
-                    <td colspan="100%" style="text-align: center;">
-                      <pagination-controls
+              <thead>
+                <tr>
+                  <th>Orgão</th>
+                  <th>Setor</th>
+                  <th>Funcionário</th>
+                  <th>Observação</th>
+                  <th>Posto</th>
+                  <th>Data Hora</th>
+                  <th>Verificação</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="
+                    let acesso of pessoa.acessos
+                      | paginate
+                        : {
+                            itemsPerPage: 10,
+                            currentPage: p,
+                            totalItems: pessoa.acessos.length
+                          }
+                  "
+                >
+                  <td>{{ acesso?.setor?.orgao?.nome }}</td>
+                  <td>{{ acesso.setor.nome }}</td>
+                  <td>{{ acesso.funcionario?.nome }}</td>
+                  <td>{{ acesso.obs }}</td>
+                  <td>{{ acesso.posto.nome }}</td>
+                  <td>{{ acesso.data_hora | date : "dd/MM/yyyy HH:mm:ss" }}</td>
+                  <td>{{ acesso.createdby.nome }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td colspan="100%" style="text-align: center">
+                    <pagination-controls
                       [autoHide]="true"
                       [responsive]="true"
                       previousLabel="Anterior"
                       nextLabel="Próximo"
-                       (pageChange)="p = $event"></pagination-controls>
-                    </td>
-                  </tr>
-                </tfoot>
-              </table>
+                      (pageChange)="p = $event"
+                    ></pagination-controls>
+                  </td>
+                </tr>
+              </tfoot>
+            </table>
           </div>
         </div>
       </div>
 
-
-        <!--INICIO MODAL CADASTRO-->
-        <div class="modal fade" id="modalfoto" aria-hidden="true">
-          <div class="modal-dialog modal-xl">
-            <div class="modal-content">
-              <div class="modal-header">
-                <h4 class="modal-title">Foto</h4>
-                <button
-                  type="button"
-                  class="close"
-                  data-bs-dismiss="modal"
-                  aria-label="Close"
-                >
-                  <span aria-hidden="true">×</span>
-                </button>
-              </div>
-              <div class="modal-body text-center">
-                <img
+      <!--INICIO MODAL CADASTRO-->
+      <div class="modal fade" id="modalfoto" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Foto</h4>
+              <button
+                type="button"
+                class="close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">×</span>
+              </button>
+            </div>
+            <div class="modal-body text-center">
+              <img
                 data-bs-toggle="modal"
                 data-bs-target="#modalfoto"
-                style="height: 600px; width: 600px;"
+                style="height: 600px; width: 600px"
                 *ngIf="pessoa.foto"
                 class="profile-user-img img-fluid img-circle"
-                [src]="urlimage+pessoa.foto"
+                [src]="urlimage + pessoa.foto"
                 alt="User profile picture"
               />
-              </div>         
             </div>
           </div>
         </div>
-        <!--FIM MODAL CADASTRO-->
+      </div>
+      <!--FIM MODAL CADASTRO-->
     </div>
 
-    <ng-template  #loading>
+    <ng-template #loading>
       <div class="text-center">
         <i class="fa fa-exclamation-triangle fa-4x" aria-hidden="true"></i>
-        <h2 >Pessoa não encontrada</h2>      
+        <h2>Pessoa não encontrada</h2>
         <a routerLink="['/Inicio']">Voltar para o Início</a>
       </div>
-      
     </ng-template>
 
     <!--FIM PROFILE-->

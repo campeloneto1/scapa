@@ -73,17 +73,18 @@ export class PessoasComponent implements OnInit, OnDestroy {
 
   refresh() {
     this.closebuttoncadastro.nativeElement.click();
-    this.data$ = this.pessoasService.index().pipe(
-      tap(() => {
-        this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
-          // Destroy the table first
-          dtInstance.destroy();
-          // Call the dtTrigger to rerender again
-          this.dtTrigger.next(this.dtOptions);
+    this.searchpessoa();
+    // this.data$ = this.pessoasService.index().pipe(
+    //   tap(() => {
+    //     this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+    //       // Destroy the table first
+    //       dtInstance.destroy();
+    //       // Call the dtTrigger to rerender again
+    //       this.dtTrigger.next(this.dtOptions);
           
-        });
-      })
-    );
+    //     });
+    //   })
+    // );
   }
 
   searchpessoa(){
@@ -111,6 +112,20 @@ export class PessoasComponent implements OnInit, OnDestroy {
    
   }
 
+  //altera permissao de acesso pessoa
+  altacesso(data: Pessoa){
+    this.pessoasService.updateAcesso(data).subscribe({
+      next: (data) => {
+        //@ts-ignore
+        this.sharedService.toast('Sucesso!', data.mensagem as string, 3);
+        this.searchpessoa();
+      },
+      error: (error) => {
+        this.sharedService.toast('Error!', error.error.erro as string, 2);
+      }
+    })
+  }
+
   //SETA INFORMACAO NO FORMULARIO CHILD
   edit(data: Pessoa) {
     this.child.setForm(data);
@@ -126,7 +141,7 @@ export class PessoasComponent implements OnInit, OnDestroy {
     this.pessoasService.destroy(id).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
-        this.refresh();
+        this.searchpessoa();
       },
       error: (error) => {
         this.sharedService.toast('Error!', error.error.erro as string, 2);

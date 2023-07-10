@@ -91,8 +91,8 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
     this.form.get('funcionario_entrega_id')?.patchValue(this.form.value.funcionario_entrega.id);
     this.form.get('funcionario_entrega')?.patchValue('');
 
-    this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
-    this.form.get('setor')?.patchValue('');
+    //this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
+    //this.form.get('setor')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){

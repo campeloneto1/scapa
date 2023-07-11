@@ -50,6 +50,11 @@ export class FormularioPerfisComponent implements OnInit {
       autoridades_acessos_edt: [''],
       autoridades_acessos_del: [''],
 
+      c1: [''],
+      c1_cad: [''],
+      c1_edt: [''],
+      c1_del: [''],
+
       chaves: [''],
       chaves_cad: [''],
       chaves_edt: [''],

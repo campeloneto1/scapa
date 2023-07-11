@@ -1,7 +1,7 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper">
   <!--INICIO COMPONENT TITULO DA PAGINA-->
-  <app-titulo titulo="Acesso de Autoridades" />
+  <app-titulo titulo="Graduações" />
   <!--FIM COMPONENT TITULO DA PAGINA-->
   <!--INICIO SECTION TABLE-->
   <section class="content">
@@ -11,7 +11,6 @@
       <div class="card-header border-0">
         <h3 class="card-title">
           <button
-            *ngIf="perfil.autoridades_acessos_cad"
             title="Cadastrar"
             class="btn btn-outline-primary"
             data-bs-toggle="modal"
@@ -35,12 +34,9 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Orgão</th>
-              <th>Cargo</th>
               <th>Nome</th>
-              <th>Tipo</th>
-              <th>Data Hora</th>
-              <th>Observações</th>
+              <th>Abreviatura</th>
+
               <th>Opções</th>
             </tr>
           </thead>
@@ -50,21 +46,10 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
-              <td>
-                <span *ngIf="row.orgao">{{ row.orgao.nome }}</span>
-              </td>
-              <td>{{ row.autoridade.cargo.nome }}</td>
-              <td>{{ row.autoridade.nome }}</td>
-              <td>
-                <span class="text-success" *ngIf="row.tipo == 1">Entrada</span>
-                <span class="text-danger" *ngIf="row.tipo == 2">Saída</span>
-              </td>
-              <td>{{ row.data_hora | date : "dd/MM/yyyy HH:mm" }}</td>
-
-              <td>{{ row.obs }}</td>
+              <td>{{ row.nome }}</td>
+              <td>{{ row.abreviatura }}</td>
               <td>
                 <a
-                  *ngIf="perfil.autoridades_acessos_edt"
                   title="Editar"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -77,7 +62,6 @@
                   ></i>
                 </a>
                 <a
-                  *ngIf="perfil.autoridades_acessos_del"
                   title="Excluir"
                   class="options ml-2"
                   (click)="delete(row)"
@@ -112,9 +96,9 @@
       </div>
       <!--FIM CARD BODY-->
       <!--INICIO CARD FOOTER
-            <div class="card-footer">
-    
-            </div>-->
+          <div class="card-footer">
+  
+          </div>-->
       <!--FIM CARD FOOTER-->
     </div>
     <!--FIM CARD -->
@@ -137,7 +121,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <app-formulario-autoridades-acessos (refresh)="refresh()" />
+          <app-formulario-graduacoes (refresh)="refresh()" />
         </div>
       </div>
     </div>
@@ -162,7 +146,7 @@
         <div class="modal-body">
           <p>
             Tem certeza que deseja excluir a informação
-            <strong>{{ excluir.autoridade.nome }}</strong
+            <strong>{{ excluir.nome }}</strong
             >?
           </p>
         </div>

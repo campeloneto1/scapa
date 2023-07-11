@@ -46,6 +46,12 @@
             <p>Acessos do dia</p>
           </a>
         </li>
+        <li class="nav-item" *ngIf="perfil.c1">
+          <a [routerLink]="['C1']" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fa fa-phone"></i>
+            <p>C1</p>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="perfil.eventos">
           <a
             [routerLink]="['Eventos']"
@@ -213,6 +219,16 @@
               >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Estados</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['Graduacoes']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>Graduações</p>
               </a>
             </li>
             <li class="nav-item">

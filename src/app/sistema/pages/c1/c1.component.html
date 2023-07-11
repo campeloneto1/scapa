@@ -1,7 +1,7 @@
 <!-- INICIO CONTENT WRAPER-->
 <div class="content-wrapper">
   <!--INICIO COMPONENT TITULO DA PAGINA-->
-  <app-titulo titulo="Acesso de Autoridades" />
+  <app-titulo titulo="C1" />
   <!--FIM COMPONENT TITULO DA PAGINA-->
   <!--INICIO SECTION TABLE-->
   <section class="content">
@@ -11,7 +11,7 @@
       <div class="card-header border-0">
         <h3 class="card-title">
           <button
-            *ngIf="perfil.autoridades_acessos_cad"
+            *ngIf="perfil.c1_cad"
             title="Cadastrar"
             class="btn btn-outline-primary"
             data-bs-toggle="modal"
@@ -23,7 +23,7 @@
       </div>
       <!--FIM CARD HEADER-->
       <!--INICIO CARD BODY-->
-      <div class="card-body">
+      <div class="card-body table-responsive">
         <!--INICIO TABLE-->
         <table
           datatable
@@ -35,12 +35,15 @@
           <thead>
             <tr>
               <th>#</th>
-              <th>Orgão</th>
-              <th>Cargo</th>
+              <th>Graduação</th>
               <th>Nome</th>
-              <th>Tipo</th>
-              <th>Data Hora</th>
-              <th>Observações</th>
+              <th>Nome Guerra</th>
+              <th>Apelido</th>
+              <th>Telefone 1</th>
+              <th>Telefone 2</th>
+              <th>Telefone 3</th>
+              <th>Obs</th>
+
               <th>Opções</th>
             </tr>
           </thead>
@@ -50,21 +53,20 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data" class="optionshover">
               <td>{{ row.id }}</td>
+              <td>{{ row.graduacao?.nome }}</td>
+              <td>{{ row.nome }}</td>
+              <td>{{ row.nome_guerra }}</td>
+              <td>{{ row.apelido }}</td>
+              <td>{{ row.telefone1 | mask : "(00) 0 0000-0000" }}</td>
+              <td>{{ row.telefone2! | mask : "(00) 0 0000-0000" }}</td>
+              <td>{{ row.telefone3! | mask : "(00) 0 0000-0000" }}</td>
               <td>
-                <span *ngIf="row.orgao">{{ row.orgao.nome }}</span>
+                {{ row.obs }}
               </td>
-              <td>{{ row.autoridade.cargo.nome }}</td>
-              <td>{{ row.autoridade.nome }}</td>
-              <td>
-                <span class="text-success" *ngIf="row.tipo == 1">Entrada</span>
-                <span class="text-danger" *ngIf="row.tipo == 2">Saída</span>
-              </td>
-              <td>{{ row.data_hora | date : "dd/MM/yyyy HH:mm" }}</td>
 
-              <td>{{ row.obs }}</td>
               <td>
                 <a
-                  *ngIf="perfil.autoridades_acessos_edt"
+                  *ngIf="perfil.c1_edt"
                   title="Editar"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -77,7 +79,7 @@
                   ></i>
                 </a>
                 <a
-                  *ngIf="perfil.autoridades_acessos_del"
+                  *ngIf="perfil.c1_del"
                   title="Excluir"
                   class="options ml-2"
                   (click)="delete(row)"
@@ -137,7 +139,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <app-formulario-autoridades-acessos (refresh)="refresh()" />
+          <app-formulario-c1 (refresh)="refresh()" />
         </div>
       </div>
     </div>
@@ -162,7 +164,7 @@
         <div class="modal-body">
           <p>
             Tem certeza que deseja excluir a informação
-            <strong>{{ excluir.autoridade.nome }}</strong
+            <strong>{{ excluir.nome }}</strong
             >?
           </p>
         </div>

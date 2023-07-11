@@ -1,0 +1,86 @@
+<form [formGroup]="form" (ngSubmit)="cadastrar()">
+  <div class="row">
+    <app-input-select
+      class="col-sm-2"
+      [label]="'Graduação'"
+      [id]="'graduacao'"
+      [data$]="graduacoes$"
+      formControlName="graduacao"
+      [config]="config"
+    />
+    <app-input-text
+      class="col-sm-4"
+      formControlName="nome"
+      label="Nome"
+      id="nome"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      formControlName="nome_guerra"
+      label="Nome Guerra"
+      id="nome_guerra"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      formControlName="apelido"
+      label="Apelido"
+      id="apelido"
+      tipo="text"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-2"
+      formControlName="telefone1"
+      label="Telefone 1"
+      mascara="(00) 0 0000-0000"
+      id="telefone1"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      formControlName="telefone2"
+      label="Telefone 2"
+      mascara="(00) 0 0000-0000"
+      id="telefone2"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      formControlName="telefone3"
+      label="Telefone 3"
+      mascara="(00) 0 0000-0000"
+      id="telefone3"
+      tipo="text"
+    />
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-12"
+      formControlName="obs"
+      label="Observações"
+      id="obs"
+      tipo="textarea"
+    />
+  </div>
+  <hr />
+  <div class="float-right">
+    <a
+      (click)="form.reset()"
+      data-bs-dismiss="modal"
+      class="btn btn-link text-danger"
+    >
+      Cancelar
+    </a>
+    <button
+      [disabled]="form.invalid"
+      data-bs-dismiss="modal"
+      type="submit"
+      class="btn btn-primary"
+    >
+      Cadastrar
+    </button>
+  </div>
+</form>

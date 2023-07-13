@@ -54,16 +54,16 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
 
   @Output('refresh') refresh: EventEmitter<Pessoa> = new EventEmitter();
   @Output('refresh2') refresh2: EventEmitter<any> = new EventEmitter();
-  orgaos$!: Observable<Orgaos>;
-  niveis$!: Observable<Niveis>;
-  sexos$!: Observable<Sexos>;
-  paises$!: Observable<Paises>;
-  estados$!: Observable<Estados>;
-  estados2$!: Observable<Estados>;
-  cidades$!: Observable<Cidades>;
-  perfil!: Perfil;
-  cpfexist: boolean = false;
-  pessoacpf!: Pessoa;
+  protected orgaos$!: Observable<Orgaos>;
+  protected niveis$!: Observable<Niveis>;
+  protected sexos$!: Observable<Sexos>;
+  protected paises$!: Observable<Paises>;
+  protected estados$!: Observable<Estados>;
+  protected estados2$!: Observable<Estados>;
+  protected cidades$!: Observable<Cidades>;
+  protected perfil!: Perfil;
+  protected cpfexist: boolean = false;
+  protected pessoacpf!: Pessoa;
 
   protected config!: any
   protected config2!: any
@@ -203,23 +203,18 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
       error: (error) => {
 
       }
-    })
+    });
   }
 
   testaCPF(strCPF:any) {
       var Soma;
       var Resto;
       Soma = 0;
-      if (strCPF == "00000000000") return false;
-      if (strCPF == "11111111111") return false;
-      if (strCPF == "22222222222") return false;
-      if (strCPF == "33333333333") return false;
-      if (strCPF == "44444444444") return false;
-      if (strCPF == "55555555555") return false;
-      if (strCPF == "66666666666") return false;
-      if (strCPF == "77777777777") return false;
-      if (strCPF == "88888888888") return false;
-      if (strCPF == "99999999999") return false;
+
+      if (strCPF == "00000000000" || strCPF == "11111111111" || strCPF == "22222222222" 
+      || strCPF == "33333333333" || strCPF == "44444444444"
+      || strCPF == "55555555555" || strCPF == "66666666666" || strCPF == "77777777777" 
+      || strCPF == "88888888888" || strCPF == "99999999999") return false;
 
       for (let i=1; i<=9; i++) Soma = Soma + parseInt(strCPF.substring(i-1, i)) * (11 - i);
       Resto = (Soma * 10) % 11;

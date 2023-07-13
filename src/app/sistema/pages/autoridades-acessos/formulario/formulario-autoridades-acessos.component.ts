@@ -46,15 +46,7 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
         [Validators.required],
       ],
       autoridade_id: [''],
-      tipo: [
-        '',
-        [
-          Validators.required,
-        ],
-      ],   
-      obs: [
-        '',       
-      ],      
+       
     });
   }
 

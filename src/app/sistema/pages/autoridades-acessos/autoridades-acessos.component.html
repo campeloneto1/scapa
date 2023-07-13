@@ -38,9 +38,8 @@
               <th>Orgão</th>
               <th>Cargo</th>
               <th>Nome</th>
-              <th>Tipo</th>
-              <th>Data Hora</th>
-              <th>Observações</th>
+              <th>Data Hora Entrada</th>
+              <th>Data Hora Saída</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -55,16 +54,29 @@
               </td>
               <td>{{ row.autoridade.cargo.nome }}</td>
               <td>{{ row.autoridade.nome }}</td>
-              <td>
+              <!-- <td>
                 <span class="text-success" *ngIf="row.tipo == 1">Entrada</span>
                 <span class="text-danger" *ngIf="row.tipo == 2">Saída</span>
-              </td>
-              <td>{{ row.data_hora | date : "dd/MM/yyyy HH:mm" }}</td>
-
-              <td>{{ row.obs }}</td>
+              </td> -->
+              <td>{{ row.data_hora_entrada | date : "dd/MM/yyyy HH:mm" }}</td>
+              <td>{{ row.data_hora_saida | date : "dd/MM/yyyy HH:mm" }}</td>
+              <!-- <td>{{ row.obs }}</td> -->
               <td>
                 <a
-                  *ngIf="perfil.autoridades_acessos_edt"
+                  *ngIf="perfil.autoridades_acessos_edt && !row.data_hora_saida"
+                  title="Registrar saída"
+                  class="options ml-2"
+                  (click)="saida(row)"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalsaida"
+                >
+                  <i
+                    class="fa fa-sign-out text-primary point"
+                    aria-hidden="true"
+                  ></i>
+                </a>
+                <a
+                  *ngIf="perfil.autoridades_acessos_edt && !row.data_hora_saida"
                   title="Editar"
                   class="options ml-2"
                   (click)="edit(row)"
@@ -175,6 +187,50 @@
             data-bs-dismiss="modal"
             type="button"
             class="btn btn-danger"
+          >
+            Confirmar
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--FIM MODAL EXCLUSAO-->
+
+  <!--INICIO MODAL SAIDA-->
+  <div class="modal fade" id="modalsaida" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content" *ngIf="autSaida">
+        <div class="modal-header">
+          <h4 class="modal-title">Saída de Autoridade</h4>
+          <button
+            type="button"
+            class="close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>
+            Tem certeza que deseja confirmar a saída da autoridade
+            <strong>{{ autSaida.autoridade.nome }}</strong
+            >?
+          </p>
+        </div>
+        <div class="modal-footer justify-right">
+          <button
+            type="button"
+            class="btn btn-link text-danger"
+            data-bs-dismiss="modal"
+          >
+            Fechar
+          </button>
+          <button
+            (click)="confirmSaida()"
+            data-bs-dismiss="modal"
+            type="button"
+            class="btn btn-primary"
           >
             Confirmar
           </button>

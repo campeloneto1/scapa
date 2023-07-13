@@ -7,9 +7,9 @@ export interface AutoridadeAcesso{
     orgao_id: number,
     autoridade: Autoridade,
     autoridade_id: number,
-    data_hora: Date,
-    tipo: number,
-    obs: string
+    data_hora_entrada: Date,
+    data_hora_saida: Date,
+    
 }
 
 export type AutoridadesAcessos = Array<AutoridadeAcesso>;

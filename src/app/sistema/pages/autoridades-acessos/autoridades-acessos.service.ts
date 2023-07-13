@@ -28,4 +28,8 @@ export class AutoridadesAcessosService{
       destroy(id: number){
         return this.http.delete(`${API}/autoridades-acessos/${id}`);
       }
+
+      saida(data: AutoridadeAcesso){
+        return this.http.patch(`${API}/autoridades-acessos/${data.id}/saida`,data);
+      }
 }

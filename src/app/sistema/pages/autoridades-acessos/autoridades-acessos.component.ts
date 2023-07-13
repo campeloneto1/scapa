@@ -22,6 +22,7 @@ export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
   data$!: Observable<AutoridadesAcessos>;
   excluir!: AutoridadeAcesso;
+  autSaida!: AutoridadeAcesso;
   perfil!: Perfil;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
@@ -88,6 +89,23 @@ export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
   //CONFIRMA A ESCLUSAO DO USUARIO
   confirm(id:number){
     this.autoridadesAcessosService.destroy(id).subscribe({
+      next: (data) => {
+        this.sharedService.toast('Sucesso!', data as string, 3);
+        this.refresh();
+      },
+      error: (error) => {
+        this.sharedService.toast('Error!', error.erro as string, 2);
+      }
+    })
+  }
+
+  saida(data: AutoridadeAcesso){
+    this.autSaida = data;
+  }
+
+   //CONFIRMA A saida Da autoridade
+   confirmSaida(){
+    this.autoridadesAcessosService.saida(this.autSaida).subscribe({
       next: (data) => {
         this.sharedService.toast('Sucesso!', data as string, 3);
         this.refresh();

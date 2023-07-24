@@ -36,6 +36,8 @@ export class InputSelectComponent {
   @Input() disabled: boolean = false;
   @Input() multiple: boolean = false;
   @Input() keepSelectMenuOpened: boolean = false;
+  @Input() autoClearSearch: boolean = true;
+  @Input() autoSelectSingleOption: boolean = true;
 
   @Input() optionid: string = 'id';
   @Input() optionname: any = 'nome';

@@ -26,6 +26,7 @@ import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
 
 export class AcessoComponent implements OnInit, OnDestroy{
     form!: FormGroup;
+    form2!: FormGroup;
     urlimage = environment.image;
     postos$!: Observable<Postos>;
     setores$!: Observable<Setores>;
@@ -299,7 +300,9 @@ export class AcessoComponent implements OnInit, OnDestroy{
             //     this.form.get('funcionario_id')?.patchValue(this.form.value.funcionario.id);
             //     this.form.get('funcionario')?.patchValue('');
             // }
-    
+
+            //this.form2.patchValue(this.form);
+            //this.form2.get('posto')?.patchValue('');
             this.subscription5 = this.acessosService.store(this.form.value).subscribe({
                 next: (data) => {
                     this.sharedService.toast('Sucesso!', data as string, 1);
@@ -313,6 +316,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
                     this.funcionarios$ = of([]);
                     this.form.get('obs')?.patchValue('');
                     this.cadpessoa = false;
+                    //this.form2.reset();
                 },
                 error: (error) => {
                     this.sharedService.toast('Error!', error.error.erro as string, 2);

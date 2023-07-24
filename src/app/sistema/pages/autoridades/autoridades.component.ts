@@ -45,7 +45,7 @@ export class AutoridadesComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
-    this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
+    this.dtOptions = { ...this.dtOptions, order: [2, 'asc'] };
 
     this.perfil = this.sessionService.retornaPerfil();
 

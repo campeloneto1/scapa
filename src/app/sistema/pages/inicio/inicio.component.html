@@ -119,7 +119,11 @@
                   </thead>
                   <tbody>
                     <tr *ngFor="let evento of proximosEventos">
-                      <td>{{ evento.nome }}</td>
+                      <td>
+                        <a [routerLink]="['/Evento', evento.id]">{{
+                          evento.nome
+                        }}</a>
+                      </td>
                       <td>{{ evento.setor.nome }}</td>
                       <td>
                         {{ evento.data_hora | date : "dd/MM/yyyy HH:mm" }}

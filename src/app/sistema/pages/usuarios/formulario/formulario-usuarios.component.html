@@ -1,27 +1,81 @@
-<form  [formGroup]="form" (ngSubmit)="cadastrar()">
-    <div class="row">
-        <app-input-text class="col-sm-4" formControlName="nome" label="Nome" id="nome" tipo="text" />
-        <app-input-text class="col-sm-2" mascara="000.000.000-00" formControlName="cpf" label="CPF" id="cpf" tipo="text" />
-        <!--<app-input-text class="col-sm-2"  formControlName="rg" label="RG" id="rg" tipo="text" />
+<form [formGroup]="form" (ngSubmit)="cadastrar()">
+  <div class="row">
+    <app-input-text
+      class="col-sm-4"
+      formControlName="nome"
+      label="Nome"
+      id="nome"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      mascara="000.000.000-00"
+      formControlName="cpf"
+      label="CPF"
+      id="cpf"
+      tipo="text"
+    />
+    <!--<app-input-text class="col-sm-2"  formControlName="rg" label="RG" id="rg" tipo="text" />
         <app-input-select class="col-sm-2" formControlName="uf_rg" [config]="config" [data$]="estados$" id="uf_rg" label="UF RG" />-->
-    </div>
-    <div class="row">
-        <app-input-text class="col-sm-2" mascara="(00) 0 0000-0000" formControlName="telefone1" label="Telefone 1" id="telefone1" tipo="text" />
-        <app-input-text class="col-sm-2" mascara="(00) 0 0000-0000" formControlName="telefone2" label="Telefone 2" id="telefone2" tipo="text" />
-        <app-input-text class="col-sm-4"  formControlName="email" label="E-mail" id="email" tipo="email" />
-    </div>   
-    <div class="row">
-        <app-input-select class="col-sm-2" formControlName="orgao" [config]="config2" [data$]="orgaos$" id="orgao" label="Orgão" />
-        <app-input-select class="col-sm-2" formControlName="perfil" [config]="config" [data$]="perfis$" id="perfil" label="Perfil" />
-    </div>
+  </div>
+  <div class="row">
+    <app-input-text
+      class="col-sm-2"
+      mascara="(00) 0 0000-0000"
+      formControlName="telefone1"
+      label="Telefone 1"
+      id="telefone1"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-2"
+      mascara="(00) 0 0000-0000"
+      formControlName="telefone2"
+      label="Telefone 2"
+      id="telefone2"
+      tipo="text"
+    />
+    <app-input-text
+      class="col-sm-4"
+      formControlName="email"
+      label="E-mail"
+      id="email"
+      tipo="email"
+    />
+  </div>
+  <div class="row">
+    <app-input-select
+      class="col-sm-2"
+      formControlName="orgao_id"
+      [data$]="orgaos$"
+      id="orgao_id"
+      label="Orgão"
+    />
+    <app-input-select
+      class="col-sm-2"
+      formControlName="perfil_id"
+      [data$]="perfis$"
+      id="perfil_id"
+      label="Perfil"
+    />
+  </div>
 
-    <hr />
-    <div class="float-right">
-        <a (click)="form.reset()" data-bs-dismiss="modal" class="btn btn-link text-danger">
-            Cancelar
-        </a>
-        <button [disabled]="form.invalid"  data-bs-dismiss="modal" type="submit" class="btn btn-primary ">
-            Cadastrar
-        </button>        
-    </div>
+  <hr />
+  <div class="float-right">
+    <a
+      (click)="form.reset()"
+      data-bs-dismiss="modal"
+      class="btn btn-link text-danger"
+    >
+      Cancelar
+    </a>
+    <button
+      [disabled]="form.invalid"
+      data-bs-dismiss="modal"
+      type="submit"
+      class="btn btn-primary"
+    >
+      Cadastrar
+    </button>
+  </div>
 </form>

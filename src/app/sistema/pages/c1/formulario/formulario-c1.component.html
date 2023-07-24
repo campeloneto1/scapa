@@ -3,10 +3,9 @@
     <app-input-select
       class="col-sm-2"
       [label]="'Graduação'"
-      [id]="'graduacao'"
+      [id]="'graduacao_id'"
       [data$]="graduacoes$"
-      formControlName="graduacao"
-      [config]="config"
+      formControlName="graduacao_id"
     />
     <app-input-text
       class="col-sm-4"
@@ -35,7 +34,7 @@
       class="col-sm-2"
       formControlName="telefone1"
       label="Telefone 1"
-      mascara="(00) 0 0000-0000"
+      mascara="(00) 0000-0000||(00) 0 0000-0000"
       id="telefone1"
       tipo="text"
     />
@@ -43,7 +42,7 @@
       class="col-sm-2"
       formControlName="telefone2"
       label="Telefone 2"
-      mascara="(00) 0 0000-0000"
+      mascara="(00) 0000-0000||(00) 0 0000-0000"
       id="telefone2"
       tipo="text"
     />
@@ -51,7 +50,7 @@
       class="col-sm-2"
       formControlName="telefone3"
       label="Telefone 3"
-      mascara="(00) 0 0000-0000"
+      mascara="(00) 0000-0000||(00) 0 0000-0000"
       id="telefone3"
       tipo="text"
     />

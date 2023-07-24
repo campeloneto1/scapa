@@ -1,13 +1,13 @@
 <div class="content-wrapper">
   <!--IMPORTA COMPONENT TITULO DA PAGINA-->
-  <app-titulo titulo="Relatório de acessos" />
+  <app-titulo titulo="Relatório de de acessos de Autoridades" />
   <!--INICIO SECTION CONTENT-->
   <section class="content">
     <!--INICIO CARD -->
     <div class="card">
       <div class="card-header border-0">
         <div class="d-flex justify-content-between">
-          <h3 class="card-title">Relatório de acessos</h3>
+          <h3 class="card-title">Relatório de acessos de Autoridades</h3>
           <button (click)="voltar()" *ngIf="show" class="btn btn-link">
             Voltar
           </button>
@@ -18,26 +18,11 @@
         <form [formGroup]="form" (ngSubmit)="consultar()">
           <div class="row">
             <app-input-select
-              (ngModelChange)="getSetoresPostos()"
               class="col-sm-3"
               formControlName="orgao_id"
               [data$]="orgaos$"
               id="orgao_id"
               label="Orgão"
-            />
-            <app-input-select
-              class="col-sm-3"
-              formControlName="setor_id"
-              [data$]="setores$"
-              id="setor_id"
-              label="Setor"
-            />
-            <app-input-select
-              class="col-sm-3"
-              formControlName="posto_id"
-              [data$]="postos$"
-              id="posto_id"
-              label="Posto"
             />
           </div>
           <div class="row">
@@ -76,14 +61,10 @@
             <tr>
               <th>#</th>
               <th>Orgão</th>
-              <th>Setor</th>
-              <th>Funcionário</th>
-              <th>Pessoa</th>
-              <th>CPF</th>
-              <th>Observações</th>
-              <th>Posto</th>
-              <th>Data Hora</th>
-              <th>Verificação</th>
+              <th>Cargo</th>
+              <th>Autoridade</th>
+              <th>Data Hora Entrada</th>
+              <th>Data Hora Saída</th>
             </tr>
           </thead>
           <!--FIM THEAD-->
@@ -92,15 +73,17 @@
             <!-- INICIO TR -->
             <tr *ngFor="let row of data">
               <td>{{ row.id }}</td>
-              <td>{{ row.setor.orgao.nome }}</td>
-              <td>{{ row.setor.nome }}</td>
-              <td>{{ row.funcionario?.nome }}</td>
-              <td>{{ row.pessoa.nome }}</td>
-              <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
-              <td>{{ row.obs }}</td>
-              <td>{{ row.posto.nome }}</td>
-              <td>{{ row.data_hora | date : "dd/MM/yyyy HH:mm:ss" }}</td>
-              <td>{{ row.createdby.nome }}</td>
+              <td>
+                <span *ngIf="row.orgao">{{ row.orgao.nome }}</span>
+              </td>
+              <td>{{ row.autoridade.cargo.nome }}</td>
+              <td>{{ row.autoridade.nome }}</td>
+              <!-- <td>
+                    <span class="text-success" *ngIf="row.tipo == 1">Entrada</span>
+                    <span class="text-danger" *ngIf="row.tipo == 2">Saída</span>
+                  </td> -->
+              <td>{{ row.data_hora_entrada | date : "dd/MM/yyyy HH:mm" }}</td>
+              <td>{{ row.data_hora_saida | date : "dd/MM/yyyy HH:mm" }}</td>
             </tr>
             <!-- FIM TR -->
           </tbody>

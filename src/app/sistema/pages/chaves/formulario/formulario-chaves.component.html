@@ -4,18 +4,17 @@
       class="col-sm-6"
       [multiple]="true"
       [label]="'Setor'"
-      [id]="'setor'"
+      [id]="'setor_id'"
       [data$]="setores$"
-      formControlName="setor"
-      [config]="config"
+      formControlName="setor_id"
+      [keepSelectMenuOpened]="true"
     />
     <app-input-select
       class="col-sm-6"
       [label]="'Funcionário entrega'"
-      [id]="'funcionario_entrega'"
+      [id]="'funcionario_entrega_id'"
       [data$]="funcionarios$"
-      formControlName="funcionario_entrega"
-      [config]="config2"
+      formControlName="funcionario_entrega_id"
     />
   </div>
   <div class="row">

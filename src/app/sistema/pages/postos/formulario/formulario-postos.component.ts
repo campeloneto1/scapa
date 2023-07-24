@@ -22,7 +22,7 @@ export class FormularioPostosComponent implements OnInit {
   orgaos$!: Observable<Orgaos>;
   @Output('refresh') refresh: EventEmitter<Posto> = new EventEmitter();
 
-  protected config!: any
+  //protected config!: any
 
   constructor(
     private postosService: PostosService,
@@ -33,18 +33,18 @@ export class FormularioPostosComponent implements OnInit {
 
   ngOnInit(): void {
      //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-     this.config = this.sharedService.getConfig();
-     this.config = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
+    //  this.config = this.sharedService.getConfig();
+    //  this.config = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
 
     this.orgaos$ = this.orgaosService.index();
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
-      orgao_id: [''],
-      orgao: ['',
+      orgao_id: ['',
       Validators.compose([
         Validators.required,
-      ]),],
+      ])],
+      orgao: [''],
       nome: [
         '',
         Validators.compose([
@@ -62,8 +62,8 @@ export class FormularioPostosComponent implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
-    this.form.get('orgao')?.patchValue('');
+    // this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
+    // this.form.get('orgao')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){

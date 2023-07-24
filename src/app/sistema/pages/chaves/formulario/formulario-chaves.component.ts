@@ -25,8 +25,8 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
     funcionarios$!: Observable<Funcionarios>;
     @Output('refresh') refresh: EventEmitter<Chave> = new EventEmitter();
 
-    protected config!: any
-    protected config2!: any
+    // protected config!: any
+    // protected config2!: any
 
     constructor(
         private chavesService: ChavesService,
@@ -40,14 +40,28 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void {
         this.setores$ = this.setoresService.index();
-        this.funcionarios$ = this.funcionariosService.index();
+        //this.funcionarios$ = this.funcionariosService.index();
+
+        this.funcionariosService.index().subscribe(
+          {
+            next: (data) => {
+              data.forEach((funcionario) => {
+                funcionario.nome = `${funcionario.nome} (${funcionario.setor.nome})`;
+              });
+              this.funcionarios$ = of(data);
+            },
+            error: (error) => {
+  
+            }
+          }
+        );
 
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-        this.config = this.sharedService.getConfig();
-        this.config = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
+        // this.config = this.sharedService.getConfig();
+        // this.config = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
 
-        this.config2 = this.sharedService.getConfig();
-        this.config2 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item.setor.nome})`; }, placeholder:'Funcionário'};
+        // this.config2 = this.sharedService.getConfig();
+        // this.config2 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item.setor.nome})`; }, placeholder:'Funcionário'};
 
       
         //BUILD O FORMULARIO COM VALIDACOES
@@ -55,17 +69,18 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
         id: [''],
         setor_id: [
             '',
+            [Validators.required],
         ],
         setor: [
-            '',
-            [Validators.required],
+            ''
         ],
         funcionario_entrega_id: [
             '',
+            [Validators.required],
         ],
         funcionario_entrega: [
             '',
-            [Validators.required],
+            
         ],
         obs: [
             '',
@@ -83,13 +98,13 @@ export class FormularioChavesComponent implements OnInit, OnDestroy{
 
     getFuncionarios(){
       this.funcionarios$ = of([]);
-      this.funcionarios$ = this.setoresService.where(this.form.value.setor.id);
+      this.funcionarios$ = this.setoresService.where(this.form.value.setor_id);
   }
 
      //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('funcionario_entrega_id')?.patchValue(this.form.value.funcionario_entrega.id);
-    this.form.get('funcionario_entrega')?.patchValue('');
+    // this.form.get('funcionario_entrega_id')?.patchValue(this.form.value.funcionario_entrega_id);
+    // this.form.get('funcionario_entrega')?.patchValue('');
 
     //this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
     //this.form.get('setor')?.patchValue('');

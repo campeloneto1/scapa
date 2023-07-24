@@ -47,6 +47,16 @@
           </a>
         </li>
         <li class="nav-item" *ngIf="perfil.c1">
+          <a
+            [routerLink]="['Autoridades']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-star"></i>
+            <p>Autoridades</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.c1">
           <a [routerLink]="['C1']" routerLinkActive="active" class="nav-link">
             <i class="nav-icon fa fa-phone"></i>
             <p>C1</p>
@@ -160,7 +170,7 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <a
                 [routerLink]="['Autoridades']"
                 routerLinkActive="active"
@@ -168,6 +178,16 @@
               >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Autoridades</p>
+              </a>
+            </li> -->
+            <li class="nav-item">
+              <a
+                [routerLink]="['Cargos']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>Cargos</p>
               </a>
             </li>
             <li class="nav-item">
@@ -191,16 +211,6 @@
             </p>
           </a>
           <ul class="nav nav-treeview">
-            <li class="nav-item">
-              <a
-                [routerLink]="['Cargos']"
-                routerLinkActive="active"
-                class="nav-link"
-              >
-                <i class="far fa-circle nav-icon"></i>
-                <p>Cargos</p>
-              </a>
-            </li>
             <li class="nav-item">
               <a
                 [routerLink]="['Cidades']"
@@ -290,6 +300,16 @@
               >
                 <i class="far fa-circle nav-icon"></i>
                 <p>Acessos</p>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a
+                [routerLink]="['RelAutoridadesAcessos']"
+                routerLinkActive="active"
+                class="nav-link"
+              >
+                <i class="far fa-circle nav-icon"></i>
+                <p>Acessos de Autoridades</p>
               </a>
             </li>
           </ul>

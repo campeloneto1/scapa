@@ -130,6 +130,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'RelAutoridadesAcessos',
+                loadComponent: () => import('./pages/relatorios/rel-autoridades-acessos/rel-autoridades-acessos.component').then((c) => c.RelAutoridadesAcessosComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'Setores',
                 loadComponent: () => import('./pages/setores/setores.component').then((c) => c.SetoresComponent),
                 canActivate: [AlowedGuard]

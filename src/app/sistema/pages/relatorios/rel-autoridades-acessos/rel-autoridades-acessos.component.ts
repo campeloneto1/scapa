@@ -6,29 +6,27 @@ import { TituloComponent } from "src/app/sistema/components/titulo/titulo.compon
 import { SharedModule } from "src/app/sistema/shared/shared.module";
 import { SharedService } from "src/app/sistema/shared/shared.service";
 import { FormularioPessoasCompoennt } from "../../pessoas/formulario/formulario-pessoas.component";
-import { Posto, Postos } from "../../postos/postos";
-import { Setor, Setores } from "../../setores/setores";
+import { Postos } from "../../postos/postos";
+import { Setores } from "../../setores/setores";
 import { environment } from "src/environments/environments";
 import { Orgao, Orgaos } from "../../orgaos/orgaos";
 import { OrgaosService } from "../../orgaos/orgaos.service";
 import { RelatoriosService } from "../relatorios.service";
-import { Acessos } from "../../acessos/acessos";
+import { AutoridadesAcessos } from "../../autoridades-acessos/autoridades-acessos";
 @Component({
-    selector: 'app-rel-acessos',
-    templateUrl: './rel-acessos.component.html',
-    styleUrls: ['rel-acessos.component.css'],
+    selector: 'app-rel-autoridades-acessos',
+    templateUrl: './rel-autoridades-acessos.component.html',
+    styleUrls: ['rel-autoridades-acessos.component.css'],
     standalone: true,
     imports: [CommonModule, SharedModule, TituloComponent, FormularioPessoasCompoennt]
 })
 
-export class RelAcessosComponent implements OnInit{
+export class RelAutoridadesAcessosComponent implements OnInit{
     form!: FormGroup;
     urlimage = environment.image;
     show: boolean = false;
     orgaos$!: Observable<Orgaos>;
-    postos$!: Observable<Postos>;
-    setores$!: Observable<Setores>;
-    data$!: Observable<Acessos>;
+    data$!: Observable<AutoridadesAcessos>;
     orgao!: Orgao;
 
     // protected config!: any
@@ -49,11 +47,7 @@ export class RelAcessosComponent implements OnInit{
         this.form = this.formBuilder.group({
             'orgao': [''],
             'orgao_id': ['', Validators.required],
-            'posto': [''],
-            'posto_id': [''],
-
-            'setor': [''],
-            'setor_id': [''],
+         
             'data_hora_inicio': ['', Validators.required],
             'data_hora_fim': ['', Validators.required],
         });
@@ -72,14 +66,8 @@ export class RelAcessosComponent implements OnInit{
         // this.config3 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
     }
 
-    
-    getSetoresPostos(){
-        this.postos$ = this.orgaosService.where_postos(this.form.value.orgao_id);
-        this.setores$ = this.orgaosService.where_setores(this.form.value.orgao_id);
-    }
-
     consultar(){
-        this.orgao = this.form.value.orgao;
+       // this.orgao = this.form.value.orgao;
         this.show = true;
         // this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
         // this.form.get('orgao')?.patchValue('');
@@ -94,14 +82,14 @@ export class RelAcessosComponent implements OnInit{
         //     this.form.get('posto')?.patchValue('');
         // }
     
-        this.data$ = this.relatoriosService.relAcessos(this.form.value);
+        this.data$ = this.relatoriosService.relAutoridadesAcessos(this.form.value);
            
         //console.log(this.form.value)
     }
 
     voltar(){
-        this.show= false;
-        this.form.get('orgao')?.patchValue(this.orgao);
+        this.show = false;
+       // this.form.get('orgao')?.patchValue(this.orgao);
     }
 
     

@@ -23,8 +23,8 @@ export class FormularioCidadesCompoennt implements OnInit {
   estados$!: Observable<Estados>;
   @Output('refresh') refresh: EventEmitter<Cidade> = new EventEmitter();
 
-  protected config!: any
-  protected config2!: any
+  // protected config!: any
+  // protected config2!: any
 
   constructor(
     private cidadesService: CidadesService,
@@ -36,25 +36,25 @@ export class FormularioCidadesCompoennt implements OnInit {
     this.paises$ = this.sharedService.getPaises();
 
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
+    // this.config = this.sharedService.getConfig();
+    // this.config = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
 
-    this.config2 = this.sharedService.getConfig();
-    this.config2 = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'Estado'};
+    // this.config2 = this.sharedService.getConfig();
+    // this.config2 = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'Estado'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
       pais: [
-        '',
-        [Validators.required],
+        ''
       ],
-      pais_id: [''],
+      pais_id: ['',
+      [Validators.required],],
       estado: [
-        '',
-        [Validators.required],
+        ''
       ],
-      estado_id: [''],
+      estado_id: ['',
+      [Validators.required],],
       nome: [
         '',
         Validators.compose([
@@ -68,19 +68,19 @@ export class FormularioCidadesCompoennt implements OnInit {
   }
 
   getEstados(){
-    if(this.form.value.pais){
-     this.estados$ = this.sharedService.getEstados(this.form.value.pais.id);
+    if(this.form.value.pais_id){
+     this.estados$ = this.sharedService.getEstados(this.form.value.pais_id);
     }
   }
 
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('pais_id')?.patchValue(this.form.value.pais.id);
-    this.form.get('pais')?.patchValue('');
+    // this.form.get('pais_id')?.patchValue(this.form.value.pais.id);
+    // this.form.get('pais')?.patchValue('');
 
-    this.form.get('estado_id')?.patchValue(this.form.value.estado.id);
-    this.form.get('estado')?.patchValue('');
+    // this.form.get('estado_id')?.patchValue(this.form.value.estado.id);
+    // this.form.get('estado')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){
@@ -114,6 +114,9 @@ export class FormularioCidadesCompoennt implements OnInit {
   setForm(data: Cidade){
     
     this.form.patchValue(data);
-    this.form.get('pais')?.patchValue(data.estado.pais)
+    this.form.get('pais_id')?.patchValue(data.estado.pais_id);
+    if(this.form.value.pais_id){
+      this.estados$ = this.sharedService.getEstados(this.form.value.pais_id);
+     }
   }
 }

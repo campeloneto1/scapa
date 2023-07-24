@@ -14,7 +14,7 @@
             <h3 class="card-title">
               <button
                 title="Cadastrar"
-                (click)="child.showWebcam = true"
+                (click)="child.showWebcam = true; child.form.reset()"
                 *ngIf="perfil.pessoas_cad"
                 class="btn btn-outline-primary"
                 data-bs-toggle="modal"

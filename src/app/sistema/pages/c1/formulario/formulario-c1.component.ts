@@ -22,7 +22,7 @@ export class FormularioC1Component implements OnInit {
   graduacoes$!: Observable<Graduacoes>;
   @Output('refresh') refresh: EventEmitter<C1> = new EventEmitter();
 
-  protected config!: any
+  //protected config!: any
 
   constructor(
     private c1Service: C1Service,
@@ -33,8 +33,8 @@ export class FormularioC1Component implements OnInit {
 
   ngOnInit(): void {
      //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-     this.config = this.sharedService.getConfig();
-     this.config = {...this.config, displayFn:(item: Graduacao) => { return `${item.nome}`; }, placeholder:'Graduação'};
+    //  this.config = this.sharedService.getConfig();
+    //  this.config = {...this.config, displayFn:(item: Graduacao) => { return `${item.nome}`; }, placeholder:'Graduação'};
 
 
     //BUILD O FORMULARIO COM VALIDACOES
@@ -72,21 +72,21 @@ export class FormularioC1Component implements OnInit {
         '',
         Validators.compose([
           Validators.required,
-          Validators.minLength(11),
+          Validators.minLength(10),
           Validators.maxLength(11),
         ]),
       ],
       telefone2: [
         '',
         Validators.compose([
-          Validators.minLength(11),
+          Validators.minLength(10),
           Validators.maxLength(11),
         ]),
       ],
       telefone3: [
         '',
         Validators.compose([
-          Validators.minLength(11),
+          Validators.minLength(10),
           Validators.maxLength(11),
         ]),
       ],
@@ -102,10 +102,10 @@ export class FormularioC1Component implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    if(this.form.value.graduacao){
-      this.form.get('graduacao_id')?.patchValue(this.form.value.graduacao.id);
-    this.form.get('graduacao')?.patchValue('');
-    }
+    // if(this.form.value.graduacao){
+    //   this.form.get('graduacao_id')?.patchValue(this.form.value.graduacao.id);
+    // this.form.get('graduacao')?.patchValue('');
+    // }
     
 
     //console.log(this.form.value);

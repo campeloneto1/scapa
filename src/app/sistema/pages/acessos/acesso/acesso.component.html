@@ -17,10 +17,9 @@
               <app-input-select
                 (ngModelChange)="setPosto()"
                 class="col-sm-6 offset-sm-3"
-                formControlName="posto"
-                [config]="config"
+                formControlName="posto_id"
                 [data$]="postos$"
-                id="posto"
+                id="posto_id"
                 label="Posto"
               />
             </div>
@@ -267,18 +266,16 @@
               <!-- SETOR QUE IRA VISITAR-->
               <div class="col-sm-6">
                 <app-input-select
-                  formControlName="setor"
+                  formControlName="setor_id"
                   (ngModelChange)="getFuncionarios()"
-                  [config]="config3"
                   [data$]="setores$"
-                  id="setor"
+                  id="setor_id"
                   label="Setor"
                 />
                 <app-input-select
-                  formControlName="funcionario"
-                  [config]="config4"
+                  formControlName="funcionario_id"
                   [data$]="funcionarios$"
-                  id="funcionario"
+                  id="funcionario_id"
                   label="Funcionário"
                 />
                 <app-input-text

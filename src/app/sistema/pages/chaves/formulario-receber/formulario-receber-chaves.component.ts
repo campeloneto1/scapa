@@ -42,7 +42,21 @@ export class FormularioReceberChavesComponent implements OnInit, OnDestroy{
         this.config = {...this.config, height: '400px', displayFn:(item: Funcionario) => { return `${item.nome} (${item.setor.nome})`; }, placeholder:'Funcionário'};
 
       
-        this.funcionarios$ = this.funcionariosService.index();
+        //this.funcionarios$ = this.funcionariosService.index();
+
+        this.funcionariosService.index().subscribe(
+          {
+            next: (data) => {
+              data.forEach((funcionario) => {
+                funcionario.nome = `${funcionario.nome} (${funcionario.setor.nome})`;
+              });
+              this.funcionarios$ = of(data);
+            },
+            error: (error) => {
+  
+            }
+          }
+        );
 
         //BUILD O FORMULARIO COM VALIDACOES
         this.form = this.formBuilder.group({
@@ -56,10 +70,11 @@ export class FormularioReceberChavesComponent implements OnInit, OnDestroy{
         ],
         funcionario_devolucao_id: [
             '',
+            [Validators.required],
         ],
         funcionario_devolucao: [
             '',
-            [Validators.required],
+            
         ],
         obs: [
             '',
@@ -82,8 +97,8 @@ export class FormularioReceberChavesComponent implements OnInit, OnDestroy{
 
      //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('funcionario_devolucao_id')?.patchValue(this.form.value.funcionario_devolucao.id);
-    this.form.get('funcionario_devolucao')?.patchValue('');
+    //this.form.get('funcionario_devolucao_id')?.patchValue(this.form.value.funcionario_devolucao.id);
+    //this.form.get('funcionario_devolucao')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){

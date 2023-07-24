@@ -84,10 +84,9 @@
     />
     <app-input-select
       class="col-sm-2"
-      formControlName="sexo"
-      [config]="config2"
+      formControlName="sexo_id"
       [data$]="sexos$"
-      id="sexo"
+      id="sexo_id"
       label="Sexo"
     />
   </div>
@@ -140,10 +139,9 @@
     />
     <app-input-select
       class="col-sm-2"
-      formControlName="uf_rg"
-      [config]="config"
+      formControlName="uf_rg_id"
       [data$]="estados2$"
-      id="uf_rg"
+      id="uf_rg_id"
       label="UF RG"
     />
   </div>
@@ -156,29 +154,26 @@
       (ngModelChange)="getEstados()"
       class="col-sm-2"
       [label]="'País'"
-      [id]="'pais'"
+      [id]="'pais_id'"
       [data$]="paises$"
-      formControlName="pais"
-      [config]="config4"
+      formControlName="pais_id"
     />
 
     <app-input-select
       (ngModelChange)="getCidades()"
       class="col-sm-2"
       [label]="'Estado'"
-      [id]="'estado'"
+      [id]="'estado_id'"
       [data$]="estados$"
-      formControlName="estado"
-      [config]="config5"
+      formControlName="estado_id"
     />
 
     <app-input-select
-      class="col-sm-2"
+      class="col-sm-4"
       [label]="'Cidade'"
-      [id]="'cidade'"
+      [id]="'cidade_id'"
       [data$]="cidades$"
-      formControlName="cidade"
-      [config]="config6"
+      formControlName="cidade_id"
     />
 
     <app-input-text

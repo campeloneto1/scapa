@@ -21,7 +21,7 @@ export class FormularioEstadosCompoennt implements OnInit {
   paises$!: Observable<Paises>;
   @Output('refresh') refresh: EventEmitter<Estado> = new EventEmitter();
 
-  protected config!: any
+  //protected config!: any
 
   constructor(
     private estadosService: EstadosService,
@@ -33,17 +33,17 @@ export class FormularioEstadosCompoennt implements OnInit {
     this.paises$ = this.sharedService.getPaises();
 
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
+    // this.config = this.sharedService.getConfig();
+    // this.config = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
       pais: [
-        '',
-        [Validators.required],
+        ''
       ],
-      pais_id: [''],
+      pais_id: ['',
+      [Validators.required]],
       nome: [
         '',
         Validators.compose([
@@ -66,8 +66,8 @@ export class FormularioEstadosCompoennt implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('pais_id')?.patchValue(this.form.value.pais.id);
-    this.form.get('pais')?.patchValue('');
+    // this.form.get('pais_id')?.patchValue(this.form.value.pais.id);
+    // this.form.get('pais')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){

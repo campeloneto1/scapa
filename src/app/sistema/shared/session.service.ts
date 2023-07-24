@@ -24,7 +24,7 @@ export class SessionService{
     
     pathgestor = [
       'Usuarios',
-      'Autoridades',
+      'Cargos',
     ]   
 
     constructor(private router: Router){

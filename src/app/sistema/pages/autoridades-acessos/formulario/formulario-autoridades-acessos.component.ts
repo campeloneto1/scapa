@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { SharedModule } from 'src/app/sistema/shared/shared.module';
 import { SharedService } from 'src/app/sistema/shared/shared.service';
 
@@ -34,18 +34,32 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
   ngOnInit(): void {
     this.autoridades$ = this.autoridadesService.index();
 
+    this.autoridadesService.index().subscribe(
+      {
+        next: (data) => {
+          data.forEach((autoridade) => {
+            autoridade.nome = `${autoridade.cargo.nome} ${autoridade.nome}`;
+          });
+          this.autoridades$ = of(data);
+        },
+        error: (error) => {
+
+        }
+      }
+    );
+
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Autoridade) => { return `${item.cargo.nome} ${item.nome}`; }, placeholder:'Autoridade'};
+    // this.config = this.sharedService.getConfig();
+    // this.config = {...this.config, displayFn:(item: Autoridade) => { return `${item.cargo.nome} ${item.nome}`; }, placeholder:'Autoridade'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
       autoridade: [
-        '',
-        [Validators.required],
+        ''
       ],
-      autoridade_id: [''],
+      autoridade_id: ['',
+      [Validators.required],],
        
     });
   }
@@ -53,8 +67,8 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('autoridade_id')?.patchValue(this.form.value.autoridade.id);
-    this.form.get('autoridade')?.patchValue('');
+    // this.form.get('autoridade_id')?.patchValue(this.form.value.autoridade.id);
+    // this.form.get('autoridade')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){

@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit } from "@angular/core";
+import { Component, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Observable } from "rxjs";
+import { Observable, of } from "rxjs";
 import { TituloComponent } from "src/app/sistema/components/titulo/titulo.component";
 import { SharedModule } from "src/app/sistema/shared/shared.module";
 import { Evento } from "../eventos";
@@ -23,7 +23,7 @@ import { FormularioPessoasCompoennt } from "../../pessoas/formulario/formulario-
     imports: [CommonModule, SharedModule, TituloComponent, FormularioPessoasCompoennt]
 })
 
-export class EventoComponent implements OnInit{
+export class EventoComponent implements OnInit, OnDestroy{
     id!: number;
     evento$!: Observable<Evento>;
     pessoas$!: Observable<Pessoas>;
@@ -36,6 +36,8 @@ export class EventoComponent implements OnInit{
 
     protected config!: any
 
+    protected subscription!:any;
+
     constructor(
         private activatedRoute: ActivatedRoute,
         private sharedService: SharedService,
@@ -47,19 +49,53 @@ export class EventoComponent implements OnInit{
     }
     ngOnInit(): void {
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-        this.config = this.sharedService.getConfig();
-        this.config = {...this.config, displayFn:(item: Pessoa) => { return `${item.nome} (${item.cpf})`; }, placeholder:'Pessoas'};
+        // this.config = this.sharedService.getConfig();
+        // this.config = {...this.config, displayFn:(item: Pessoa) => { return `${item.nome} (${item.cpf})`; }, placeholder:'Pessoas'};
+
+        this.subscription = this.pessoasService.index().subscribe(
+          {
+            next: (data) => {
+              data.forEach((pessoa) => {
+                  pessoa.nome = `${pessoa.nome} (${pessoa.cpf})`;
+              });
+              this.pessoas$ = of(data);
+            },
+            error: (error) => {
+
+            }
+          }
+        );
 
         this.id = this.activatedRoute.snapshot.params['id'];
         this.evento$ = this.eventosService.show(this.id);
         
-        this.pessoas$ = this.pessoasService.index();
+        //this.pessoas$ = this.pessoasService.index();
         //console.log(this.evento$);
+    }
+
+    ngOnDestroy(): void {
+      if(this.subscription){
+        this.subscription.unsubscribe();
+      }
     }
 
     refresh($event:any){
       
-      this.pessoas$ = this.pessoasService.index(); 
+      //this.pessoas$ = this.pessoasService.index(); 
+
+      this.pessoasService.index().subscribe(
+        {
+          next: (data) => {
+            data.forEach((pessoa) => {
+                pessoa.nome = `${pessoa.nome} (${pessoa.cpf})`;
+            });
+            this.pessoas$ = of(data);
+          },
+          error: (error) => {
+
+          }
+        }
+      );
 
       var obj = {evento: this.evento_id, pessoas: [{id: $event.id}]};
         this.eventosPessoasService.store(obj).subscribe({
@@ -81,6 +117,7 @@ export class EventoComponent implements OnInit{
 
     addPessoas(id:number){
       this.evento_id = id;
+      this.pessoas = [];
     }
 
     adicionar(){
@@ -95,7 +132,7 @@ export class EventoComponent implements OnInit{
             error: (error) => {
               this.sharedService.toast('Error!', error.error.erro as string, 2);
             }
-          })
+          });
 
         //console.log(obj);
     }

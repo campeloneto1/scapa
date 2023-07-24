@@ -9,6 +9,7 @@ import { SharedService } from '../../shared/shared.service';
 import { FormularioAutoridadesCompoennt } from './formulario/formulario-autoridades.component';
 import { Autoridade, Autoridades } from './autoridades';
 import { AutoridadesService } from './autoridades.service';
+import { Perfil } from '../perfis/perfis';
 
 @Component({
   selector: 'app-autoridades',
@@ -21,7 +22,7 @@ export class AutoridadesComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
   data$!: Observable<Autoridades>;
   excluir!: Autoridade;
-
+  perfil!: Perfil;
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
 
@@ -37,6 +38,7 @@ export class AutoridadesComponent implements OnInit, OnDestroy {
 
   constructor(
     private sharedService: SharedService,
+    private sessionService: SessionService,
     private autoridadesService: AutoridadesService
   ) {}
 
@@ -44,6 +46,8 @@ export class AutoridadesComponent implements OnInit, OnDestroy {
     //PEGA AS CONFIGURACOES DA TABELA E ADICIONA A ORDENACAO PELA COLUNA
     this.dtOptions = this.sharedService.getDtOptions();
     this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
+
+    this.perfil = this.sessionService.retornaPerfil();
 
     this.data$ = this.autoridadesService.index().pipe(
       tap(() => {

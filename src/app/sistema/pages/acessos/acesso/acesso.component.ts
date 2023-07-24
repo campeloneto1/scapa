@@ -8,9 +8,9 @@ import { SharedService } from "src/app/sistema/shared/shared.service";
 import { FormularioPessoasCompoennt } from "../../pessoas/formulario/formulario-pessoas.component";
 import { Pessoa, Pessoas } from "../../pessoas/pessoas";
 import { PessoasService } from "../../pessoas/pessoas.service";
-import { Posto, Postos } from "../../postos/postos";
+import { Postos } from "../../postos/postos";
 import { PostosService } from "../../postos/postos.service";
-import { Setor, Setores } from "../../setores/setores";
+import { Setores } from "../../setores/setores";
 import { SetoresService } from "../../setores/setores.service";
 import { AcessosService } from "../acessos.service";
 import { environment } from "src/environments/environments";
@@ -38,10 +38,10 @@ export class AcessoComponent implements OnInit, OnDestroy{
     cadastro:boolean = false;
     protected cadpessoa = false;
 
-    protected config!: any
-    protected config2!: any
-    protected config3!: any
-    protected config4!: any
+    // protected config!: any
+    // protected config2!: any
+    // protected config3!: any
+    // protected config4!: any
 
     protected subscription!: any;
     protected subscription2!: any;
@@ -67,12 +67,12 @@ export class AcessoComponent implements OnInit, OnDestroy{
         
         this.form = this.formBuilder.group({
             'cpfpesquisa': ['', Validators.required],
-            'posto': ['', Validators.required],
-            'posto_id': [''],
+            'posto': [''],
+            'posto_id': ['', Validators.required],
             'pessoa': ['', Validators.required],
             'pessoa_id': [''],
-            'setor': ['', Validators.required],
-            'setor_id': [''],
+            'setor': [''],
+            'setor_id': ['', Validators.required],
             'funcionario': [''],
             'funcionario_id': [''],
             'data_hora': [''],
@@ -81,7 +81,8 @@ export class AcessoComponent implements OnInit, OnDestroy{
 
         if(localStorage.getItem('posto')){
             //@ts-ignore
-            this.form.get('posto')?.patchValue(JSON.parse(localStorage.getItem('posto')))
+            this.form.get('posto')?.patchValue(JSON.parse(localStorage.getItem('posto')));
+            this.form.get('posto_id')?.patchValue(this.form.value.posto?.id)
         }
 
         this.postos$ = this.postosService.index();
@@ -97,17 +98,17 @@ export class AcessoComponent implements OnInit, OnDestroy{
      
 
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-        this.config = this.sharedService.getConfig();
-        this.config = {...this.config, displayFn:(item: Posto) => { return `${item.orgao.nome} - ${item.nome}`; }, placeholder:'Selecione um Posto'};
+        // this.config = this.sharedService.getConfig();
+        // this.config = {...this.config, displayFn:(item: Posto) => { return `${item.orgao.nome} - ${item.nome}`; }, placeholder:'Selecione um Posto'};
 
         /*this.config2 = this.sharedService.getConfig();
         this.config2 = {...this.config, displayFn:(item: Pessoa) => { return `${item.nome} (${item.cpf})`; }, placeholder:'Selecione uma Pessoa'};*/
 
-        this.config3 = this.sharedService.getConfig();
-        this.config3 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
+        // this.config3 = this.sharedService.getConfig();
+        // this.config3 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
 
-        this.config4 = this.sharedService.getConfig();
-        this.config4 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item?.ramal1 ? item?.ramal1 : ''}${item?.ramal2 ? " | "+item?.ramal2 : ''})`; }, placeholder:'Funcionário'};
+        // this.config4 = this.sharedService.getConfig();
+        // this.config4 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item?.ramal1 ? item?.ramal1 : ''}${item?.ramal2 ? " | "+item?.ramal2 : ''})`; }, placeholder:'Funcionário'};
     
     
         this.subscription2 = this.searchSubject.pipe(
@@ -155,22 +156,39 @@ export class AcessoComponent implements OnInit, OnDestroy{
 
     setPosto(){
         //console.log(this.form.value.posto)
-        localStorage.setItem('posto', JSON.stringify(this.form.value.posto))
+
+        this.postos$.subscribe({
+            next: (data) => {
+                data.forEach((posto) => {
+                    if(posto.id == this.form.value.posto_id){
+                        localStorage.setItem('posto', JSON.stringify(posto));
+                        this.form.get('posto')?.patchValue(posto);
+                    }
+                });
+            }
+        })
+
+        
     }
 
     getFuncionarios(){
         this.funcionarios$ = of([]);
-        this.funcionarios$ = this.setoresService.where(this.form.value.setor.id);
+        this.funcionarios$ = this.setoresService.where(this.form.value.setor_id);
     }
 
     unsetPosto(){
         localStorage.removeItem('posto');
         this.form.get('posto')?.patchValue('');
+        this.form.get('posto_id')?.patchValue('');
         this.form.get('pessoa')?.patchValue('');
+        this.form.get('pessoa_id')?.patchValue('');
         this.form.get('setor')?.patchValue('');
+        this.form.get('setor_id')?.patchValue('');
         this.form.get('funcionario')?.patchValue('');
+        this.form.get('funcionario_id')?.patchValue('');
         this.form.get('obs')?.patchValue('');
         this.form.get('cpf')?.patchValue('');
+        this.funcionarios$ = of([]);
     }
 
     refresh($event:any){
@@ -191,7 +209,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 }
             },
             error: (erro) => {
-                console.log('bbbbbb')
+                //console.log('bbbbbb')
             }
         });
     }
@@ -212,7 +230,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
                     }
                 },
                 error: (erro) => {
-                    console.log('bbbbbb')
+                    //console.log('bbbbbb')
                 }
             });
         }else{
@@ -258,7 +276,10 @@ export class AcessoComponent implements OnInit, OnDestroy{
         this.form.get('pessoa')?.patchValue('');
         this.form.get('setor')?.patchValue('');
         this.form.get('funcionario')?.patchValue('');
-
+        this.form.get('pessoa_id')?.patchValue('');
+        this.form.get('setor_id')?.patchValue('');
+        this.form.get('funcionario_id')?.patchValue('');
+        this.funcionarios$ = of([]);
         this.cadpessoa = false;
     }
 
@@ -269,22 +290,27 @@ export class AcessoComponent implements OnInit, OnDestroy{
             this.form.get('pessoa_id')?.patchValue(this.form.value.pessoa.id);
             this.form.get('pessoa')?.patchValue('');
     
-            this.form.get('posto_id')?.patchValue(this.form.value.posto.id);
+            // this.form.get('posto_id')?.patchValue(this.form.value.posto.id);
     
-            this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
-            this.form.get('setor')?.patchValue('');
+            // this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
+            // this.form.get('setor')?.patchValue('');
 
-            if(this.form.value.funcionario){
-                this.form.get('funcionario_id')?.patchValue(this.form.value.funcionario.id);
-                this.form.get('funcionario')?.patchValue('');
-            }
+            // if(this.form.value.funcionario){
+            //     this.form.get('funcionario_id')?.patchValue(this.form.value.funcionario.id);
+            //     this.form.get('funcionario')?.patchValue('');
+            // }
     
             this.subscription5 = this.acessosService.store(this.form.value).subscribe({
                 next: (data) => {
                     this.sharedService.toast('Sucesso!', data as string, 1);
     
+                    this.form.get('pessoa')?.patchValue('');
                     this.form.get('pessoa_id')?.patchValue('');
+                    this.form.get('setor')?.patchValue('');
                     this.form.get('setor_id')?.patchValue('');
+                    this.form.get('funcionario')?.patchValue('');
+                    this.form.get('funcionario_id')?.patchValue('');
+                    this.funcionarios$ = of([]);
                     this.form.get('obs')?.patchValue('');
                     this.cadpessoa = false;
                 },

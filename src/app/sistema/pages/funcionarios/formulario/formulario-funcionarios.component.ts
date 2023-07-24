@@ -26,8 +26,8 @@ export class FormularioFuncionariosComponent{
     setores$!: Observable<Setores>;
     @Output('refresh') refresh: EventEmitter<Funcionario> = new EventEmitter();
   
-    protected config!: any
-    protected config2!: any
+    // protected config!: any
+    // protected config2!: any
   
     constructor(
       private setoresService: SetoresService,
@@ -39,26 +39,26 @@ export class FormularioFuncionariosComponent{
   
     ngOnInit(): void {
        //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-       this.config = this.sharedService.getConfig();
-       this.config = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
+      //  this.config = this.sharedService.getConfig();
+      //  this.config = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
   
-       this.config2 = this.sharedService.getConfig();
-       this.config2 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
+      //  this.config2 = this.sharedService.getConfig();
+      //  this.config2 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
   
       this.orgaos$ = this.orgaosService.index();
       //BUILD O FORMULARIO COM VALIDACOES
       this.form = this.formBuilder.group({
         id: [''],
-        orgao_id: [''],
-        orgao: ['',
+        orgao_id: ['',
+        Validators.compose([
+          Validators.required,
+        ])],
+        orgao: [''],
+        setor_id: ['',
         Validators.compose([
           Validators.required,
         ]),],
-        setor_id: [''],
-        setor: ['',
-        Validators.compose([
-          Validators.required,
-        ]),],
+        setor: [''],
         nome: [
           '',
           Validators.compose([
@@ -74,20 +74,20 @@ export class FormularioFuncionariosComponent{
     }
   
     getSetores(){
-      this.setores$ = this.orgaosService.where_setores(this.form.value.orgao.id);
+      this.setores$ = this.orgaosService.where_setores(this.form.value.orgao_id);
     }
   
   
     //FUNÇÃO CADATRO E EDÇÃO
     cadastrar(){  
-      this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
-      this.form.get('orgao')?.patchValue('');
+      // this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
+      // this.form.get('orgao')?.patchValue('');
   
-      this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
-      this.form.get('setor')?.patchValue('');
+      // this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
+      // this.form.get('setor')?.patchValue('');
   
-      this.form.get('evento_id')?.patchValue(this.form.value.evento.id);
-      this.form.get('evento')?.patchValue('');
+      // this.form.get('evento_id')?.patchValue(this.form.value.evento.id);
+      // this.form.get('evento')?.patchValue('');
   
       //console.log(this.form.value);
       if(this.form.value.id){
@@ -121,9 +121,9 @@ export class FormularioFuncionariosComponent{
     setForm(data: Funcionario){
       this.form.patchValue(data);
 
-      this.form.get('orgao_id')?.patchValue(data.setor.orgao.id);
-      this.form.get('orgao')?.patchValue(data.setor.orgao);
-      this.form.get('evento')?.patchValue(data.setor);
-      this.setores$ = this.orgaosService.where_setores(data.setor.orgao.id || 0);
+       this.form.get('orgao_id')?.patchValue(data.setor.orgao_id);
+      // this.form.get('orgao')?.patchValue(data.setor.orgao);
+      // this.form.get('evento')?.patchValue(data.setor);
+       this.setores$ = this.orgaosService.where_setores(data.setor.orgao_id || 0);
     }
 }

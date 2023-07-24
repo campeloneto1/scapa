@@ -65,13 +65,13 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   protected cpfexist: boolean = false;
   protected pessoacpf!: Pessoa;
 
-  protected config!: any
-  protected config2!: any
-  protected config3!: any
-  protected config4!: any
-  protected config5!: any
-  protected config6!: any
-  protected config7!: any
+  // protected config!: any
+  // protected config2!: any
+  // protected config3!: any
+  // protected config4!: any
+  // protected config5!: any
+  // protected config6!: any
+  // protected config7!: any
 
   constructor(
     private http: HttpClient,
@@ -98,26 +98,26 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     this.perfil = this.SessionService.retornaPerfil();
 
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Estado) => { return `${item.nome}`; }, placeholder:'UF RG'};
+    // this.config = this.sharedService.getConfig();
+    // this.config = {...this.config, displayFn:(item: Estado) => { return `${item.nome}`; }, placeholder:'UF RG'};
 
-    this.config2 = this.sharedService.getConfig();
-    this.config2 = {...this.config, displayFn:(item: Sexo) => { return `${item.nome}`; }, placeholder:'Sexo'};
+    // this.config2 = this.sharedService.getConfig();
+    // this.config2 = {...this.config, displayFn:(item: Sexo) => { return `${item.nome}`; }, placeholder:'Sexo'};
 
-    this.config3 = this.sharedService.getConfig();
-    this.config3 = {...this.config, displayFn:(item: Nivel) => { return `${item.nome}`; }, placeholder:'Nível'};
+    // this.config3 = this.sharedService.getConfig();
+    // this.config3 = {...this.config, displayFn:(item: Nivel) => { return `${item.nome}`; }, placeholder:'Nível'};
 
-    this.config4 = this.sharedService.getConfig();
-    this.config4 = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
+    // this.config4 = this.sharedService.getConfig();
+    // this.config4 = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
 
-    this.config5 = this.sharedService.getConfig();
-    this.config5 = {...this.config, displayFn:(item: Estado) => { return `${item.nome}`; }, placeholder:'Estado'};
+    // this.config5 = this.sharedService.getConfig();
+    // this.config5 = {...this.config, displayFn:(item: Estado) => { return `${item.nome}`; }, placeholder:'Estado'};
 
-    this.config6 = this.sharedService.getConfig();
-    this.config6 = {...this.config, displayFn:(item: Cidade) => { return `${item.nome}`; }, placeholder:'Cidade'};
+    // this.config6 = this.sharedService.getConfig();
+    // this.config6 = {...this.config, displayFn:(item: Cidade) => { return `${item.nome}`; }, placeholder:'Cidade'};
 
-    this.config7 = this.sharedService.getConfig();
-    this.config7 = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
+    // this.config7 = this.sharedService.getConfig();
+    // this.config7 = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
@@ -232,20 +232,20 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   }
 
   getNiveis(){
-    if(this.form.value.orgao){
-      this.niveis$ = this.orgaosService.where_niveis(this.form.value.orgao.id);
+    if(this.form.value.orgao_id){
+      this.niveis$ = this.orgaosService.where_niveis(this.form.value.orgao_id);
     }
   }
 
   getEstados(){
-    if(this.form.value.pais){
-     this.estados$ = this.sharedService.getEstados(this.form.value.pais.id);
+    if(this.form.value.pais_id){
+     this.estados$ = this.sharedService.getEstados(this.form.value.pais_id);
     }
   }
 
   getCidades(){
-    if(this.form.value.estado){
-      this.cidades$ = this.sharedService.getCidades(this.form.value.estado.id);
+    if(this.form.value.estado_id){
+      this.cidades$ = this.sharedService.getCidades(this.form.value.estado_id);
     }
    
   }
@@ -253,27 +253,27 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
    
-    if(this.form.value.uf_rg){
-      this.form.get('uf_rg_id')?.patchValue(this.form.value.uf_rg.id);
-      this.form.get('uf_rg')?.patchValue('');
-    }
+    // if(this.form.value.uf_rg){
+    //   this.form.get('uf_rg_id')?.patchValue(this.form.value.uf_rg.id);
+    //   this.form.get('uf_rg')?.patchValue('');
+    // }
     
-    if(this.form.value.sexo){
-      this.form.get('sexo_id')?.patchValue(this.form.value.sexo.id);
-      this.form.get('sexo')?.patchValue('');
-    }
-    if(this.form.value.cidade){
-      this.getEstados();
-      this.getCidades();
-      this.form.get('pais_id')?.patchValue(this.form.value.cidade.estado.pais.id);
-      this.form.get('pais')?.patchValue('');
+    // if(this.form.value.sexo){
+    //   this.form.get('sexo_id')?.patchValue(this.form.value.sexo.id);
+    //   this.form.get('sexo')?.patchValue('');
+    // }
+    // if(this.form.value.cidade_id){
+    //   this.getEstados();
+    //   this.getCidades();
+    //   this.form.get('pais_id')?.patchValue(this.form.value.cidade.estado.pais_id);
+    //   //this.form.get('pais')?.patchValue('');
 
-      this.form.get('estado_id')?.patchValue(this.form.value.cidade.estado.id);
-      this.form.get('estado')?.patchValue('');
+    //   this.form.get('estado_id')?.patchValue(this.form.value.cidade.estado.id);
+    //   //this.form.get('estado')?.patchValue('');
 
-      this.form.get('cidade_id')?.patchValue(this.form.value.cidade.id);
-      this.form.get('cidade')?.patchValue('');
-    }
+    //   //this.form.get('cidade_id')?.patchValue(this.form.value.cidade.id);
+    //   //this.form.get('cidade')?.patchValue('');
+    // }
     //console.log(this.form.value);
     
     if(this.form.value.id){
@@ -314,18 +314,18 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     this.form.patchValue(data);
 
     if(data.cidade){
-        this.form.get('estado')?.patchValue(data.cidade.estado);
-        this.form.get('pais')?.patchValue(data.cidade.estado.pais);
+        this.form.get('estado_id')?.patchValue(data.cidade.estado_id);
+        this.form.get('pais_id')?.patchValue(data.cidade.estado.pais_id);
         this.getEstados();
         this.getCidades();                
     }
 
     if(data.sexo){
-        this.form.get('sexo')?.patchValue(data.sexo);        
+        this.form.get('sexo_id')?.patchValue(data.sexo_id);        
     }
 
-    if(data.uf_rg){
-        this.form.get('uf_rg')?.patchValue(data.uf_rg);        
+    if(data.uf_rg_id){
+        this.form.get('uf_rg_id')?.patchValue(data.uf_rg_id);        
     }
     /*
     if(data.nivel){

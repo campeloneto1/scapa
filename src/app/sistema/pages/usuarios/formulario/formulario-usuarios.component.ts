@@ -24,8 +24,8 @@ export class FormularioUsuariosCompoennt implements OnInit {
   perfis$!: Observable<Perfis>;
   orgaos$!: Observable<Orgaos>;
 
-  protected config!: any;
-  protected config2!: any;
+  // protected config!: any;
+  // protected config2!: any;
 
   constructor(
     private usuariosService: UsuariosService,
@@ -41,18 +41,18 @@ export class FormularioUsuariosCompoennt implements OnInit {
     this.orgaos$ = this.orgaosService.index();
 
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Perfil) => { return `${item.nome}`; }, placeholder:'Perfil'};
-    this.config2 = this.sharedService.getConfig();
-    this.config2 = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
+    // this.config = this.sharedService.getConfig();
+    // this.config = {...this.config, displayFn:(item: Perfil) => { return `${item.nome}`; }, placeholder:'Perfil'};
+    // this.config2 = this.sharedService.getConfig();
+    // this.config2 = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
-      perfil_id: [''],
-      perfil: ['', [Validators.required]],
-      orgao_id: [''],
-      orgao: ['', [Validators.required]],
+      perfil_id: ['', [Validators.required]],
+      perfil: [''],
+      orgao_id: ['', [Validators.required]],
+      orgao: [''],
       nome: [
         '',
         Validators.compose([
@@ -93,10 +93,10 @@ export class FormularioUsuariosCompoennt implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('perfil_id')?.patchValue(this.form.value.perfil.id);
-    this.form.get('perfil')?.patchValue('');
-    this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
-    this.form.get('orgao')?.patchValue('');
+    // this.form.get('perfil_id')?.patchValue(this.form.value.perfil.id);
+    // this.form.get('perfil')?.patchValue('');
+    // this.form.get('orgao_id')?.patchValue(this.form.value.orgao.id);
+    // this.form.get('orgao')?.patchValue('');
     //console.log(this.form.value);
     if(this.form.value.id){
       this.usuariosService.update(this.form.value).subscribe({

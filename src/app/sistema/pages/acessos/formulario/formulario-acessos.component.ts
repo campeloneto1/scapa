@@ -62,14 +62,14 @@ export class FormularioAcessosCompoennt implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
-    this.form.get('setor')?.patchValue('');
+    // this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
+    // this.form.get('setor')?.patchValue('');
 
-    this.form.get('posto_id')?.patchValue(this.form.value.posto.id);
-    this.form.get('posto')?.patchValue('');
+    // this.form.get('posto_id')?.patchValue(this.form.value.posto.id);
+    // this.form.get('posto')?.patchValue('');
 
-    this.form.get('user_id')?.patchValue(this.form.value.user.id);
-    this.form.get('user')?.patchValue('');
+    // this.form.get('user_id')?.patchValue(this.form.value.user.id);
+    // this.form.get('user')?.patchValue('');
 
 
     //console.log(this.form.value);

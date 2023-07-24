@@ -22,7 +22,7 @@ export class FormularioAutoridadesCompoennt implements OnInit {
   cargos$!: Observable<Cargos>;
   @Output('refresh') refresh: EventEmitter<Autoridade> = new EventEmitter();
 
-  protected config!: any
+  // protected config!: any
 
   constructor(
     private autoridadesService: AutoridadesService,
@@ -35,17 +35,17 @@ export class FormularioAutoridadesCompoennt implements OnInit {
     this.cargos$ = this.cargosService.index();
 
     //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    this.config = this.sharedService.getConfig();
-    this.config = {...this.config, displayFn:(item: Cargo) => { return `${item.nome}`; }, placeholder:'Cargo'};
+    // this.config = this.sharedService.getConfig();
+    // this.config = {...this.config, displayFn:(item: Cargo) => { return `${item.nome}`; }, placeholder:'Cargo'};
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
       cargo: [
-        '',
-        [Validators.required],
+        ''
       ],
-      cargo_id: [''],
+      cargo_id: ['',
+      [Validators.required],],
       nome: [
         '',
         Validators.compose([
@@ -60,8 +60,8 @@ export class FormularioAutoridadesCompoennt implements OnInit {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-    this.form.get('cargo_id')?.patchValue(this.form.value.cargo.id);
-    this.form.get('cargo')?.patchValue('');
+    // this.form.get('cargo_id')?.patchValue(this.form.value.cargo.id);
+    // this.form.get('cargo')?.patchValue('');
 
     //console.log(this.form.value);
     if(this.form.value.id){

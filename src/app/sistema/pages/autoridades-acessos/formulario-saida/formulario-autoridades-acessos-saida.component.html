@@ -1,0 +1,39 @@
+<form [formGroup]="form" (ngSubmit)="cadastrar()">
+  <div class="row">
+    <div class="col-sm-12">
+      <p *ngIf="form.value.autoridade">
+        Tem certeza que deseja confirmar a saída da autoridade
+        <strong
+          >{{ form.value.autoridade.cargo?.nome }}
+          {{ form.value.autoridade.nome }}</strong
+        >
+        ?
+      </p>
+    </div>
+    <app-input-text
+      formControlName="obs"
+      label="Observações"
+      id="obs"
+      tipo="textarea"
+      class="col-sm-12"
+    />
+  </div>
+  <hr />
+  <div class="float-right">
+    <a
+      (click)="form.reset()"
+      data-bs-dismiss="modal"
+      class="btn btn-link text-danger"
+    >
+      Cancelar
+    </a>
+    <button
+      [disabled]="form.invalid"
+      data-bs-dismiss="modal"
+      type="submit"
+      class="btn btn-primary"
+    >
+      Cadastrar
+    </button>
+  </div>
+</form>

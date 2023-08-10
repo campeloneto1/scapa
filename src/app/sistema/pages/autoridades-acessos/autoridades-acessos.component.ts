@@ -7,6 +7,7 @@ import { SessionService } from '../../shared/session.service';
 import { SharedModule } from '../../shared/shared.module';
 import { SharedService } from '../../shared/shared.service';
 import { FormularioAutoridadesAcessosComponent } from './formulario/formulario-autoridades-acessos.component';
+import { FormularioAutoridadesAcessosSaidaComponent } from './formulario-saida/formulario-autoridades-acessos-saida.component';
 import { AutoridadeAcesso, AutoridadesAcessos } from './autoridades-acessos';
 import { AutoridadesAcessosService } from './autoridades-acessos.service';
 import { Perfil } from "../perfis/perfis";
@@ -16,7 +17,7 @@ import { Perfil } from "../perfis/perfis";
   templateUrl: './autoridades-acessos.component.html',
   styleUrls: ['autoridades-acessos.component.css'],
   standalone: true,
-  imports: [CommonModule, TituloComponent, SharedModule, FormularioAutoridadesAcessosComponent],
+  imports: [CommonModule, TituloComponent, SharedModule, FormularioAutoridadesAcessosComponent, FormularioAutoridadesAcessosSaidaComponent],
 })
 export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
   //VARIAVEL DAS INFORMCAOES DA PAGINA
@@ -33,6 +34,7 @@ export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
   dtElement!: DataTableDirective;
 
   @ViewChild(FormularioAutoridadesAcessosComponent) child!: FormularioAutoridadesAcessosComponent;
+  @ViewChild(FormularioAutoridadesAcessosSaidaComponent) child2!: FormularioAutoridadesAcessosSaidaComponent;
 
   // We use this trigger because fetching the list of persons can be quite long,
   // thus we ensure the data is fetched before rendering
@@ -100,7 +102,9 @@ export class AutoridadesAcessosComponent implements OnInit, OnDestroy {
   }
 
   saida(data: AutoridadeAcesso){
-    this.autSaida = data;
+    //this.autSaida = data;
+    //console.log(this.child2);
+    this.child2.setForm(data);
   }
 
    //CONFIRMA A saida Da autoridade

@@ -40,6 +40,7 @@
               <th>Nome</th>
               <th>Data Hora Entrada</th>
               <th>Data Hora Saída</th>
+              <th>Observações</th>
               <th>Opções</th>
             </tr>
           </thead>
@@ -60,7 +61,7 @@
               </td> -->
               <td>{{ row.data_hora_entrada | date : "dd/MM/yyyy HH:mm" }}</td>
               <td>{{ row.data_hora_saida | date : "dd/MM/yyyy HH:mm" }}</td>
-              <!-- <td>{{ row.obs }}</td> -->
+              <td>{{ row.obs }}</td>
               <td>
                 <a
                   *ngIf="perfil.autoridades_acessos_edt && !row.data_hora_saida"
@@ -198,8 +199,8 @@
 
   <!--INICIO MODAL SAIDA-->
   <div class="modal fade" id="modalsaida" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content" *ngIf="autSaida">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
         <div class="modal-header">
           <h4 class="modal-title">Saída de Autoridade</h4>
           <button
@@ -212,13 +213,9 @@
           </button>
         </div>
         <div class="modal-body">
-          <p>
-            Tem certeza que deseja confirmar a saída da autoridade
-            <strong>{{ autSaida.autoridade.nome }}</strong
-            >?
-          </p>
+          <app-formulario-autoridades-acessos-saida (refresh)="refresh()" />
         </div>
-        <div class="modal-footer justify-right">
+        <!-- <div class="modal-footer justify-right">
           <button
             type="button"
             class="btn btn-link text-danger"
@@ -234,7 +231,7 @@
           >
             Confirmar
           </button>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>

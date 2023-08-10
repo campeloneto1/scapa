@@ -102,6 +102,7 @@ export class FormularioAutoridadesAcessosComponent implements OnInit {
 
   //FUNÇÃO SETA INFORMACAO NO FORMULARIO
   setForm(data: AutoridadeAcesso){
+    
     this.form.patchValue(data);
   }
 }

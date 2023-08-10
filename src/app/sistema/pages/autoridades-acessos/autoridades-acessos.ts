@@ -8,7 +8,8 @@ export interface AutoridadeAcesso{
     autoridade: Autoridade,
     autoridade_id: number,
     data_hora_entrada: Date,
-    data_hora_saida: Date,
+    data_hora_saida?: Date,
+    obs?: string,
     
 }
 

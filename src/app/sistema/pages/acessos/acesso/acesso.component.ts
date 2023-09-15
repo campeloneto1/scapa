@@ -16,6 +16,8 @@ import { AcessosService } from "../acessos.service";
 import { environment } from "src/environments/environments";
 import { Eventos } from "../../eventos/eventos";
 import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
+import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 @Component({
     selector: 'app-acesso',
     templateUrl: './acesso.component.html',
@@ -25,18 +27,18 @@ import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
 })
 
 export class AcessoComponent implements OnInit, OnDestroy{
-    form!: FormGroup;
-    form2!: FormGroup;
-    urlimage = environment.image;
-    postos$!: Observable<Postos>;
-    setores$!: Observable<Setores>;
-    pessoas$!: Observable<Pessoas>;
-    funcionarios$!: Observable<Funcionarios>;
-    pessoa!: Pessoa;
-    pessoas!: Pessoas;
-    pessoas2!: Pessoas;
-    eventos!: Eventos;
-    cadastro:boolean = false;
+    protected form!: FormGroup;
+    protected form2!: FormGroup;
+    protected urlimage = environment.image;
+    protected postos$!: Observable<Postos>;
+    protected setores$!: Observable<Setores>;
+    protected pessoas$!: Observable<Pessoas>;
+    protected funcionarios$!: Observable<Funcionarios>;
+    protected pessoa!: Pessoa;
+    protected pessoas!: Pessoas;
+    protected  pessoas2!: Pessoas;
+    protected eventos!: Eventos;
+    protected cadastro:boolean = false;
     protected cadpessoa = false;
 
     // protected config!: any
@@ -53,7 +55,28 @@ export class AcessoComponent implements OnInit, OnDestroy{
 
     private readonly searchSubject = new Subject<string | undefined>();
 
+    public sysImage!: string;
+    public webcamImage!: WebcamImage;
+    // toggle webcam on/off
+    public showWebcam = true;
+    public allowCameraSwitch = true;
+    public multipleWebcamsAvailable = false;
+    public deviceId!: string;
+    public videoOptions: MediaTrackConstraints = {
+        // width: {ideal: 1024},
+        // height: {ideal: 576}
+    };
+    public errors: WebcamInitError[] = [];
+
+    // webcam snapshot trigger
+  private trigger: Subject<void> = new Subject<void>();
+  // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
+  private nextWebcam: Subject<boolean | string> = new Subject<
+    boolean | string
+  >();
+
     constructor(
+        private http: HttpClient,
         private acessosService: AcessosService,
         private pessoasService: PessoasService,
         private setoresService: SetoresService,
@@ -96,8 +119,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
             }
         });*/
 
-     
-
         //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
         // this.config = this.sharedService.getConfig();
         // this.config = {...this.config, displayFn:(item: Posto) => { return `${item.orgao.nome} - ${item.nome}`; }, placeholder:'Selecione um Posto'};
@@ -121,7 +142,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 if(data.length > 0){
                     //this.pessoa = data[0];
                     //this.form.get('pessoa')?.patchValue(data[0]);
-                    //console.log('cccccccccccc');
                     this.pessoas = data;
                     if(data.length > 1){
                         this.cadpessoa = true;
@@ -132,7 +152,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 }
             },
             error: (erro) => {
-                //console.log('bbbbbb')
             }
         });
     }
@@ -156,8 +175,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
     }
 
     setPosto(){
-        //console.log(this.form.value.posto)
-
         this.postos$.subscribe({
             next: (data) => {
                 data.forEach((posto) => {
@@ -168,8 +185,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 });
             }
         })
-
-        
     }
 
     getFuncionarios(){
@@ -193,8 +208,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
     }
 
     refresh($event:any){
-        //console.log($event);
-
         //this.pessoas$ = this.pessoasService.index();
         this.cadpessoa = false;
         
@@ -203,35 +216,28 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 if(data.length > 0){
                     //this.pessoa = data[0];
                     this.form.get('pessoa')?.patchValue(data[0]);
-                    //console.log('cccccccccccc');
                     this.cadpessoa = false;
                 }else{
                    this.cadpessoa = true;
                 }
             },
             error: (erro) => {
-                //console.log('bbbbbb')
             }
         });
     }
 
     getPessoa(){
-        //console.log('aaaaaaaaaaaaaa')
-        //console.log('aaaaaaaaaaaaaa')
         if(this.form.value.cpf.length == 11){
             this.subscription3 = this.pessoasService.checkCpf2(this.form.value.cpf).subscribe({
                 next: (data:any) => {
                     if(data.length > 0){
-                        //this.pessoa = data[0];
                         this.form.get('pessoa')?.patchValue(data[0]);
-                        //console.log('cccccccccccc');
                         this.cadpessoa = false;
                     }else{
                        this.cadpessoa = true;
                     }
                 },
                 error: (erro) => {
-                    //console.log('bbbbbb')
                 }
             });
         }else{
@@ -243,9 +249,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
         this.subscription4 = this.pessoasService.checkCpf2(this.form.value.cpfpesquisa).subscribe({
             next: (data:any) => {
                 if(data.length == 1){
-                    //this.pessoa = data[0];
                     this.form.get('pessoa')?.patchValue(data[0]);
-                    //console.log('cccccccccccc');
                     this.cadpessoa = false;
                 }else{
                     this.pessoas = data;
@@ -253,13 +257,11 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 }
             },
             error: (erro) => {
-                //console.log('bbbbbb')
             }
         });
     }
 
     searchCpf(){
-        //console.log('aaaaaaaaaa')
         if(this.form.value.cpfpesquisa.length < 5){
             this.form.get('pessoa')?.patchValue('');
             this.cadpessoa = false;
@@ -337,4 +339,82 @@ export class AcessoComponent implements OnInit, OnDestroy{
             }
         })
     }
+
+    public getSnapshot(): void {
+        this.trigger.next(void 0);
+      }
+    
+      public handleImage(webcamImage: WebcamImage): void {
+        this.webcamImage = webcamImage;
+        this.sysImage = webcamImage.imageAsDataUrl;
+       
+    
+        var myFormData = new FormData();
+        const headers = new HttpHeaders();
+        headers.append('Content-Type', 'multipart/form-data');
+        headers.append('Accept', 'application/json');
+        myFormData.append('image', webcamImage.imageAsDataUrl);
+        
+        this.http.post(`${environment.url}/upload-foto`, myFormData, {
+        headers: headers
+        }).subscribe({
+          next: (data) => {
+           //this.form.get('foto')?.patchValue(data);
+           //console.log(data);
+
+           var updatefoto = {
+            id: this.form.value.pessoa.id,
+            foto: data
+           }
+           this.http.post(`${environment.url}/update-foto`, updatefoto, {
+            headers: headers
+            }).subscribe({
+              next: (data) => {
+               //this.form.get('foto')?.patchValue(data);
+               //console.log(data);     
+               this.searchCpf();                      
+              },
+              error: (error) => {
+               
+              }
+            }); 
+
+          },
+          error: (error) => {
+           
+          }
+        }); 
+      }
+    
+      public triggerSnapshot(): void {
+        this.trigger.next();
+      }
+    
+      public toggleWebcam(): void {
+        this.showWebcam = !this.showWebcam;
+      }
+    
+      public handleInitError(error: WebcamInitError): void {
+        this.errors.push(error);
+      }
+    
+      public showNextWebcam(directionOrDeviceId: boolean | string): void {
+        // true => move forward through devices
+        // false => move backwards through devices
+        // string => move to device with given deviceId
+        this.nextWebcam.next(directionOrDeviceId);
+      }
+    
+      public cameraWasSwitched(deviceId: string): void {
+        //console.log('active device: ' + deviceId);
+        this.deviceId = deviceId;
+      }
+    
+      public get triggerObservable(): Observable<void> {
+        return this.trigger.asObservable();
+      }
+    
+      public get nextWebcamObservable(): Observable<boolean | string> {
+        return this.nextWebcam.asObservable();
+      }
 }

@@ -38,6 +38,9 @@ export interface Pessoa{
     digital?: string,
     pivot?: any,
     nao_autorizado?: boolean,
+
+    data_verificacao?: Date,
+    obs_verificacao?: string
 }
 
 export type Pessoas = Array<Pessoa>;

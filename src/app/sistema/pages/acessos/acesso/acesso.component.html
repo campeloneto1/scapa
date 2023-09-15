@@ -160,6 +160,70 @@
                   [src]="urlimage + form.value.pessoa?.foto"
                   alt="User profile picture"
                 />
+
+                <div
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalaltfoto"
+                  style="cursor: pointer; color: #007bff"
+                >
+                  Alterar foto
+                </div>
+
+                <!--INICIO MODAL ALTERAR FOTO-->
+                <div class="modal fade" id="modalaltfoto" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Alterar foto</h4>
+                        <button
+                          type="button"
+                          class="close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <div>
+                          <img
+                            *ngIf="sysImage"
+                            style="height: 200px; width: 200px"
+                            [src]="webcamImage.imageAsDataUrl"
+                          />
+                          <webcam
+                            [height]="200"
+                            [trigger]="triggerObservable"
+                            (imageCapture)="handleImage($event)"
+                            *ngIf="!sysImage && showWebcam"
+                            [allowCameraSwitch]="allowCameraSwitch"
+                            [switchCamera]="nextWebcamObservable"
+                            [videoOptions]="videoOptions"
+                            (cameraSwitched)="cameraWasSwitched($event)"
+                            (initError)="handleInitError($event)"
+                          ></webcam>
+                        </div>
+                        <div style="margin-top: 10px">
+                          <a
+                            *ngIf="!sysImage && showWebcam"
+                            (click)="getSnapshot()"
+                            class="btn btn-info"
+                            >Tirar foto
+                          </a>
+                          <a
+                            *ngIf="sysImage"
+                            (click)="
+                              sysImage = ''; form.get('foto')?.patchValue('')
+                            "
+                            class="btn btn-info"
+                            >Tirar novamente</a
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--FIM MODAL  ALTERAR FOTO-->
               </div>
             </div>
             <h2 class="text-center">{{ form.value.pessoa?.nome }}</h2>
@@ -253,6 +317,28 @@
                   <dd *ngIf="form.value.pessoa?.obs" class="col-sm-8">
                     {{ form.value.pessoa?.obs }}
                   </dd>
+
+                  <!--<dt class="col-sm-4">Data Verificação:</dt>
+                  <dd class="col-sm-8">
+                    <span *ngIf="form.value.pessoa?.data_verificacao">{{
+                      form.value.pessoa?.data_verificacao | date : "dd/MM/yyyy"
+                    }}</span>
+                    <span *ngIf="!form.value.pessoa?.data_verificacao"
+                      >Nunca verificado pela UMAE</span
+                    >
+                  </dd>
+                  <dt
+                    *ngIf="form.value.pessoa?.obs_verificacao"
+                    class="col-sm-4"
+                  >
+                    Obs. Verificação:
+                  </dt>
+                  <dd
+                    *ngIf="form.value.pessoa?.obs_verificacao"
+                    class="col-sm-8"
+                  >
+                    {{ form.value.pessoa?.obs_verificacao }}
+                  </dd>-->
 
                   <!--<dt *ngIf="eventos[0]" class="col-sm-4">Evento:</dt>
                             <dd *ngIf="eventos[0]" class="col-sm-8">

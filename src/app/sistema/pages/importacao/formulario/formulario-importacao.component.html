@@ -1,0 +1,37 @@
+<form [formGroup]="form" (ngSubmit)="cadastrar()">
+  <div class="row">
+    <div class="form-group">
+      <label for="file">
+        Arquivo
+        <span class="text-danger">*</span>
+      </label>
+
+      <input
+        formControlName="file"
+        type="file"
+        class="form-control"
+        id="file"
+        accept=".xlsx, .xls, .csv, .ods"
+        (change)="uploadData($event)"
+      />
+    </div>
+  </div>
+  <hr />
+  <div class="float-right">
+    <a
+      (click)="form.reset()"
+      data-bs-dismiss="modal"
+      class="btn btn-link text-danger"
+    >
+      Cancelar
+    </a>
+    <button
+      [disabled]="form.invalid"
+      data-bs-dismiss="modal"
+      type="submit"
+      class="btn btn-primary"
+    >
+      Carregar arquivo
+    </button>
+  </div>
+</form>

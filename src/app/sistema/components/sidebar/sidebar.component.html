@@ -92,6 +92,16 @@
             <p>Entrega de Chaves</p>
           </a>
         </li>
+        <li class="nav-item" *ngIf="perfil.gestor">
+          <a
+            [routerLink]="['Importacao']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-upload"></i>
+            <p>Importar Pessoas</p>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="perfil.orgaos">
           <a
             [routerLink]="['Orgaos']"

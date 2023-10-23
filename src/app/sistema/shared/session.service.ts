@@ -20,11 +20,13 @@ export class SessionService{
       'Perfis',      
       'Sexos',
       'Logs',
+      'Graduacoes',
     ];
     
     pathgestor = [
       'Usuarios',
       'Cargos',
+      'Importacao',
     ]   
 
     constructor(private router: Router){

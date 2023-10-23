@@ -160,6 +160,13 @@
                   [src]="urlimage + form.value.pessoa?.foto"
                   alt="User profile picture"
                 />
+                <i
+                  style="cursor: pointer; position: absolute"
+                  data-bs-toggle="modal"
+                  data-bs-target="#modalfoto"
+                  class="fa fa-expand"
+                  aria-hidden="true"
+                ></i>
 
                 <div
                   data-bs-toggle="modal"
@@ -168,6 +175,35 @@
                 >
                   Alterar foto
                 </div>
+
+                <!--INICIO MODAL FOTO-->
+                <div class="modal fade" id="modalfoto" aria-hidden="true">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Foto</h4>
+                        <button
+                          type="button"
+                          class="close"
+                          data-bs-dismiss="modal"
+                          aria-label="Close"
+                        >
+                          <span aria-hidden="true">×</span>
+                        </button>
+                      </div>
+                      <div class="modal-body">
+                        <img
+                          style="height: 400px; width: 400px"
+                          *ngIf="form.value.pessoa?.foto"
+                          class="profile-user-img img-fluid img-circle"
+                          [src]="urlimage + form.value.pessoa?.foto"
+                          alt="User profile picture"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!--FIM MODAL  FOTO-->
 
                 <!--INICIO MODAL ALTERAR FOTO-->
                 <div class="modal fade" id="modalaltfoto" aria-hidden="true">
@@ -192,7 +228,7 @@
                             [src]="webcamImage.imageAsDataUrl"
                           />
                           <webcam
-                            [height]="200"
+                            [height]="300"
                             [trigger]="triggerObservable"
                             (imageCapture)="handleImage($event)"
                             *ngIf="!sysImage && showWebcam"

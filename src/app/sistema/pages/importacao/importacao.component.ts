@@ -8,6 +8,8 @@ import { SessionService } from "../../shared/session.service";
 import { Observable, Subject, of } from "rxjs";
 import { FormularioImportacaoComponent } from "./formulario/formulario-importacao.component";
 import { ImportacaoService } from "./importacao.service";
+import { EventosService } from "../eventos/eventos.service";
+import { Eventos } from "../eventos/eventos";
 
 @Component({
     selector: 'app-importacao',
@@ -20,6 +22,8 @@ import { ImportacaoService } from "./importacao.service";
 export class ImportacaoComponent implements OnInit, OnDestroy{
 
   data$!: any;
+  eventos$!: Observable<Eventos>;
+  evento_id!: number;
 
   //VARIAVEL DE CONFIGURACOES DA TABLEA
   dtOptions: DataTables.Settings = {};
@@ -36,7 +40,8 @@ export class ImportacaoComponent implements OnInit, OnDestroy{
   constructor(
     private sharedService: SharedService,
     private sessionService: SessionService,
-    private importacaoService: ImportacaoService
+    private importacaoService: ImportacaoService,
+    private eventosService: EventosService
   ) {}
 
   ngOnInit(): void {
@@ -44,11 +49,15 @@ export class ImportacaoComponent implements OnInit, OnDestroy{
     this.dtOptions = this.sharedService.getDtOptions();
     this.dtOptions = { ...this.dtOptions, order: [1, 'asc'] };
 
-    
+    this.eventos$ = this.eventosService.index();
   }
 
   ngOnDestroy(): void {
-      
+      // Do not forget to unsubscribe the event
+      if(this.dtTrigger){
+        this.dtTrigger.unsubscribe();
+      }
+    
   }
 
   refresh(data:any){
@@ -64,7 +73,8 @@ export class ImportacaoComponent implements OnInit, OnDestroy{
   confirm(){
     //console.log(this.data$)
     var importacao:any = {
-      dados: this.data$
+      dados: this.data$,
+      evento_id: this.evento_id,
     }
     this.importacaoService.importar(importacao).subscribe(
       {

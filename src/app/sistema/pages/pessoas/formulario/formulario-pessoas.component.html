@@ -6,6 +6,7 @@
       [src]="urlimage + form.value.foto"
     />
     <img
+      #imagetaked
       *ngIf="sysImage"
       style="height: 200px"
       [src]="webcamImage.imageAsDataUrl"

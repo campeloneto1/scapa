@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, delay } from 'rxjs';
 import { SessionService } from 'src/app/sistema/shared/session.service';
 import { SharedModule } from 'src/app/sistema/shared/shared.module';
 import { SharedService } from 'src/app/sistema/shared/shared.service';
@@ -19,6 +19,8 @@ import { Orgao, Orgaos } from '../../orgaos/orgaos';
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environments';
+import { FaceapiService } from '../faceapi.service';
+import { FaceMatcher, LabeledFaceDescriptors } from 'face-api.js';
 
 @Component({
   selector: 'app-formulario-pessoas',
@@ -42,6 +44,8 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   };
   public errors: WebcamInitError[] = [];
   protected cpfnotvalid:boolean = false;
+
+  @ViewChild('imagetaked', { static: false }) imagetaked!: ElementRef;
 
   // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
@@ -80,7 +84,8 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     private orgaosService: OrgaosService,
     private sexosService: SexosService,
     private sharedService: SharedService,
-    private SessionService: SessionService
+    private SessionService: SessionService,
+    private faceapiService: FaceapiService
   ) {}
  
 
@@ -252,29 +257,6 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
 
   //FUNÇÃO CADATRO E EDÇÃO
   cadastrar(){  
-   
-    // if(this.form.value.uf_rg){
-    //   this.form.get('uf_rg_id')?.patchValue(this.form.value.uf_rg.id);
-    //   this.form.get('uf_rg')?.patchValue('');
-    // }
-    
-    // if(this.form.value.sexo){
-    //   this.form.get('sexo_id')?.patchValue(this.form.value.sexo.id);
-    //   this.form.get('sexo')?.patchValue('');
-    // }
-    // if(this.form.value.cidade_id){
-    //   this.getEstados();
-    //   this.getCidades();
-    //   this.form.get('pais_id')?.patchValue(this.form.value.cidade.estado.pais_id);
-    //   //this.form.get('pais')?.patchValue('');
-
-    //   this.form.get('estado_id')?.patchValue(this.form.value.cidade.estado.id);
-    //   //this.form.get('estado')?.patchValue('');
-
-    //   //this.form.get('cidade_id')?.patchValue(this.form.value.cidade.id);
-    //   //this.form.get('cidade')?.patchValue('');
-    // }
-    //console.log(this.form.value);
     
     if(this.form.value.id){
       this.pessoasService.update(this.form.value).subscribe({
@@ -340,11 +322,22 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     this.trigger.next(void 0);
   }
 
-  public handleImage(webcamImage: WebcamImage): void {
+  public async handleImage(webcamImage: WebcamImage){
     this.webcamImage = webcamImage;
     this.sysImage = webcamImage.imageAsDataUrl;
-   
+    var detectedFace;
 
+     setTimeout(async () => { 
+      detectedFace = await this.faceapiService.recognizeFace(this.imagetaked.nativeElement);
+      //@ts-ignore
+      console.log(detectedFace?.descriptor);
+      if(detectedFace){
+        //@ts-ignore
+        console.log(await this.faceapiService.facematcher(detectedFace));
+      }
+    }, 1000 );
+
+    /*
     var myFormData = new FormData();
     const headers = new HttpHeaders();
     headers.append('Content-Type', 'multipart/form-data');
@@ -361,7 +354,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
       error: (error) => {
        
       }
-    }); 
+    }); */
   }
 
   public triggerSnapshot(): void {

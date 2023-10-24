@@ -21,6 +21,13 @@
               <i class="fa fa-plus" aria-hidden="true"></i>
             </button>
           </h3>
+          <app-input-select
+            class="col-sm-6"
+            [label]="'Evento'"
+            [id]="'evento_id'"
+            [data$]="eventos$"
+            [(ngModel)]="evento_id"
+          />
           <h3 class="card-title">
             <button
               title="Cadastrar"

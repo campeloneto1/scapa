@@ -13,7 +13,7 @@ import * as XLSX from 'xlsx';
     imports: [CommonModule, SharedModule]
 })
 
-export class FormularioImportacaoComponent implements OnInit, OnDestroy{
+export class FormularioImportacaoComponent implements OnInit{
     form!: FormGroup;
     @Output('refresh') refresh: EventEmitter<any> = new EventEmitter();
     datasheet: any;
@@ -38,9 +38,7 @@ export class FormularioImportacaoComponent implements OnInit, OnDestroy{
          
         });
     }
-    ngOnDestroy(): void {
-        throw new Error("Method not implemented.");
-    }
+    
     
     public uploadData(event: any) : void { 
        /* wire up file reader */

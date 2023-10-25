@@ -6,6 +6,7 @@ import { LabeledFaceDescriptors } from 'face-api.js';
   providedIn: 'root',
 })
 export class FaceapiService {
+
   async loadModels() {
     await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/models');
     await faceapi.nets.tinyFaceDetector.loadFromUri('/assets/models');
@@ -29,6 +30,11 @@ export class FaceapiService {
   
   async facematcher(image: LabeledFaceDescriptors){
     const matcher = new faceapi.FaceMatcher(image);
+    return matcher;
+  }
+
+  async fromJson(data: Object){
+    const matcher = faceapi.FaceMatcher.fromJSON(data);
     return matcher;
   }
 }

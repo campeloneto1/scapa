@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnDestroy, OnInit } from "@angular/core";
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { debounceTime, distinctUntilChanged, Observable, of, Subject, switchMap } from "rxjs";
 import { TituloComponent } from "src/app/sistema/components/titulo/titulo.component";
@@ -18,6 +18,7 @@ import { Eventos } from "../../eventos/eventos";
 import { Funcionario, Funcionarios } from "../../funcionarios/funcionarios";
 import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { FaceapiService } from "../../pessoas/faceapi.service";
 @Component({
     selector: 'app-acesso',
     templateUrl: './acesso.component.html',
@@ -68,6 +69,10 @@ export class AcessoComponent implements OnInit, OnDestroy{
     };
     public errors: WebcamInitError[] = [];
 
+    @ViewChild('imagetaked', { static: false }) imagetaked!: ElementRef;
+    @ViewChild('imagedatabase', { static: false }) imagedatabase!: ElementRef;
+    private facematchersring!: any; 
+
     // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
   // switch to next / previous / specific webcam; true/false: forward/backwards, string: deviceId
@@ -77,12 +82,14 @@ export class AcessoComponent implements OnInit, OnDestroy{
 
     constructor(
         private http: HttpClient,
+        private faceapiService: FaceapiService,
         private acessosService: AcessosService,
         private pessoasService: PessoasService,
         private setoresService: SetoresService,
         private postosService: PostosService,
         private sharedService: SharedService,
-        private formBuilder: FormBuilder
+        private formBuilder: FormBuilder,
+        
     ){
 
     }
@@ -251,6 +258,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
                 if(data.length == 1){
                     this.form.get('pessoa')?.patchValue(data[0]);
                     this.cadpessoa = false;
+                    this.updateFaceMatcher();
                 }else{
                     this.pessoas = data;
                    this.cadpessoa = true;
@@ -259,6 +267,23 @@ export class AcessoComponent implements OnInit, OnDestroy{
             error: (erro) => {
             }
         });
+    }
+
+    updateFaceMatcher(){
+        var detectedFace;   
+        console.log("entrou")
+        if(!this.form.value.pessoa.face_matcher && this.form.value.pessoa.foto){
+            console.log("precisa atualizar");
+            setTimeout(async () => { 
+                //detectedFace = await this.faceapiService.recognizeFaces(this.imagetaked.nativeElement);  
+                detectedFace = await this.faceapiService.recognizeFace(this.imagedatabase.nativeElement);  
+                if(detectedFace){
+                    //@ts-ignore
+                    this.facematchersring = await this.faceapiService.facematcher(detectedFace);      
+                    
+                }
+            }, 500 );
+        }
     }
 
     searchCpf(){
@@ -286,25 +311,14 @@ export class AcessoComponent implements OnInit, OnDestroy{
         this.cadpessoa = false;
     }
 
-    registrar(){
+    registrar(){                
+
         if(this.form.valid){
             this.form.get('cpfpesquisa')?.patchValue('');
 
             this.form.get('pessoa_id')?.patchValue(this.form.value.pessoa.id);
             this.form.get('pessoa')?.patchValue('');
-    
-            // this.form.get('posto_id')?.patchValue(this.form.value.posto.id);
-    
-            // this.form.get('setor_id')?.patchValue(this.form.value.setor.id);
-            // this.form.get('setor')?.patchValue('');
-
-            // if(this.form.value.funcionario){
-            //     this.form.get('funcionario_id')?.patchValue(this.form.value.funcionario.id);
-            //     this.form.get('funcionario')?.patchValue('');
-            // }
-
-            //this.form2.patchValue(this.form);
-            //this.form2.get('posto')?.patchValue('');
+               
             this.subscription5 = this.acessosService.store(this.form.value).subscribe({
                 next: (data) => {
                     this.sharedService.toast('Sucesso!', data as string, 1);
@@ -348,7 +362,20 @@ export class AcessoComponent implements OnInit, OnDestroy{
         this.webcamImage = webcamImage;
         this.sysImage = webcamImage.imageAsDataUrl;
        
-    
+        var detectedFace;    
+        
+        setTimeout(async () => { 
+            //detectedFace = await this.faceapiService.recognizeFaces(this.imagetaked.nativeElement);  
+             detectedFace = await this.faceapiService.recognizeFace(this.imagetaked.nativeElement);  
+            if(detectedFace){
+              //@ts-ignore
+              this.facematchersring = await this.faceapiService.facematcher(detectedFace);      
+                this.uploadImagem(this.webcamImage);
+            }
+          }, 500 );
+      }
+
+      uploadImagem(webcamImage: WebcamImage){
         var myFormData = new FormData();
         const headers = new HttpHeaders();
         headers.append('Content-Type', 'multipart/form-data');
@@ -361,11 +388,16 @@ export class AcessoComponent implements OnInit, OnDestroy{
           next: (data) => {
            //this.form.get('foto')?.patchValue(data);
            //console.log(data);
+           if(this.facematchersring){
+            this.facematchersring._labeledDescriptors[0]._label = `${this.form.value.pessoa.nome} (${this.form.value.pessoa.cpf})`;                 
+          }
 
            var updatefoto = {
             id: this.form.value.pessoa.id,
-            foto: data
+            foto: data,
+            face_matcher: JSON.stringify(this.facematchersring)
            }
+
            this.http.post(`${environment.url}/update-foto`, updatefoto, {
             headers: headers
             }).subscribe({

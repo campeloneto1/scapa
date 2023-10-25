@@ -38,6 +38,7 @@ export interface Pessoa{
     digital?: string,
     pivot?: any,
     nao_autorizado?: boolean,
+    face_matcher?: string,
 
     data_verificacao?: Date,
     obs_verificacao?: string

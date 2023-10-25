@@ -97,32 +97,6 @@
           </div>
         </div>
         <!--FIM CARD-->
-
-        <!--INICIO MODAL CADASTRO
-          <div class="modal fade" id="modalcad"  aria-hidden="true">
-            <div class="modal-dialog modal-xl" >
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h4 class="modal-title">Cadastrar Pessoa</h4>
-                  <button
-                  (click)="cadastro = false;"
-                    type="button"
-                    class="close"
-                    data-bs-dismiss="modal"
-                    aria-label="Close"
-                  >
-                    <span aria-hidden="true">×</span>
-                  </button>
-                </div>
-                <div class="modal-body" *ngIf="cadastro">
-                  <app-formulario-pessoas
-                    (refresh)="refresh()"
-                  />
-                </div>         
-              </div>
-            </div>
-          </div>-->
-        <!--FIM MODAL CADASTRO-->
       </div>
       <!--FIM COL-SM-4  SELECAO PESSOA-->
       <!--INICIO COL-SM-8  IDENTIFICACAO PESSOA-->
@@ -151,14 +125,15 @@
                   *ngIf="!form.value.pessoa?.foto"
                   class="profile-user-img img-fluid img-circle"
                   src="assets/casamil.png"
-                  alt="User profile picture"
+                  alt="Foto padrão"
                 />
                 <img
+                  #imagedatabase
                   style="height: 200px; width: 200px"
                   *ngIf="form.value.pessoa?.foto"
                   class="profile-user-img img-fluid img-circle"
                   [src]="urlimage + form.value.pessoa?.foto"
-                  alt="User profile picture"
+                  alt="Foto da pessoa"
                 />
                 <i
                   style="cursor: pointer; position: absolute"
@@ -223,6 +198,7 @@
                       <div class="modal-body">
                         <div>
                           <img
+                            #imagetaked
                             *ngIf="sysImage"
                             style="height: 200px; width: 200px"
                             [src]="webcamImage.imageAsDataUrl"

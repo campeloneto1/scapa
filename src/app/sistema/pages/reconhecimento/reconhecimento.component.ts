@@ -1,8 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { TituloComponent } from "../../components/titulo/titulo.component";
 import { SharedModule } from "../../shared/shared.module";
-import { Observable } from "rxjs";
 import { Pessoa, Pessoas } from "../pessoas/pessoas";
 import { PessoasService } from "../pessoas/pessoas.service";
 import { FaceapiService } from "../pessoas/faceapi.service";

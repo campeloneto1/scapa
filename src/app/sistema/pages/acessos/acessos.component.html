@@ -40,6 +40,7 @@
               <th>Visitante</th>
               <th>CPF</th>
               <th>Observações</th>
+              <!-- <th>Observações do Acesso</th> -->
               <th>Posto</th>
               <th>Data Hora</th>
               <th>Registro</th>
@@ -62,6 +63,7 @@
                   >{{ row.pessoa.nome }}</a
                 >
               </td>
+              <!-- <td>{{ row.pessoa.obs }}</td> -->
               <td>{{ row.pessoa.cpf | mask : "000.000.000-00" }}</td>
               <td>{{ row.obs }}</td>
               <td>{{ row.posto.nome }}</td>

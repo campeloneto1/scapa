@@ -130,6 +130,11 @@ const routes: Routes = [
                 canActivate: [AlowedGuard]
             },
             {
+                path: 'Reconhecimento',
+                loadComponent: () => import('./pages/reconhecimento/reconhecimento.component').then((c) => c.ReconhecimentoComponent),
+                canActivate: [AlowedGuard]
+            },
+            {
                 path: 'RelAcessos',
                 loadComponent: () => import('./pages/relatorios/rel-acessos/rel-acessos.component').then((c) => c.RelAcessosComponent),
                 canActivate: [AlowedGuard]

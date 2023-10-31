@@ -45,6 +45,11 @@ export class PessoasService{
         return this.http.patch(`${API}/pessoas/${data.id}/altacesso`, data.id);
       }
 
+     returnFaceMatcher(){
+        return this.http.get(`${API}/pessoas-facematcher`);
+      }
+
+
       store(data: Pessoa){
         return this.http.post(`${API}/pessoas`,data);
       }
@@ -55,5 +60,9 @@ export class PessoasService{
     
       destroy(id: number){
         return this.http.delete(`${API}/pessoas/${id}`);
+      }
+
+      updateFacematcher(data: Object){
+        return this.http.post(`${API}/update-facematcher`,data);
       }
 }

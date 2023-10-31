@@ -1,0 +1,50 @@
+<!-- INICIO CONTENT WRAPER-->
+<div class="content-wrapper">
+  <!--INICIO COMPONENT TITULO DA PAGINA-->
+  <app-titulo titulo="Reconhecimento de Pessoas" />
+  <!--FIM COMPONENT TITULO DA PAGINA-->
+  <!--INICIO SECTION TABLE-->
+  <section class="content">
+    <!--INICIO CARD -->
+    <div class="card">
+      <!--INICIO CARD HEADER-->
+      <div class="card-header border-0">
+        <div style="display: flex; justify-content: space-between">
+          <input
+            [(ngModel)]="file"
+            type="file"
+            class="form-control"
+            id="file"
+            accept=".jpg, .jpeg, .png, .webp"
+            (change)="uploadData($event)"
+          />
+        </div>
+      </div>
+      <!--FIM CARD HEADER-->
+      <!--INICIO CARD BODY-->
+      <div class="card-body">
+        <div class="text-center">
+          <img
+            #imageRec
+            *ngIf="imageSrc"
+            [src]="imageSrc"
+            style="height: 400px"
+          />
+        </div>
+
+        <ul *ngIf="result">
+          <li *ngFor="let pessoa of result">{{ pessoa.label }}</li>
+        </ul>
+      </div>
+      <!--FIM CARD BODY-->
+      <!--INICIO CARD FOOTER
+          <div class="card-footer">
+  
+          </div>-->
+      <!--FIM CARD FOOTER-->
+    </div>
+    <!--FIM CARD -->
+  </section>
+  <!--FIM SECTION TABLE-->
+</div>
+<!-- FIM CONTENT WRAPER-->

@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, EventEmitter, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable, Subject, delay } from 'rxjs';
 import { SessionService } from 'src/app/sistema/shared/session.service';
@@ -20,7 +20,6 @@ import { WebcamImage, WebcamInitError, WebcamUtil } from 'ngx-webcam';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environments';
 import { FaceapiService } from '../faceapi.service';
-import { FaceMatcher, LabeledFaceDescriptors } from 'face-api.js';
 
 @Component({
   selector: 'app-formulario-pessoas',
@@ -29,7 +28,7 @@ import { FaceMatcher, LabeledFaceDescriptors } from 'face-api.js';
   standalone: true,
   imports: [CommonModule, SharedModule],
 })
-export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
+export class FormularioPessoasCompoennt implements OnInit, OnDestroy, AfterViewInit {
   urlimage = environment.image;
   public sysImage!: string;
   public webcamImage!: WebcamImage;
@@ -70,14 +69,6 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
   protected cpfexist: boolean = false;
   protected pessoacpf!: Pessoa;
 
-  // protected config!: any
-  // protected config2!: any
-  // protected config3!: any
-  // protected config4!: any
-  // protected config5!: any
-  // protected config6!: any
-  // protected config7!: any
-
   constructor(
     private http: HttpClient,
     private pessoasService: PessoasService,
@@ -87,7 +78,13 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     private sharedService: SharedService,
     private SessionService: SessionService,
     private faceapiService: FaceapiService
-  ) {}
+  ) {
+    
+  }
+
+  ngAfterViewInit(): void {
+    this.faceapiService.loadModels();
+  }
  
 
   ngOnInit(): void {
@@ -101,37 +98,11 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     this.sexos$ = this.sexosService.index();
     this.estados2$ = this.sharedService.getEstados(1);
     this.paises$ = this.sharedService.getPaises();
-    this.perfil = this.SessionService.retornaPerfil();
-
-    //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-    // this.config = this.sharedService.getConfig();
-    // this.config = {...this.config, displayFn:(item: Estado) => { return `${item.nome}`; }, placeholder:'UF RG'};
-
-    // this.config2 = this.sharedService.getConfig();
-    // this.config2 = {...this.config, displayFn:(item: Sexo) => { return `${item.nome}`; }, placeholder:'Sexo'};
-
-    // this.config3 = this.sharedService.getConfig();
-    // this.config3 = {...this.config, displayFn:(item: Nivel) => { return `${item.nome}`; }, placeholder:'Nível'};
-
-    // this.config4 = this.sharedService.getConfig();
-    // this.config4 = {...this.config, displayFn:(item: Pais) => { return `${item.nome}`; }, placeholder:'País'};
-
-    // this.config5 = this.sharedService.getConfig();
-    // this.config5 = {...this.config, displayFn:(item: Estado) => { return `${item.nome}`; }, placeholder:'Estado'};
-
-    // this.config6 = this.sharedService.getConfig();
-    // this.config6 = {...this.config, displayFn:(item: Cidade) => { return `${item.nome}`; }, placeholder:'Cidade'};
-
-    // this.config7 = this.sharedService.getConfig();
-    // this.config7 = {...this.config, displayFn:(item: Orgao) => { return `${item.nome}`; }, placeholder:'Orgão'};
+    this.perfil = this.SessionService.retornaPerfil();  
 
     //BUILD O FORMULARIO COM VALIDACOES
     this.form = this.formBuilder.group({
       id: [''],
-      //orgao_id: [''],
-     //orgao: ['', [Validators.required,]],
-      //nivel_id: [''],
-      //nivel: ['', [Validators.required,]],
       face_matcher: [''],
       sexo_id: [''],
       sexo: [''],
@@ -263,12 +234,10 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
       this.facematcher._labeledDescriptors[0]._label = `${this.form.value.nome} (${this.form.value.cpf})`;
       this.form.get('face_matcher')?.patchValue(JSON.stringify(this.facematcher));
     }
-    //console.log(this.form.value);
     
     if(this.form.value.id){
       this.pessoasService.update(this.form.value).subscribe({
         next: (data:any) => {
-          //console.log('aaaaaaaaaa')
           this.sharedService.toast('Sucesso!', data.mensagem as string, 3);
           this.form.reset();
           this.sysImage = '';
@@ -282,7 +251,6 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
     }else{
       this.pessoasService.store(this.form.value).subscribe({
         next: (data:any) => {
-          //console.log('aaaaaaaaaa')
           this.sharedService.toast('Sucesso!', data.mensagem as string, 1);
           this.form.reset();
           this.sysImage = '';
@@ -341,12 +309,8 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy {
       if(detectedFace){
         //@ts-ignore
         this.facematcher = await this.faceapiService.facematcher(detectedFace);      
-        //@ts-ignore
-        //const faceMatches = detectedFace.map(face => previous.__zone_symbol__value.findBestMatch(face.descriptor));
-        //console.log(faceMatches)
       }
     }, 500 );
-
     
     var myFormData = new FormData();
     const headers = new HttpHeaders();

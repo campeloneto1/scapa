@@ -8,22 +8,22 @@ import { LabeledFaceDescriptors } from 'face-api.js';
 export class FaceapiService {
 
   async loadModels() {
-    await faceapi.nets.ssdMobilenetv1.loadFromUri('/assets/models');
-    await faceapi.nets.tinyFaceDetector.loadFromUri('/assets/models');
-    await faceapi.nets.faceLandmark68Net.loadFromUri('/assets/models');
-    await faceapi.nets.faceRecognitionNet.loadFromUri('/assets/models');
+    await faceapi.nets.ssdMobilenetv1.loadFromUri('assets/models');
+    await faceapi.nets.tinyFaceDetector.loadFromUri('assets/models');
+    await faceapi.nets.faceLandmark68Net.loadFromUri('assets/models');
+    await faceapi.nets.faceRecognitionNet.loadFromUri('assets/models');
 
   }
 
   async recognizeFace(image: HTMLImageElement) {
-    await this.loadModels();
+    //await this.loadModels();
     const detections = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptor();
     return detections;
   }
 
 
   async recognizeFaces(image: HTMLImageElement) {
-    await this.loadModels();
+    //await this.loadModels();
     const detections = await faceapi.detectAllFaces(image, new faceapi.TinyFaceDetectorOptions()).withFaceLandmarks().withFaceDescriptors();
     return detections;
   }

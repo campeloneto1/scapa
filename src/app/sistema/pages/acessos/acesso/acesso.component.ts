@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { debounceTime, distinctUntilChanged, Observable, of, Subject, switchMap } from "rxjs";
 import { TituloComponent } from "src/app/sistema/components/titulo/titulo.component";
@@ -27,7 +27,7 @@ import { FaceapiService } from "../../pessoas/faceapi.service";
     imports: [CommonModule, SharedModule, TituloComponent, FormularioPessoasCompoennt]
 })
 
-export class AcessoComponent implements OnInit, OnDestroy{
+export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
     protected form!: FormGroup;
     protected form2!: FormGroup;
     protected urlimage = environment.image;
@@ -41,11 +41,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
     protected eventos!: Eventos;
     protected cadastro:boolean = false;
     protected cadpessoa = false;
-
-    // protected config!: any
-    // protected config2!: any
-    // protected config3!: any
-    // protected config4!: any
 
     protected subscription!: any;
     protected subscription2!: any;
@@ -70,7 +65,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
     public errors: WebcamInitError[] = [];
 
     @ViewChild('imagetaked', { static: false }) imagetaked!: ElementRef;
-    @ViewChild('imagedatabase', { static: false }) imagedatabase!: ElementRef;
+    @ViewChild('imagematch', { static: false }) imagematch!: ElementRef;
     private facematchersring!: any; 
 
     // webcam snapshot trigger
@@ -91,7 +86,6 @@ export class AcessoComponent implements OnInit, OnDestroy{
         private formBuilder: FormBuilder,
         
     ){
-
     }
 
     ngOnInit(): void {
@@ -117,50 +111,36 @@ export class AcessoComponent implements OnInit, OnDestroy{
         }
 
         this.postos$ = this.postosService.index();
-        this.setores$ = this.setoresService.index();
-        //this.pessoas$ = this.pessoasService.index();
-
-        /*this.pessoasService.index().subscribe({
-            next: (data) => {
-                this.pessoas2 = data;
-            }
-        });*/
-
-        //RETORNA CONFIGRACAO DO NGX SELECT DROPDOWN
-        // this.config = this.sharedService.getConfig();
-        // this.config = {...this.config, displayFn:(item: Posto) => { return `${item.orgao.nome} - ${item.nome}`; }, placeholder:'Selecione um Posto'};
-
-        /*this.config2 = this.sharedService.getConfig();
-        this.config2 = {...this.config, displayFn:(item: Pessoa) => { return `${item.nome} (${item.cpf})`; }, placeholder:'Selecione uma Pessoa'};*/
-
-        // this.config3 = this.sharedService.getConfig();
-        // this.config3 = {...this.config, displayFn:(item: Setor) => { return `${item.nome}`; }, placeholder:'Setor'};
-
-        // this.config4 = this.sharedService.getConfig();
-        // this.config4 = {...this.config, displayFn:(item: Funcionario) => { return `${item.nome} (${item?.ramal1 ? item?.ramal1 : ''}${item?.ramal2 ? " | "+item?.ramal2 : ''})`; }, placeholder:'Funcionário'};
-    
-    
+        this.setores$ = this.setoresService.index();    
+        
         this.subscription2 = this.searchSubject.pipe(
             debounceTime(1000),
             distinctUntilChanged(),
             switchMap((data:any) => this.pessoasService.searchCpf(data))
           ).subscribe({
             next: (data:any) => {
-                if(data.length > 0){
-                    //this.pessoa = data[0];
-                    //this.form.get('pessoa')?.patchValue(data[0]);
+                if(data.length > 0){                   
                     this.pessoas = data;
                     if(data.length > 1){
                         this.cadpessoa = true;
-                    }
-                    
+                    }else{
+                        this.cadpessoa = false;
+                        this.form.get('pessoa')?.patchValue(data[0]);
+                        this.updateFaceMatcher();
+                        
+                    }                    
                 }else{
                    this.cadpessoa = true;
                 }
+             
             },
             error: (erro) => {
             }
         });
+    }
+
+    ngAfterViewInit(): void {
+        this.faceapiService.loadModels();
     }
 
     ngOnDestroy(): void {
@@ -191,7 +171,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
                     }
                 });
             }
-        })
+        }); 
     }
 
     getFuncionarios(){
@@ -203,19 +183,10 @@ export class AcessoComponent implements OnInit, OnDestroy{
         localStorage.removeItem('posto');
         this.form.get('posto')?.patchValue('');
         this.form.get('posto_id')?.patchValue('');
-        this.form.get('pessoa')?.patchValue('');
-        this.form.get('pessoa_id')?.patchValue('');
-        this.form.get('setor')?.patchValue('');
-        this.form.get('setor_id')?.patchValue('');
-        this.form.get('funcionario')?.patchValue('');
-        this.form.get('funcionario_id')?.patchValue('');
-        this.form.get('obs')?.patchValue('');
-        this.form.get('cpf')?.patchValue('');
-        this.funcionarios$ = of([]);
+        this.clearSearch();
     }
 
     refresh($event:any){
-        //this.pessoas$ = this.pessoasService.index();
         this.cadpessoa = false;
         
         this.subscription = this.pessoasService.checkCpf2($event.cpf).subscribe({
@@ -259,28 +230,44 @@ export class AcessoComponent implements OnInit, OnDestroy{
                     this.form.get('pessoa')?.patchValue(data[0]);
                     this.cadpessoa = false;
                     this.updateFaceMatcher();
+                   
                 }else{
                     this.pessoas = data;
                    this.cadpessoa = true;
                 }
+                
             },
             error: (erro) => {
             }
         });
     }
 
-    updateFaceMatcher(){
-        var detectedFace;   
-        console.log("entrou")
+    public updateFaceMatcher(){
+        //console.log("entrou")
         if(!this.form.value.pessoa.face_matcher && this.form.value.pessoa.foto){
-            console.log("precisa atualizar");
+            var detectedFace;  
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.src = this.urlimage+this.form.value.pessoa.foto;  
             setTimeout(async () => { 
-                //detectedFace = await this.faceapiService.recognizeFaces(this.imagetaked.nativeElement);  
-                detectedFace = await this.faceapiService.recognizeFace(this.imagedatabase.nativeElement);  
+                //detectedFace = await this.faceapiService.recognizeFaces(img);  
+                 detectedFace = await this.faceapiService.recognizeFace(img);  
                 if(detectedFace){
-                    //@ts-ignore
-                    this.facematchersring = await this.faceapiService.facematcher(detectedFace);      
-                    
+                   //@ts-ignore
+                   this.facematchersring = await this.faceapiService.facematcher(detectedFace);     
+                   this.facematchersring._labeledDescriptors[0]._label = `${this.form.value.pessoa.nome} (${this.form.value.pessoa.cpf})`; 
+                    //console.log(this.facematchersring);
+                    var obj = {
+                        id: this.form.value.pessoa.id,
+                        face_matcher: JSON.stringify(this.facematchersring)
+                    }
+                    this.pessoasService.updateFacematcher(obj).subscribe({
+                        next: (data:any) => {
+                                                      
+                        },
+                        error: (erro) => {
+                        }
+                    });
                 }
             }, 500 );
         }
@@ -302,17 +289,17 @@ export class AcessoComponent implements OnInit, OnDestroy{
     clearSearch(){
         this.form.get('cpfpesquisa')?.patchValue('');
         this.form.get('pessoa')?.patchValue('');
-        this.form.get('setor')?.patchValue('');
-        this.form.get('funcionario')?.patchValue('');
         this.form.get('pessoa_id')?.patchValue('');
+        this.form.get('setor')?.patchValue('');
         this.form.get('setor_id')?.patchValue('');
+        this.form.get('funcionario')?.patchValue('');
         this.form.get('funcionario_id')?.patchValue('');
+        this.form.get('obs')?.patchValue('');
         this.funcionarios$ = of([]);
-        this.cadpessoa = false;
+        this.cadpessoa = false;   
     }
 
-    registrar(){                
-
+     registrar(){                
         if(this.form.valid){
             this.form.get('cpfpesquisa')?.patchValue('');
 
@@ -322,17 +309,7 @@ export class AcessoComponent implements OnInit, OnDestroy{
             this.subscription5 = this.acessosService.store(this.form.value).subscribe({
                 next: (data) => {
                     this.sharedService.toast('Sucesso!', data as string, 1);
-    
-                    this.form.get('pessoa')?.patchValue('');
-                    this.form.get('pessoa_id')?.patchValue('');
-                    this.form.get('setor')?.patchValue('');
-                    this.form.get('setor_id')?.patchValue('');
-                    this.form.get('funcionario')?.patchValue('');
-                    this.form.get('funcionario_id')?.patchValue('');
-                    this.funcionarios$ = of([]);
-                    this.form.get('obs')?.patchValue('');
-                    this.cadpessoa = false;
-                    //this.form2.reset();
+                    this.clearSearch();
                 },
                 error: (error) => {
                     this.sharedService.toast('Error!', error.error.erro as string, 2);
@@ -386,11 +363,9 @@ export class AcessoComponent implements OnInit, OnDestroy{
         headers: headers
         }).subscribe({
           next: (data) => {
-           //this.form.get('foto')?.patchValue(data);
-           //console.log(data);
            if(this.facematchersring){
-            this.facematchersring._labeledDescriptors[0]._label = `${this.form.value.pessoa.nome} (${this.form.value.pessoa.cpf})`;                 
-          }
+                this.facematchersring._labeledDescriptors[0]._label = `${this.form.value.pessoa.nome} (${this.form.value.pessoa.cpf})`;                 
+            }
 
            var updatefoto = {
             id: this.form.value.pessoa.id,
@@ -401,10 +376,12 @@ export class AcessoComponent implements OnInit, OnDestroy{
            this.http.post(`${environment.url}/update-foto`, updatefoto, {
             headers: headers
             }).subscribe({
-              next: (data) => {
-               //this.form.get('foto')?.patchValue(data);
-               //console.log(data);     
-               this.searchCpf();                      
+              next: (data) => {              
+               this.pessoasService.show(this.form.value.pessoa.id).subscribe({
+                next: (data) => {
+                    this.form.get('pessoa')?.patchValue(data);
+                }
+               })                   
               },
               error: (error) => {
                

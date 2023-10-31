@@ -59,7 +59,7 @@
                   autocomplete="off"
                   formControlName="cpfpesquisa"
                   type="text"
-                  (keyup)="searchCpf()"
+                  (ngModelChange)="searchCpf()"
                   list="pessoas"
                   name="cpfpesquisa"
                   id="cpfpesquisa"
@@ -82,17 +82,6 @@
                   </option>
                 </datalist>
               </div>
-              <!--<app-input-text class="col-sm-12" (change)="getPessoa()" formControlName="cpf" label="CPF" id="cpf" tipo="text" mascara="000.000.000-00" />
-
-                    <app-input-select (ngModelChange)="closeWeb()"  class="col-sm-12" formControlName="pessoa"  [config]="config2" [data$]="pessoas$" id="pessoa" label="Pessoa" />
-                    <p class="text-center">ou</p>
-                    <button class="btn btn-primary"
-                      data-bs-toggle="modal"
-                      data-bs-target="#modalcad" 
-                      (click)="cadastro = true;"
-                    >
-                      Cadastre uma pessoa
-                    </button>-->
             </div>
           </div>
         </div>
@@ -128,13 +117,14 @@
                   alt="Foto padrão"
                 />
                 <img
-                  #imagedatabase
+                  #imagematch
                   style="height: 200px; width: 200px"
                   *ngIf="form.value.pessoa?.foto"
                   class="profile-user-img img-fluid img-circle"
                   [src]="urlimage + form.value.pessoa?.foto"
                   alt="Foto da pessoa"
                 />
+
                 <i
                   style="cursor: pointer; position: absolute"
                   data-bs-toggle="modal"
@@ -168,7 +158,7 @@
                       </div>
                       <div class="modal-body">
                         <img
-                          style="height: 400px; width: 400px"
+                          style="height: 500px; width: 500px"
                           *ngIf="form.value.pessoa?.foto"
                           class="profile-user-img img-fluid img-circle"
                           [src]="urlimage + form.value.pessoa?.foto"

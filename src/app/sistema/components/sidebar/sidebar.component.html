@@ -46,16 +46,7 @@
             <p>Acessos do dia</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="perfil.c1">
-          <a
-            [routerLink]="['Autoridades']"
-            routerLinkActive="active"
-            class="nav-link"
-          >
-            <i class="nav-icon fa fa-star"></i>
-            <p>Autoridades</p>
-          </a>
-        </li>
+
         <li class="nav-item" *ngIf="perfil.c1">
           <a [routerLink]="['C1']" routerLinkActive="active" class="nav-link">
             <i class="nav-icon fa fa-phone"></i>
@@ -82,14 +73,15 @@
             <p>Cad. Acesso de Aut.</p>
           </a>
         </li>
-        <li class="nav-item" *ngIf="perfil.chaves">
+
+        <li class="nav-item" *ngIf="perfil.pessoas">
           <a
-            [routerLink]="['Chaves']"
+            [routerLink]="['Pessoas']"
             routerLinkActive="active"
             class="nav-link"
           >
-            <i class="nav-icon fa fa-key"></i>
-            <p>Entrega de Chaves</p>
+            <i class="nav-icon fa fa-address-book"></i>
+            <p>Consultar Pessoas</p>
           </a>
         </li>
         <li class="nav-item" *ngIf="perfil.gestor">
@@ -102,6 +94,26 @@
             <p>Importar Pessoas</p>
           </a>
         </li>
+        <li class="nav-item" *ngIf="perfil.c1">
+          <a
+            [routerLink]="['Autoridades']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-star"></i>
+            <p>Autoridades</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.chaves">
+          <a
+            [routerLink]="['Chaves']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-key"></i>
+            <p>Entrega de Chaves</p>
+          </a>
+        </li>
         <li class="nav-item" *ngIf="perfil.orgaos">
           <a
             [routerLink]="['Orgaos']"
@@ -110,16 +122,6 @@
           >
             <i class="nav-icon fa fa-building"></i>
             <p>Orgãos</p>
-          </a>
-        </li>
-        <li class="nav-item" *ngIf="perfil.pessoas">
-          <a
-            [routerLink]="['Pessoas']"
-            routerLinkActive="active"
-            class="nav-link"
-          >
-            <i class="nav-icon fa fa-address-book"></i>
-            <p>Consultar Pessoas</p>
           </a>
         </li>
         <li class="nav-item" *ngIf="perfil.postos">
@@ -159,6 +161,16 @@
           >
             <i class="nav-icon fa fa-sitemap"></i>
             <p>Setores</p>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf="perfil.gestor">
+          <a
+            [routerLink]="['Reconhecimento']"
+            routerLinkActive="active"
+            class="nav-link"
+          >
+            <i class="nav-icon fa fa-eye"></i>
+            <p>Reconhecimento</p>
           </a>
         </li>
         <!--<li class="nav-item" *ngIf="perfil.gestor">

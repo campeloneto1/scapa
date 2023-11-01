@@ -13,28 +13,40 @@
           <input
             [(ngModel)]="file"
             type="file"
-            class="form-control"
+            class="form-control col-sm-10"
             id="file"
             accept=".jpg, .jpeg, .png, .webp"
             (change)="uploadData($event)"
+          />
+          <input
+            [(ngModel)]="score"
+            type="number"
+            max="1"
+            min="0"
+            step=".1"
+            class="form-control col-sm-02"
+            id="score"
+            (change)="detectFaces()"
           />
         </div>
       </div>
       <!--FIM CARD HEADER-->
       <!--INICIO CARD BODY-->
-      <div class="card-body">
-        <div class="text-center">
+      <div class="card-body row">
+        <div class="col-sm-4">
+          <ul *ngIf="result">
+            <li *ngFor="let pessoa of result">{{ pessoa.label }}</li>
+          </ul>
+        </div>
+        <div class="text-center col-sm-8" style="position: relative">
           <img
             #imageRec
             *ngIf="imageSrc"
             [src]="imageSrc"
             style="height: 400px"
           />
+          <canvas #canvas></canvas>
         </div>
-
-        <ul *ngIf="result">
-          <li *ngFor="let pessoa of result">{{ pessoa.label }}</li>
-        </ul>
       </div>
       <!--FIM CARD BODY-->
       <!--INICIO CARD FOOTER

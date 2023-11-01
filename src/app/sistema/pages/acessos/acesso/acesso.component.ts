@@ -51,6 +51,8 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
 
     private readonly searchSubject = new Subject<string | undefined>();
 
+    public precisaTrocarFoto = false;
+
     public sysImage!: string;
     public webcamImage!: WebcamImage;
     // toggle webcam on/off
@@ -120,14 +122,14 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
           ).subscribe({
             next: (data:any) => {
                 if(data.length > 0){                   
-                    this.pessoas = data;
+                    
                     if(data.length > 1){
+                        this.pessoas = data;
                         this.cadpessoa = true;
                     }else{
                         this.cadpessoa = false;
                         this.form.get('pessoa')?.patchValue(data[0]);
                         this.updateFaceMatcher();
-                        
                     }                    
                 }else{
                    this.cadpessoa = true;
@@ -137,6 +139,8 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
             error: (erro) => {
             }
         });
+
+        
     }
 
     ngAfterViewInit(): void {
@@ -268,6 +272,10 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
                         error: (erro) => {
                         }
                     });
+                    this.precisaTrocarFoto = false;
+                }else{
+                    //console.log('recomendo trocar foto')
+                    this.precisaTrocarFoto = true;
                 }
             }, 500 );
         }
@@ -297,6 +305,7 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
         this.form.get('obs')?.patchValue('');
         this.funcionarios$ = of([]);
         this.cadpessoa = false;   
+        this.precisaTrocarFoto = false;
     }
 
      registrar(){                
@@ -347,7 +356,7 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
             if(detectedFace){
               //@ts-ignore
               this.facematchersring = await this.faceapiService.facematcher(detectedFace);      
-                this.uploadImagem(this.webcamImage);
+              this.uploadImagem(this.webcamImage);
             }
           }, 500 );
       }
@@ -376,7 +385,8 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
            this.http.post(`${environment.url}/update-foto`, updatefoto, {
             headers: headers
             }).subscribe({
-              next: (data) => {              
+              next: (data) => {       
+                this.precisaTrocarFoto = false;       
                this.pessoasService.show(this.form.value.pessoa.id).subscribe({
                 next: (data) => {
                     this.form.get('pessoa')?.patchValue(data);

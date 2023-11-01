@@ -306,6 +306,7 @@ export class FormularioPessoasCompoennt implements OnInit, OnDestroy, AfterViewI
      setTimeout(async () => { 
       //detectedFace = await this.faceapiService.recognizeFaces(this.imagetaked.nativeElement);  
        detectedFace = await this.faceapiService.recognizeFace(this.imagetaked.nativeElement);  
+       console.log(detectedFace)
       if(detectedFace){
         //@ts-ignore
         this.facematcher = await this.faceapiService.facematcher(detectedFace);      

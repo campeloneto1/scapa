@@ -59,7 +59,7 @@
                   autocomplete="off"
                   formControlName="cpfpesquisa"
                   type="text"
-                  (ngModelChange)="searchCpf()"
+                  (keyup)="searchCpf()"
                   list="pessoas"
                   name="cpfpesquisa"
                   id="cpfpesquisa"
@@ -81,6 +81,21 @@
                     {{ pessoa.nome }}
                   </option>
                 </datalist>
+
+                <!-- <webcam
+                  [height]="200"
+                  [trigger]="triggerObservable"
+                  (imageCapture)="handleImage2($event)"
+                  *ngIf="!form.value.foto && !sysImage && showWebcam"
+                  [allowCameraSwitch]="allowCameraSwitch"
+                  [switchCamera]="nextWebcamObservable"
+                  [videoOptions]="videoOptions"
+                  (cameraSwitched)="cameraWasSwitched($event)"
+                  (initError)="handleInitError($event)"
+                ></webcam>
+                <a (click)="getSnapshot()" class="btn btn-info btn-block"
+                  >Tirar foto
+                </a> -->
               </div>
             </div>
           </div>
@@ -139,6 +154,12 @@
                   style="cursor: pointer; color: #007bff"
                 >
                   Alterar foto
+                </div>
+                <div
+                  *ngIf="precisaTrocarFoto || !form.value.pessoa?.foto"
+                  style="color: red"
+                >
+                  Por favor, tirar outra foto da pessoa!
                 </div>
 
                 <!--INICIO MODAL FOTO-->

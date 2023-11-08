@@ -24,7 +24,13 @@ export class FaceapiService {
 
   async recognizeFaces(image: HTMLImageElement, score:number) {
     //await this.loadModels(); , new faceapi.TinyFaceDetectorOptions()
-    const detections = await faceapi.detectAllFaces(image, new faceapi.TinyFaceDetectorOptions({scoreThreshold: score})).withFaceLandmarks().withFaceDescriptors();
+    const detections = await faceapi.detectAllFaces(image, new faceapi.TinyFaceDetectorOptions({scoreThreshold: score, inputSize: 416})).withFaceLandmarks().withFaceDescriptors();
+    return detections;
+  }
+
+  async recognizeFaceVideo(image: HTMLVideoElement) {
+    //await this.loadModels();
+    const detections = await faceapi.detectSingleFace(image, new faceapi.TinyFaceDetectorOptions({scoreThreshold: 0.6})).withFaceLandmarks().withFaceDescriptor();
     return detections;
   }
   
@@ -46,5 +52,13 @@ export class FaceapiService {
   async draw(canvas: any, resized:any){
     const draw = faceapi.draw.drawDetections(canvas, resized);
     return draw;
+  }
+
+  async rect(x:any, y: any, width:any, height:any){
+    return new faceapi.Rect(x, y, width, height)
+  }
+
+  async extractFaces(imageRef:any, regionsToExtract:any){
+    return faceapi.extractFaces(imageRef, regionsToExtract)
   }
 }

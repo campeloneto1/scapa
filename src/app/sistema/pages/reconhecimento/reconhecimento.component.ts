@@ -23,6 +23,8 @@ export class ReconhecimentoComponent implements OnInit, OnDestroy{
     imageSrc!: any;
     canvas!: any;
     resizedDetections!: any;
+    loading:boolean = true;
+    loading2:boolean = false;
 
     subscription1: any;
     obj = {
@@ -54,6 +56,7 @@ export class ReconhecimentoComponent implements OnInit, OnDestroy{
                 this.faceapiService.fromJson(this.obj).then(data => {
                     this.facematchers = data;
                 });
+                this.loading = false;
             }
         });
        
@@ -67,7 +70,8 @@ export class ReconhecimentoComponent implements OnInit, OnDestroy{
         // }
     }
 
-    uploadData(event: any){        
+    uploadData(event: any){       
+        this.loading2 = true; 
         if (event.target.files && event.target.files[0]) {
             const file = event.target.files[0];    
             const reader = new FileReader();
@@ -89,6 +93,12 @@ export class ReconhecimentoComponent implements OnInit, OnDestroy{
         this.canvas = this.canvas2.nativeElement;
         this.canvas.width = this.imageRec.nativeElement.width;
         this.canvas.height = this.imageRec.nativeElement.height;
+        this.canvas.style.position = 'absolute';
+        this.canvas.style.left = this.imageRec.nativeElement.offsetLeft+"px";
+        this.canvas.style.top = this.imageRec.nativeElement.offsetTop+"px";        
+        //console.log(this.imageRec.nativeElement.getBoundingClientRect().right+"px")
+       
+        this.canvas.style.zindex = 1000;
         
         await this.faceapiService.resizeResults(this.detectedFace, { width: this.imageRec.nativeElement.width, height: this.imageRec.nativeElement.height }).then(data => {
             
@@ -97,16 +107,40 @@ export class ReconhecimentoComponent implements OnInit, OnDestroy{
         const context = this.canvas.getContext('2d');
         
         await this.faceapiService.draw(this.canvas, this.resizedDetections);
-
-        this.findMatch();
-       //console.log(this.result)
+        //console.log(this.resizedDetections)
+        //console.log(this.imageRec.nativeElement.getBoundingClientRect().top)
+        await this.findMatch().then(() => {
+            this.loading2 = false; 
+        });
+      
     }
 
     async findMatch(){
-        await this.detectedFace.map((face:any) => {            
-            //@ts-ignore
-            this.result.push(this.facematchers.findBestMatch(face.descriptor));
+        
+        this.resizedDetections.map((face:any, index:number) => {        
+            //console.log(face)                
+            this.extractFaceFromBox(this.imageRec.nativeElement, face.detection.box).then((data:any) => {
+                //@ts-ignore
+                this.result.push([this.facematchers.findBestMatch(face.descriptor), data]);
+            });            
         });
     }
+
+    async extractFaceFromBox(imageRef:any, box:any): Promise<any> {
+        //console.log(box.width)
+        var regionsToExtract;
+        await this.faceapiService.rect(box.x, box.y, box.width, box.height).then((data:any) => {
+            //console.log(data)
+            regionsToExtract = [data];
+          });
+        
+        let faceImages = await this.faceapiService.extractFaces(imageRef, regionsToExtract);
+        
+        if (faceImages.length === 0) {
+          console.log("No face found");
+        } else {         
+           return faceImages[0].toDataURL();
+        }
+      }
     
 }

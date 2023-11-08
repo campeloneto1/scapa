@@ -68,7 +68,15 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
 
     @ViewChild('imagetaked', { static: false }) imagetaked!: ElementRef;
     @ViewChild('imagematch', { static: false }) imagematch!: ElementRef;
+    @ViewChild('webcam', { static: false }) webcam!: ElementRef;
     private facematchersring!: any; 
+
+    private facematchers: any;
+    obj = {
+        "distanceThreshold":0.6,
+        "labeledDescriptors":[]
+    }
+    private startweb:boolean = false;
 
     // webcam snapshot trigger
   private trigger: Subject<void> = new Subject<void>();
@@ -140,11 +148,25 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
             }
         });
 
-        
+        this.pessoasService.returnFaceMatcher().subscribe({
+            next: (data:any) => {
+                data.map((pessoa:Pessoa) => {                    
+                    //@ts-ignore
+                    this.obj.labeledDescriptors.push(JSON.parse(pessoa.face_matcher).labeledDescriptors[0])
+                });
+            },
+            complete: () => {
+                this.faceapiService.fromJson(this.obj).then(data => {
+                    this.facematchers = data;
+                    this.startweb = true;
+                });            
+            }
+        });
     }
 
     ngAfterViewInit(): void {
         this.faceapiService.loadModels();
+        this.handleImage2();
     }
 
     ngOnDestroy(): void {
@@ -356,9 +378,35 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
             if(detectedFace){
               //@ts-ignore
               this.facematchersring = await this.faceapiService.facematcher(detectedFace);      
-              this.uploadImagem(this.webcamImage);
+              
             }
-          }, 500 );
+        }, 500 );
+        this.uploadImagem(this.webcamImage);
+      }
+
+      handleImage2() {
+          let video = document.querySelector("#webcam div video");
+          let facematch:any;
+            if(video && !this.form.value.cpfpesquisa && this.startweb){
+                this.faceapiService.recognizeFaceVideo(video as HTMLVideoElement).then((data:any) => {
+                    if(data){
+                        
+                       //@ts-ignore
+                       facematch = this.facematchers.findBestMatch(data.descriptor)
+                       if(facematch){
+                        let array = facematch.label.split(" (")[1];
+                        //console.log(array.substring(0, array.length - 1))
+                        this.form.get('cpfpesquisa')?.patchValue(array.substring(0, array.length - 1));
+                        this.searchCpf();
+                       }
+                      
+                    }
+                })
+            }
+        
+          setTimeout(async () => { 
+            this.handleImage2();
+          }, 2000 );
       }
 
       uploadImagem(webcamImage: WebcamImage){
@@ -372,15 +420,20 @@ export class AcessoComponent implements OnInit, OnDestroy, AfterViewInit{
         headers: headers
         }).subscribe({
           next: (data) => {
+            var updatefoto;
            if(this.facematchersring){
-                this.facematchersring._labeledDescriptors[0]._label = `${this.form.value.pessoa.nome} (${this.form.value.pessoa.cpf})`;                 
+                this.facematchersring._labeledDescriptors[0]._label = `${this.form.value.pessoa.nome} (${this.form.value.pessoa.cpf})`;    
+                updatefoto = {
+                    id: this.form.value.pessoa.id,
+                    foto: data,
+                    face_matcher: JSON.stringify(this.facematchersring)
+                   }             
+            }else{
+                updatefoto = {
+                    id: this.form.value.pessoa.id,
+                    foto: data,
+                   }
             }
-
-           var updatefoto = {
-            id: this.form.value.pessoa.id,
-            foto: data,
-            face_matcher: JSON.stringify(this.facematchersring)
-           }
 
            this.http.post(`${environment.url}/update-foto`, updatefoto, {
             headers: headers

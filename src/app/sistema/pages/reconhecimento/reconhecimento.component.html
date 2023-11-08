@@ -7,8 +7,11 @@
   <section class="content">
     <!--INICIO CARD -->
     <div class="card">
+      <div class="card-header text-center" *ngIf="loading">
+        <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+      </div>
       <!--INICIO CARD HEADER-->
-      <div class="card-header border-0">
+      <div class="card-header border-0" *ngIf="!loading">
         <div style="display: flex; justify-content: space-between">
           <input
             [(ngModel)]="file"
@@ -32,10 +35,17 @@
       </div>
       <!--FIM CARD HEADER-->
       <!--INICIO CARD BODY-->
+
       <div class="card-body row">
-        <div class="col-sm-4">
+        <div class="col-sm-4 text-center" *ngIf="loading2">
+          <i class="fa fa-spinner fa-spin fa-3x fa-fw"></i>
+        </div>
+        <div class="col-sm-4" *ngIf="!loading2">
           <ul *ngIf="result">
-            <li *ngFor="let pessoa of result">{{ pessoa.label }}</li>
+            <li *ngFor="let pessoa of result">
+              {{ pessoa[0].label }}
+              <img *ngIf="pessoa[1]" height="50" [src]="pessoa[1]" />
+            </li>
           </ul>
         </div>
         <div class="text-center col-sm-8" style="position: relative">

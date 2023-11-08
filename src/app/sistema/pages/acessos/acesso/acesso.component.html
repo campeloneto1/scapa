@@ -82,20 +82,12 @@
                   </option>
                 </datalist>
 
-                <!-- <webcam
-                  [height]="200"
-                  [trigger]="triggerObservable"
-                  (imageCapture)="handleImage2($event)"
-                  *ngIf="!form.value.foto && !sysImage && showWebcam"
-                  [allowCameraSwitch]="allowCameraSwitch"
-                  [switchCamera]="nextWebcamObservable"
+                <webcam
+                  id="webcam"
+                  #webcam
+                  [height]="50"
                   [videoOptions]="videoOptions"
-                  (cameraSwitched)="cameraWasSwitched($event)"
-                  (initError)="handleInitError($event)"
                 ></webcam>
-                <a (click)="getSnapshot()" class="btn btn-info btn-block"
-                  >Tirar foto
-                </a> -->
               </div>
             </div>
           </div>
